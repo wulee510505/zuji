@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.liangmayong.text2speech.Text2Speech;
+import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PushMessage;
 import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
 import com.wulee.administrator.zuji.utils.GsonUtil;
@@ -33,7 +34,7 @@ public class PushMsgReceiver extends BroadcastReceiver {
 
             Text2Speech.speech(context,"您有一条新的消息",false);
             PushMessage pushMessage = GsonUtil.parseJsonWithGson(jsonMessage, PushMessage.class);
-
+            DBHandler.insertPushMessage(pushMessage);
 
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                             .setSmallIcon(R.mipmap.ic_launcher)
