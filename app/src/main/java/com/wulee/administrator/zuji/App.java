@@ -2,11 +2,17 @@ package com.wulee.administrator.zuji;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.wulee.administrator.zuji.database.dao.DaoMaster;
+import com.wulee.administrator.zuji.database.dao.DaoSession;
 
+import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobConfig;
+import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.update.BmobUpdateAgent;
 
 /**
  * Created by wulee on 2016/12/8 09:37
@@ -17,6 +23,9 @@ public class App extends Application {
    public static Context context;
     public static ACache aCache;
 
+    public static DaoMaster master;
+    public static DaoSession session;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -25,11 +34,19 @@ public class App extends Application {
 
         SDKInitializer.initialize(context);
 
+        initDB();
+
         initBmobSDK();
-        //BmobUpdateAgent.initAppVersion();
+        BmobUpdateAgent.initAppVersion();
 
         Bmob.initialize(this,"ac67374a92fdca635c75eb6388e217a4");
+    }
 
+    private static void initDB(){
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "zuji-db", null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        master= new DaoMaster(db);
+        session=master.newSession();
     }
 
     private void initBmobSDK() {
@@ -40,6 +57,10 @@ public class App extends Application {
                 .setFileExpiration(2500)//文件的过期时间(单位为秒)：默认1800s
                 .build();
         Bmob.initialize(config);
+        // 使用推送服务时的初始化操作
+        BmobInstallation.getCurrentInstallation().save();
+        // 启动推送服务
+        BmobPush.startWork(this);
     }
     
 }

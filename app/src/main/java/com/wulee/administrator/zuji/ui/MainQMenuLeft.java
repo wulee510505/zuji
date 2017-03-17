@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.PersonalInfo;
+import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 
@@ -36,7 +37,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private ImageView rbImage;
     private TextView mTvMobile;
 
-    private TextView tvSetting,tvLoginOut,tvCheckUpdate; // 登录、退出登录提示语
+    private TextView tvMsg,tvSetting,tvLoginOut,tvCheckUpdate; // 登录、退出登录提示语
 
     @Nullable
     @Override
@@ -56,10 +57,12 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         rbImage = (ImageView) view.findViewById(R.id.circle_img_header);
         mTvMobile = (TextView) view.findViewById(R.id.tv_mobile);
 
+        tvMsg = (TextView) view.findViewById(R.id.mml_pushmsg_tv);
         tvSetting = (TextView) view.findViewById(R.id.mml_setting_tv);
         tvCheckUpdate = (TextView) view.findViewById(R.id.mml_checkupdate_tv);
         tvLoginOut = (TextView) view.findViewById(R.id.mml_loginout_tv);
 
+        tvMsg.setOnClickListener(this);
         tvSetting.setOnClickListener(this);
         tvLoginOut.setOnClickListener(this);
         tvCheckUpdate.setOnClickListener(this);
@@ -80,6 +83,9 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  AppUtils.AppExit(mContext);
                  PersonalInfo.logOut();
                  startActivity(new Intent(mContext,LoginActivity.class));
+                 break;
+             case R.id.mml_pushmsg_tv:
+                 startActivity(new Intent(mContext,PushMsgListActivity.class));
                  break;
              case R.id.mml_checkupdate_tv:
                  BmobUpdateAgent.update(mContext);
