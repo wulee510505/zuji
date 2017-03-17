@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="#f6a6c1" >
+
+
+    <RelativeLayout
+        android:id="@+id/mnfm_rl_person_login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <RelativeLayout
+            android:id="@+id/mnfm_rl_head_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/circle_img_header"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:src="@mipmap/ic_launcher"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mnfm_rl_head_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:minWidth="70dp"
+                android:textColor="@color/color_white"
+                android:text="游客"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tv_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/color_white"
+                android:text=""
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/mml_loginout_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cdcdcd"/>
+
+        <TextView
+            android:id="@+id/mml_setting_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="设置"
+            android:textColor="@color/color_white"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cdcdcd"/>
+
+        <TextView
+            android:id="@+id/mml_checkupdate_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="检查更新"
+            android:textColor="@color/color_white"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cdcdcd"/>
+
+        <TextView
+            android:id="@+id/mml_loginout_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="退出登录"
+            android:textColor="@color/color_white"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

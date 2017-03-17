@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_white"/>
+
+    <TextView
+        android:id="@+id/tv_server_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@color/colorAccent"
+        android:layout_centerInParent="true"
+        android:text="正在获取服务器时间..."
+        android:textColor="@color/color_white"
+        android:textSize="18sp" />
+
+</RelativeLayout>

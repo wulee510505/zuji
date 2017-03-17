@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true"> <!-- pressed the button status -->
+        <shape>
+
+            <!-- 开始颜色="" 结束颜色="" 颜色渐变="" -->
+            <gradient android:angle="270" android:endColor="#888888" android:startColor="#888888" />
+            <!-- //渐变方向     按钮边缘="" 边缘宽="" -->
+            <stroke android:width="1sp" android:color="#fad3cf" />
+            <!-- //边缘颜色   按钮四个圆角="" -->
+            <corners android:radius="16dp" />
+            <!-- //半径    内边距="" 按钮文字和边缘距离="" -->
+            <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
+
+            <solid android:color="@color/colorAccent"/>
+        </shape></item>
+    <item android:state_focused="true"> <!-- get the focus button sttaus -->
+        <shape>
+            <gradient android:angle="270" android:endColor="#ffc2b7" android:startColor="#ffc2b7" />
+
+            <stroke android:width="1sp" android:color="#dcdcdc" />
+
+            <corners android:radius="16dp" />
+
+            <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
+        </shape></item>
+    <item> <!-- no focus the button status(the normal status button) -->
+        <shape>
+            <gradient android:angle="270" android:endColor="#00000000" android:startColor="#00000000" />
+
+            <stroke android:width="1sp" android:color="#fad3cf" />
+
+            <corners android:radius="16dp" />
+
+            <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
+
+            <solid android:color="#ff6666"/>
+        </shape></item>
+
+</selector>

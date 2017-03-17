@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
+    defaultConfig {
+        applicationId "com.wulee.administrator.zuji"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 3
+        versionName "1.0.2"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    useLibrary 'org.apache.http.legacy'
+
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:cardview-v7:23.1.1'
+    testCompile 'junit:junit:4.12'
+    //以下SDK开发者请根据需要自行选择
+    //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
+    //3.5.0：请务必查看下面注释[1]
+    compile 'cn.bmob.android:bmob-sdk:3.5.0'
+    //bmob-push：Bmob的推送包
+    compile 'cn.bmob.android:bmob-push:0.8'
+    //bmob-im：Bmob的即时通讯包，注意每个版本的im依赖特定版本的bmob-sdk，具体的依赖关系可查看下面注释[2]
+    compile 'cn.bmob.android:bmob-im:2.0.5@aar'
+    compile 'cn.bmob.android:bmob-sdk:3.4.7-aar'
+    //bmob-sms ：Bmob单独为短信服务提供的包
+    compile 'cn.bmob.android:bmob-sms:1.0.1'
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+    compile 'cn.bmob.android:http-legacy:1.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
+    compile files('libs/android_text2speech.jar')
+    compile files('libs/baidumapapi_search_v4_2_0.jar')
+    compile 'com.mylhyl:acp:1.1.7'
+
+}
