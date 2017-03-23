@@ -12,7 +12,6 @@ import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobConfig;
 import cn.bmob.v3.BmobInstallation;
-import cn.bmob.v3.update.BmobUpdateAgent;
 
 /**
  * Created by wulee on 2016/12/8 09:37
@@ -37,7 +36,6 @@ public class App extends Application {
         initDB();
 
         initBmobSDK();
-        BmobUpdateAgent.initAppVersion();
 
         Bmob.initialize(this,"ac67374a92fdca635c75eb6388e217a4");
     }

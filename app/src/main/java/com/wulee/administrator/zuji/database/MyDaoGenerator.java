@@ -35,7 +35,7 @@ public class MyDaoGenerator {
         pushMessage.setTableName("PUSH_MESSAGE_TABLE");
         pushMessage.addStringProperty("type");
         pushMessage.addStringProperty("content");
-        pushMessage.addLongProperty("time");
+        pushMessage.addLongProperty("time").unique();
     }
 
     /**个人信息*/

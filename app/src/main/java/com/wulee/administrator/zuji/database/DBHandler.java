@@ -1,7 +1,5 @@
 package com.wulee.administrator.zuji.database;
 
-import android.text.TextUtils;
-
 import com.wulee.administrator.zuji.App;
 import com.wulee.administrator.zuji.database.bean.LoginBean;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
@@ -11,8 +9,6 @@ import com.wulee.administrator.zuji.database.dao.PersonInfoDao;
 import com.wulee.administrator.zuji.database.dao.PushMessageDao;
 
 import java.util.List;
-
-import static com.wulee.administrator.zuji.App.aCache;
 
 
 /**
@@ -43,6 +39,7 @@ public class DBHandler {
     public static void insertPushMessage(PushMessage pushMessage) {
         pushMessageDao.insertOrReplace(pushMessage);
     }
+
 
     public static List<PushMessage> getAllPushMessage() {
         return  pushMessageDao.loadAll();

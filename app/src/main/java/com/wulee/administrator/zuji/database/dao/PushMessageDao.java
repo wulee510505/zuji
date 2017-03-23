@@ -43,7 +43,7 @@ public class PushMessageDao extends AbstractDao<PushMessage, Void> {
         db.execSQL("CREATE TABLE " + constraint + "\"PUSH_MESSAGE_TABLE\" (" + //
                 "\"TYPE\" TEXT," + // 0: type
                 "\"CONTENT\" TEXT," + // 1: content
-                "\"TIME\" INTEGER);"); // 2: time
+                "\"TIME\" INTEGER UNIQUE );"); // 2: time
     }
 
     /** Drops the underlying database table. */
