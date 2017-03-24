@@ -3,6 +3,7 @@ package com.wulee.administrator.zuji.ui;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -38,13 +39,13 @@ public class MapActivity extends BaseActivity {
     public static final String INTENT_KEY_LONTITUDE = "intent_key_lontitude";
     public static final String INTENT_KEY_LATITUDE = "intent_key_latitude";
 
-    public static final String ACTION_LOCATION_CHANGE = "action_location_change";
-
     private MapView mapView;
     private BaiduMap mBaiduMap;
 
     private String mLatitude;
     private String mLontitude;
+
+    private LocationChangeReceiver mReceiver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +59,10 @@ public class MapActivity extends BaseActivity {
 
         initView();
         addLocation();
+
+        mReceiver = new LocationChangeReceiver();
+        IntentFilter filter = new IntentFilter(LocationUtil.ACTION_LOCATION_CHANGE);
+        registerReceiver(mReceiver,filter);
     }
 
     private void initView() {
@@ -97,7 +102,7 @@ public class MapActivity extends BaseActivity {
             if (TextUtils.isEmpty(intent.getAction())) {
                 return;
             }
-            if (action.equals(ACTION_LOCATION_CHANGE)) {
+            if (action.equals(LocationUtil.ACTION_LOCATION_CHANGE)) {
                 String currLatitude = aCache.getAsString("lat");
                 String currLontitude = aCache.getAsString("lon");
                 if(!TextUtils.isEmpty(currLatitude) && !TextUtils.isEmpty(currLontitude)){
@@ -122,8 +127,8 @@ public class MapActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        // 退出时销毁定位
-        LocationUtil.getInstance().stopGetLocation();
+        unregisterReceiver(mReceiver);
+
         // 关闭定位图层
         mBaiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();

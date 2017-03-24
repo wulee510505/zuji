@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
-import com.wulee.administrator.zuji.entity.PersonalInfo;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
 
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
@@ -99,7 +99,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
 
     private void doRegist(String mobile, String pwd) {
-        PersonalInfo piInfo = new PersonalInfo();
+        PersonInfo piInfo = new PersonInfo();
         piInfo.setMobilePhoneNumber(mobile);
         piInfo.setUsername(mobile);
         piInfo.setPassword(pwd);
@@ -114,9 +114,9 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 }
             }
         });*/
-        piInfo.signUp(new SaveListener<PersonalInfo>() {
+        piInfo.signUp(new SaveListener<PersonInfo>() {
             @Override
-            public void done(PersonalInfo user,BmobException e) {
+            public void done(PersonInfo user,BmobException e) {
                 if(e==null){
                     Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegistActivity.this,LoginActivity.class));

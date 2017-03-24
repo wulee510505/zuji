@@ -23,9 +23,8 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
-import com.wulee.administrator.zuji.entity.LocationInfo;
-import com.wulee.administrator.zuji.entity.PersonalInfo;
-import com.wulee.administrator.zuji.utils.LocationUtil;
+import com.wulee.administrator.zuji.database.bean.LocationInfo;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
 
 import java.util.List;
 
@@ -88,13 +87,13 @@ public class ZuJiMapActivity extends BaseActivity {
         if(!TextUtils.equals("yes",aCache.getAsString("isUploadLocation"))){
             return;
         }
-        PersonalInfo piInfo = BmobUser.getCurrentUser(PersonalInfo.class);
+        PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         BmobQuery<LocationInfo> query = new BmobQuery<LocationInfo>();
         query.addWhereEqualTo("piInfo", piInfo);    // 查询当前用户的所有位置信息
         query.include("piInfo");// 希望在查询位置信息的同时也把当前用户的信息查询出来
         query.order("-createdAt");
         // 设置每页数据个数
-        query.setLimit(30);
+        query.setLimit(50);
         query.findObjects(new FindListener<LocationInfo>() {
             @Override
             public void done(List<LocationInfo> dataList, BmobException e) {
@@ -117,7 +116,7 @@ public class ZuJiMapActivity extends BaseActivity {
         for (int i = 0; i < dataList.size(); i++) {
             LocationInfo location = dataList.get(i);
             //定义Maker坐标点
-            LatLng point = new LatLng(Double.parseDouble(location.latitude), Double.parseDouble(location.lontitude));
+            LatLng point = new LatLng(Double.parseDouble(location.getLatitude()), Double.parseDouble(location.getLontitude()));
             //构建Marker图标
             BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_mark);
             //构建MarkerOption，用于在地图上添加Marker
@@ -128,7 +127,7 @@ public class ZuJiMapActivity extends BaseActivity {
             mBaiduMap.addOverlay(option);
 
             if(i == 0){
-                lastLocation = new LatLng(Double.parseDouble(location.latitude), Double.parseDouble(location.lontitude));
+                lastLocation = new LatLng(Double.parseDouble(location.getLatitude()), Double.parseDouble(location.getLontitude()));
             }
         }
         MapStatus.Builder builder = new MapStatus.Builder();
@@ -170,8 +169,6 @@ public class ZuJiMapActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        // 退出时销毁定位
-        LocationUtil.getInstance().stopGetLocation();
         // 关闭定位图层
         mBaiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();

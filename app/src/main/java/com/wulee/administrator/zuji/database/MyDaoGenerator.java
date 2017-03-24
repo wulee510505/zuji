@@ -15,6 +15,7 @@ public class MyDaoGenerator {
         addAccount(schema);//
         pushMessageInfo(schema);
         addPersonInfo(schema);
+        addLocationInfo(schema);
         new DaoGenerator().generateAll(schema, "./app/src/main/java");
     }
 
@@ -48,5 +49,25 @@ public class MyDaoGenerator {
         personInfo.addStringProperty("birthday");
         personInfo.addStringProperty("address");
         personInfo.addStringProperty("header_img_url");
+
+        personInfo.addDoubleProperty("homeLat");
+        personInfo.addDoubleProperty("homeLon");
+        personInfo.addStringProperty("homeAddress");
+        personInfo.addDoubleProperty("companyLat");
+        personInfo.addDoubleProperty("companyLon");
+        personInfo.addStringProperty("companyAddress");
+    }
+
+
+    /**位置信息*/
+    private static void addLocationInfo(Schema schema){
+        Entity locationInfo = schema.addEntity("LocationInfo");
+        locationInfo.setTableName("LOCATION_TABLE");
+        locationInfo.addStringProperty("nativePhoneNumber");
+        locationInfo.addStringProperty("lontitude");
+        locationInfo.addStringProperty("latitude");
+        locationInfo.addStringProperty("address");
+        locationInfo.addStringProperty("locationdescribe");
+        locationInfo.addStringProperty("deviceId");
     }
 }

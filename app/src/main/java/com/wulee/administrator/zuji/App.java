@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.facebook.stetho.Stetho;
 import com.wulee.administrator.zuji.database.dao.DaoMaster;
 import com.wulee.administrator.zuji.database.dao.DaoSession;
 
@@ -38,6 +39,8 @@ public class App extends Application {
         initBmobSDK();
 
         Bmob.initialize(this,"ac67374a92fdca635c75eb6388e217a4");
+
+        Stetho.initializeWithDefaults(this);
     }
 
     private static void initDB(){

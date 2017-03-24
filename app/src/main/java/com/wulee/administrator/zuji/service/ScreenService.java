@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
-import com.wulee.administrator.zuji.utils.LocationUtil;
+import com.wulee.administrator.zuji.utils.AppUtils;
 
 /**
  * Created by wulee on 2016/12/8 09:31
@@ -48,7 +48,9 @@ public class ScreenService extends Service {
 
             if (action.equals("android.intent.action.SCREEN_ON")) {
                 System.out.println("—— SCREEN_ON ——");
-                LocationUtil.getInstance().startGetLocation();
+                if(!AppUtils.isServiceRunning("com.wulee.administrator.zuji.service.UploadLocationService")){
+                    startService(new Intent(context,UploadLocationService.class));
+                }
             } else if (action.equals("android.intent.action.SCREEN_OFF")) {
                 System.out.println("—— SCREEN_OFF ——");
             }

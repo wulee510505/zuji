@@ -1,7 +1,10 @@
 package com.wulee.administrator.zuji.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
@@ -22,9 +25,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.LocationAdapter;
 import com.wulee.administrator.zuji.base.BaseActivity;
-import com.wulee.administrator.zuji.entity.LocationInfo;
-import com.wulee.administrator.zuji.entity.PersonalInfo;
+import com.wulee.administrator.zuji.database.bean.LocationInfo;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.service.ScreenService;
+import com.wulee.administrator.zuji.service.UploadLocationService;
+import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 
 import java.text.SimpleDateFormat;
@@ -63,6 +68,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvTime;
 
+    private LocationChangeReceiver mReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +85,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mHandler.postDelayed(mRunnable,1000);
 
         BmobUpdateAgent.update(this);
+
+        mReceiver = new LocationChangeReceiver();
+        IntentFilter filter  = new IntentFilter(LocationUtil.ACTION_LOCATION_CHANGE);
+        registerReceiver(mReceiver,filter);
     }
 
     /*
@@ -101,6 +112,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        if(!AppUtils.isServiceRunning("com.wulee.administrator.zuji.service.UploadLocationService")){
+            startService(new Intent(this,UploadLocationService.class));
+        }
         isRefresh = true;
         query(0, STATE_REFRESH);
     }
@@ -116,8 +130,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     LocationInfo location = locationInfoList.get(pos);
                     if(null != location){
                         Intent intent = new Intent(MainActivity.this,MapActivity.class);
-                        intent.putExtra(MapActivity.INTENT_KEY_LATITUDE,location.latitude);
-                        intent.putExtra(MapActivity.INTENT_KEY_LONTITUDE,location.lontitude);
+                        intent.putExtra(MapActivity.INTENT_KEY_LATITUDE,location.getLatitude());
+                        intent.putExtra(MapActivity.INTENT_KEY_LONTITUDE,location.getLontitude());
                         startActivity(intent);
                     }
                 }
@@ -231,7 +245,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(!TextUtils.equals("yes",aCache.getAsString("isUploadLocation"))){
             return;
         }
-        PersonalInfo piInfo = BmobUser.getCurrentUser(PersonalInfo.class);
+        PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         BmobQuery<LocationInfo> query = new BmobQuery<LocationInfo>();
         query.addWhereEqualTo("piInfo", piInfo);    // 查询当前用户的所有位置信息
         query.include("piInfo");// 希望在查询位置信息的同时也把当前用户的信息查询出来
@@ -310,5 +324,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             return true;
         }
         return false;
+    }
+
+
+    public class LocationChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(LocationUtil.ACTION_LOCATION_CHANGE)) {
+                isRefresh = true;
+                query(0, STATE_REFRESH);
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
     }
 }

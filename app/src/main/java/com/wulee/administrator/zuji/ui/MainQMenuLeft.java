@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wulee.administrator.zuji.R;
-import com.wulee.administrator.zuji.entity.PersonalInfo;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.LocationUtil;
@@ -72,7 +72,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         tvCheckUpdate.setOnClickListener(this);
         rbImage.setOnClickListener(this);
 
-        PersonalInfo piInfo = BmobUser.getCurrentUser(PersonalInfo.class);
+        PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if(null != piInfo){
             mTvMobile.setText(piInfo.getMobilePhoneNumber());
         }
@@ -85,7 +85,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  aCache.put("has_login","no");
                  LocationUtil.getInstance().stopGetLocation();
                  AppUtils.AppExit(mContext);
-                 PersonalInfo.logOut();
+                 PersonInfo.logOut();
                  startActivity(new Intent(mContext,LoginActivity.class));
                  break;
              case R.id.mml_pushmsg_tv:

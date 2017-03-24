@@ -1,9 +1,11 @@
 package com.wulee.administrator.zuji.database;
 
 import com.wulee.administrator.zuji.App;
+import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.LoginBean;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.database.bean.PushMessage;
+import com.wulee.administrator.zuji.database.dao.LocationInfoDao;
 import com.wulee.administrator.zuji.database.dao.LoginBeanDao;
 import com.wulee.administrator.zuji.database.dao.PersonInfoDao;
 import com.wulee.administrator.zuji.database.dao.PushMessageDao;
@@ -19,6 +21,7 @@ public class DBHandler {
     private static LoginBeanDao loginDao = App.session.getLoginBeanDao();
     private static PushMessageDao pushMessageDao = App.session.getPushMessageDao();
     private static PersonInfoDao personInfoDao = App.session.getPersonInfoDao();
+    private static LocationInfoDao locationInfoDao = App.session.getLocationInfoDao();
 
     public static void insertLoginInfo(LoginBean loginInfo) {
         loginDao.insertOrReplace(loginInfo);
@@ -49,8 +52,15 @@ public class DBHandler {
         personInfoDao.insertOrReplace(personInfo);
     }
 
-
     public static void updatePesonInfo(PersonInfo personInfo) {
         personInfoDao.insertOrReplace(personInfo);
+    }
+
+    public static void insertLocationInfo(LocationInfo locationInfo) {
+        locationInfoDao.insertOrReplace(locationInfo);
+    }
+
+    public static List<LocationInfo> getAllLocationInfo() {
+        return  locationInfoDao.loadAll();
     }
 }

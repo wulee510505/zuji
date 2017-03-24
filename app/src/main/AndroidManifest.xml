@@ -131,7 +131,8 @@
         </receiver>
         <!--bmob推送end-->
 
-
+        <receiver android:name=".AlarmReceiver" > </receiver>
+        <service android:name="com.wulee.administrator.zuji.service.UploadLocationService" />
         <service android:name="com.wulee.administrator.zuji.service.ScreenService" />
         <service android:name="com.liangmayong.text2speech.Text2SpeechService" />
 

@@ -12,7 +12,8 @@ import android.widget.Toast;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
-import com.wulee.administrator.zuji.entity.PersonalInfo;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.service.UploadLocationService;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -30,7 +31,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private Button  mBtnLogin;
     private TextView tvRegist;
     private TextView tvForgetPwd;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,13 +81,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void doLogin(String mobile, String pwd) {
-        PersonalInfo user = new PersonalInfo();
+        PersonInfo user = new PersonInfo();
         user.setUsername(mobile);
         user.setPassword(pwd);
-        user.login(new SaveListener<PersonalInfo>() {
+        user.login(new SaveListener<PersonInfo>() {
             @Override
-            public void done(PersonalInfo user, BmobException e) {
+            public void done(PersonInfo user, BmobException e) {
                 if(e == null){
+                    startService(new Intent(LoginActivity.this,UploadLocationService.class));
                     aCache.put("has_login","yes");
                     startActivity(new Intent(LoginActivity.this,MainActivity.class));
                 }else{

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.wulee.administrator.zuji.App;
+
+import java.util.List;
 import java.util.Stack;
 
 //应用程序Activity管理类：用于Activity管理和应用程序退出 
@@ -96,5 +99,22 @@ public class AppUtils {
 			System.exit(0);
 		} catch (Exception e) {
 		}
+	}
+
+
+	public static boolean isServiceRunning(String className) {
+		boolean isRunning = false;
+		ActivityManager activityManager = (ActivityManager) App.context.getSystemService(Context.ACTIVITY_SERVICE);
+		List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(30);
+		if (!(serviceList.size()>0)) {
+			return false;
+		}
+		for (int i=0; i<serviceList.size(); i++) {
+			if (serviceList.get(i).service.getClassName().equals(className) == true) {
+				isRunning = true;
+				break;
+			}
+		}
+		return isRunning;
 	}
 }

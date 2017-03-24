@@ -11,7 +11,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
-import com.wulee.administrator.zuji.entity.PersonalInfo;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -62,9 +62,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         mEtHome = (TextView) findViewById(R.id.et_home);
         mEtCompany = (TextView) findViewById(R.id.et_company);
 
-        PersonalInfo user = BmobUser.getCurrentUser(PersonalInfo.class);
-        mEtHome.setText(user.homeAddress);
-        mEtCompany.setText(user.companyAddress);
+        PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
+        mEtHome.setText(user.getHomeAddress());
+        mEtCompany.setText(user.getCompanyAddress());
     }
 
     @Override
@@ -80,14 +80,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivityForResult(new Intent(this,MapSelPointActivity.class),INTENT_KEY_COMPANY);
                 break;
             case R.id.iv_save:
-                PersonalInfo user = BmobUser.getCurrentUser(PersonalInfo.class);
-                user.homeLat = homeLat;
-                user.homeLon = homeLon;
-                user.homeAddress = homeAddress;
+                PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
+                user.setHomeLat(homeLat);
+                user.setHomeLon(homeLon);
+                user.setHomeAddress(homeAddress);
 
-                user.companyLat = companyLat;
-                user.companyLon = companyLon;
-                user.companyAddress = companyAddress;
+                user.setCompanyLat(companyLat);
+                user.setCompanyLon(companyLon);
+                user.setCompanyAddress(companyAddress);
                 user.update(user.getObjectId(),new UpdateListener() {
                 @Override
                 public void done(BmobException e) {

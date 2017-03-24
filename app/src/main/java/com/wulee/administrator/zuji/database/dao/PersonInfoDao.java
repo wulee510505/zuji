@@ -29,6 +29,12 @@ public class PersonInfoDao extends AbstractDao<PersonInfo, String> {
         public final static Property Birthday = new Property(3, String.class, "birthday", false, "BIRTHDAY");
         public final static Property Address = new Property(4, String.class, "address", false, "ADDRESS");
         public final static Property Header_img_url = new Property(5, String.class, "header_img_url", false, "HEADER_IMG_URL");
+        public final static Property HomeLat = new Property(6, Double.class, "homeLat", false, "HOME_LAT");
+        public final static Property HomeLon = new Property(7, Double.class, "homeLon", false, "HOME_LON");
+        public final static Property HomeAddress = new Property(8, String.class, "homeAddress", false, "HOME_ADDRESS");
+        public final static Property CompanyLat = new Property(9, Double.class, "companyLat", false, "COMPANY_LAT");
+        public final static Property CompanyLon = new Property(10, Double.class, "companyLon", false, "COMPANY_LON");
+        public final static Property CompanyAddress = new Property(11, String.class, "companyAddress", false, "COMPANY_ADDRESS");
     };
 
 
@@ -49,7 +55,13 @@ public class PersonInfoDao extends AbstractDao<PersonInfo, String> {
                 "\"SEX\" TEXT," + // 2: sex
                 "\"BIRTHDAY\" TEXT," + // 3: birthday
                 "\"ADDRESS\" TEXT," + // 4: address
-                "\"HEADER_IMG_URL\" TEXT);"); // 5: header_img_url
+                "\"HEADER_IMG_URL\" TEXT," + // 5: header_img_url
+                "\"HOME_LAT\" REAL," + // 6: homeLat
+                "\"HOME_LON\" REAL," + // 7: homeLon
+                "\"HOME_ADDRESS\" TEXT," + // 8: homeAddress
+                "\"COMPANY_LAT\" REAL," + // 9: companyLat
+                "\"COMPANY_LON\" REAL," + // 10: companyLon
+                "\"COMPANY_ADDRESS\" TEXT);"); // 11: companyAddress
     }
 
     /** Drops the underlying database table. */
@@ -92,6 +104,36 @@ public class PersonInfoDao extends AbstractDao<PersonInfo, String> {
         if (header_img_url != null) {
             stmt.bindString(6, header_img_url);
         }
+ 
+        Double homeLat = entity.getHomeLat();
+        if (homeLat != null) {
+            stmt.bindDouble(7, homeLat);
+        }
+ 
+        Double homeLon = entity.getHomeLon();
+        if (homeLon != null) {
+            stmt.bindDouble(8, homeLon);
+        }
+ 
+        String homeAddress = entity.getHomeAddress();
+        if (homeAddress != null) {
+            stmt.bindString(9, homeAddress);
+        }
+ 
+        Double companyLat = entity.getCompanyLat();
+        if (companyLat != null) {
+            stmt.bindDouble(10, companyLat);
+        }
+ 
+        Double companyLon = entity.getCompanyLon();
+        if (companyLon != null) {
+            stmt.bindDouble(11, companyLon);
+        }
+ 
+        String companyAddress = entity.getCompanyAddress();
+        if (companyAddress != null) {
+            stmt.bindString(12, companyAddress);
+        }
     }
 
     /** @inheritdoc */
@@ -109,7 +151,13 @@ public class PersonInfoDao extends AbstractDao<PersonInfo, String> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // sex
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // birthday
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // address
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // header_img_url
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // header_img_url
+            cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6), // homeLat
+            cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7), // homeLon
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // homeAddress
+            cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9), // companyLat
+            cursor.isNull(offset + 10) ? null : cursor.getDouble(offset + 10), // companyLon
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // companyAddress
         );
         return entity;
     }
@@ -123,6 +171,12 @@ public class PersonInfoDao extends AbstractDao<PersonInfo, String> {
         entity.setBirthday(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setAddress(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setHeader_img_url(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setHomeLat(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));
+        entity.setHomeLon(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
+        entity.setHomeAddress(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setCompanyLat(cursor.isNull(offset + 9) ? null : cursor.getDouble(offset + 9));
+        entity.setCompanyLon(cursor.isNull(offset + 10) ? null : cursor.getDouble(offset + 10));
+        entity.setCompanyAddress(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
      }
     
     /** @inheritdoc */

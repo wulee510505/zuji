@@ -14,10 +14,10 @@ import com.mylhyl.acp.Acp;
 import com.mylhyl.acp.AcpListener;
 import com.mylhyl.acp.AcpOptions;
 import com.wulee.administrator.zuji.App;
-import com.wulee.administrator.zuji.entity.LocationInfo;
-import com.wulee.administrator.zuji.entity.PersonalInfo;
+import com.wulee.administrator.zuji.database.DBHandler;
+import com.wulee.administrator.zuji.database.bean.LocationInfo;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.text2speech.Text2Speech;
-import com.wulee.administrator.zuji.ui.MapActivity;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class LocationUtil{
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
 
-
+    public static final String ACTION_LOCATION_CHANGE = "action_location_change";
 
     private LocationUtil() {
         mLocationClient = new LocationClient(App.context);     //声明LocationClient类
@@ -139,22 +139,22 @@ public class LocationUtil{
             }
 
             LocationInfo locationInfo = new LocationInfo();
-            locationInfo.latitude = location.getLatitude()+"";
-            locationInfo.lontitude = location.getLongitude()+"";
-            locationInfo.address = location.getAddrStr();
-            locationInfo.locationdescribe = location.getLocationDescribe();
+            locationInfo.setLatitude(location.getLatitude()+"");
+            locationInfo.setLontitude(location.getLongitude()+"");
+            locationInfo.setAddress(location.getAddrStr());
+            locationInfo.setLocationdescribe(location.getLocationDescribe());
 
             StringBuilder sbdeviceInfo = new StringBuilder();
             if(!TextUtils.isEmpty(getNativePhoneNumber())){
-                locationInfo.nativePhoneNumber = sbdeviceInfo.append(getDeviceBrand()).append(" ").append(getSystemModel()).append(" ").append(getNativePhoneNumber()).toString();
+                locationInfo.setNativePhoneNumber(sbdeviceInfo.append(getDeviceBrand()).append(" ").append(getSystemModel()).append(" ").append(getNativePhoneNumber()).toString());
             }else{
-                locationInfo.nativePhoneNumber = sbdeviceInfo.append(getDeviceBrand()).append(" ").append(getSystemModel()).toString();
+                locationInfo.setNativePhoneNumber(sbdeviceInfo.append(getDeviceBrand()).append(" ").append(getSystemModel()).toString());
             }
-            locationInfo.deviceId = PhoneUtil.getDeviceId();
-            if(!TextUtils.isEmpty(location.getAddrStr())&& !TextUtils.equals(location.getLatitude()+"",aCache.getAsString("lat")) && !TextUtils.equals(location.getLongitude()+"",aCache.getAsString("lon")))
+            locationInfo.setDeviceId(PhoneUtil.getDeviceId());
+            if(!TextUtils.isEmpty(location.getAddrStr()))
                 submitLocationInfo(locationInfo);
 
-            App.context.sendBroadcast(new Intent(MapActivity.ACTION_LOCATION_CHANGE).putExtra("curr_location",location));
+            App.context.sendBroadcast(new Intent(ACTION_LOCATION_CHANGE).putExtra("curr_location",location));
             sb.append("\nlocationdescribe : ");
             sb.append(location.getLocationDescribe());// 位置语义化信息
             List<Poi> list = location.getPoiList();// POI数据
@@ -174,17 +174,18 @@ public class LocationUtil{
     private  void submitLocationInfo(final LocationInfo locationInfo){
         if(null == locationInfo)
             return;
-        PersonalInfo user = BmobUser.getCurrentUser(PersonalInfo.class);
+        PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
         //添加一对一关联
         locationInfo.piInfo = user;
         locationInfo.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
                 if(e == null){
-                    aCache.put("lat",locationInfo.latitude);
-                    aCache.put("lon",locationInfo.lontitude);
+                    DBHandler.insertLocationInfo(locationInfo);
+                    aCache.put("lat",locationInfo.getLatitude());
+                    aCache.put("lon",locationInfo.getLontitude());
                     aCache.put("isUploadLocation","yes");
-                    speak(locationInfo.address+ locationInfo.locationdescribe);
+                    speak(locationInfo.getAddress() + locationInfo.getLocationdescribe());
                     System.out.println("—— 位置同步成功 ——");
                 }else{
                     System.out.println("—— 位置同步失败 ——");
