@@ -10,6 +10,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
+import com.liangmayong.text2speech.Text2Speech;
 import com.mylhyl.acp.Acp;
 import com.mylhyl.acp.AcpListener;
 import com.mylhyl.acp.AcpOptions;
@@ -17,7 +18,6 @@ import com.wulee.administrator.zuji.App;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
-import com.wulee.administrator.zuji.text2speech.Text2Speech;
 
 import java.util.List;
 

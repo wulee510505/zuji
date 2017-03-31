@@ -97,7 +97,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                      public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
                          // TODO Auto-generated method stub
                          if (updateStatus == UpdateStatus.Yes) {//版本有更新
-                             Toast.makeText(mContext,"有更新", Toast.LENGTH_SHORT).show();
+
                          }else if(updateStatus == UpdateStatus.No){
                              Toast.makeText(mContext,"版本无更新", Toast.LENGTH_SHORT).show();
                          }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示

@@ -40,9 +40,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name="com.wulee.administrator.zuji.ui.MainActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <activity android:name="com.wulee.administrator.zuji.ui.MapActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
@@ -134,7 +137,6 @@
         <receiver android:name=".AlarmReceiver" > </receiver>
         <service android:name="com.wulee.administrator.zuji.service.UploadLocationService" />
         <service android:name="com.wulee.administrator.zuji.service.ScreenService" />
-        <service android:name="com.liangmayong.text2speech.Text2SpeechService" />
 
         <service
             android:name="com.baidu.location.f"
