@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/weather_image"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:scaleType="centerInside"
+        tools:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|top">
+
+        <TextView
+            android:id="@+id/weather_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/white"
+            android:textSize="74sp"
+            tools:text="9" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="14dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="top"
+            android:text="°C"
+            android:textColor="@android:color/white"
+            android:textSize="32sp" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="24dp" />
+
+    <TextView
+        android:id="@+id/weather_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        tools:text="Mostly Cloudy" />
+
+
+    <TextView
+        android:id="@+id/weather_pm_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        tools:text="PM2.5：" />
+
+    <TextView
+        android:id="@+id/weather_city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        tools:text="Xian" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</merge>

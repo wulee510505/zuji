@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
+import com.wulee.administrator.zuji.ui.weather.WeatherActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 
@@ -115,6 +116,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  break;
              case R.id.circle_img_header:
 
+                 startActivity(new Intent(mContext,WeatherActivity.class));
                  break;
              case R.id.mml_setting_tv:
                  startActivity(new Intent(mContext,SettingActivity.class));

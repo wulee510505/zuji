@@ -13,6 +13,8 @@ import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobConfig;
 import cn.bmob.v3.BmobInstallation;
+import cn.finalteam.okhttpfinal.OkHttpFinal;
+import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
 
 /**
  * Created by wulee on 2016/12/8 09:37
@@ -41,6 +43,9 @@ public class App extends Application {
         Bmob.initialize(this,"ac67374a92fdca635c75eb6388e217a4");
 
         Stetho.initializeWithDefaults(this);
+
+        OkHttpFinalConfiguration.Builder builder = new OkHttpFinalConfiguration.Builder();
+        OkHttpFinal.getInstance().init(builder.build());
     }
 
     private static void initDB(){

@@ -10,6 +10,15 @@
         android:orientation="vertical"
         android:background="@color/colorAccent">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/icon_back" />
+
+
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -24,17 +33,6 @@
             android:text=""
             android:textColor="@color/color_white"
             android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/tv_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/color_white"
-            android:textSize="17sp"
-            android:layout_marginLeft="5dp" />
 
     </RelativeLayout>
 
@@ -59,6 +57,14 @@
             android:layout_centerInParent="true"
             android:visibility="gone"/>
 
+
+        <TextView
+            android:id="@+id/tv_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="18sp"
+            android:text="暂无数据"/>
     </RelativeLayout>
 
 </RelativeLayout>
