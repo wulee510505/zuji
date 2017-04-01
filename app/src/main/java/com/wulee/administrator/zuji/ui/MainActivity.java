@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +30,9 @@ import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.service.ScreenService;
 import com.wulee.administrator.zuji.service.UploadLocationService;
-import com.wulee.administrator.zuji.utils.AppUtils;
+import com.wulee.administrator.zuji.ui.weather.WeatherActivity;
 import com.wulee.administrator.zuji.utils.LocationUtil;
+import com.wulee.administrator.zuji.widget.FloatingButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,7 +58,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView ivMenu;
     private ImageView ivSetting;
-
+    private FloatingButton floatingButton ;
     private DrawerLayout mDrawerLayout;
 
 
@@ -70,21 +72,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private LocationChangeReceiver mReceiver;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_list_main);
 
-        LocationUtil.getInstance().startGetLocation();
-
         initView();
         addListener();
 
+        startService(new Intent(MainActivity.this,UploadLocationService.class));
         startService(new Intent(MainActivity.this,ScreenService.class));
 
         mHandler.postDelayed(mRunnable,1000);
 
-        BmobUpdateAgent.update(this);
+        BmobUpdateAgent.forceUpdate(this);
 
         mReceiver = new LocationChangeReceiver();
         IntentFilter filter  = new IntentFilter(LocationUtil.ACTION_LOCATION_CHANGE);
@@ -112,14 +114,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!AppUtils.isServiceRunning("com.wulee.administrator.zuji.service.UploadLocationService")){
-            startService(new Intent(this,UploadLocationService.class));
-        }
+
         isRefresh = true;
         query(0, STATE_REFRESH);
     }
 
     private void addListener() {
+        floatingButton.setOnClickListener(this);
         ivMenu.setOnClickListener(this);
         ivSetting.setOnClickListener(this);
         mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
@@ -167,6 +168,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawerLayout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mDrawerLayout.setScrimColor(0x00000000);
+
+        floatingButton = (FloatingButton) findViewById(R.id.floatingbutton);
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) floatingButton.getLayoutParams();
+        rlp.rightMargin =  120;
+        rlp.bottomMargin = 120;
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        floatingButton.setLayoutParams(rlp);
 
         ivMenu = (ImageView) findViewById(R.id.iv_menu);
         ivSetting = (ImageView) findViewById(R.id.iv_setting);
@@ -295,7 +304,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.iv_menu:
                 OpenLeftMenu();
                 break;
-
+            case R.id.floatingbutton:
+                startActivity(new Intent(this,WeatherActivity.class));
+                break;
         }
     }
 

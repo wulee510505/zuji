@@ -60,7 +60,7 @@ public class WeatherActivity extends AppCompatActivity {
                             weatherDataEntity = resultenty.getWeather_data().get(0);
 
                             if(null != weatherDataEntity){
-                                forecast = new Forecast(resultenty.getCurrentCity(),weatherDataEntity.getTemperature(),resultenty.getPm25(),weatherDataEntity.getDayPictureUrl(),weatherDataEntity.getWeather());
+                                forecast = new Forecast(resultenty.getCurrentCity(),weatherDataEntity.getTemperature(),resultenty.getPm25(),weatherDataEntity.getDayPictureUrl(),weatherDataEntity.getWeather(),weatherDataEntity.getWind());
                                 forecastView.setForecast(forecast);
                             }
                         }

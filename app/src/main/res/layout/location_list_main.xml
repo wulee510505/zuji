@@ -58,6 +58,13 @@
                 android:overScrollMode="never"
                 android:scrollbars="none" />
         </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <com.wulee.administrator.zuji.widget.FloatingButton
+            android:id="@+id/floatingbutton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@mipmap/icon_weather"/>
     </RelativeLayout>
 
     <fragment

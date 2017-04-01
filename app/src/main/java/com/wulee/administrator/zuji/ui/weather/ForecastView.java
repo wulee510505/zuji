@@ -27,6 +27,7 @@ public class ForecastView extends LinearLayout {
     private Paint gradientPaint;
 
     private TextView weatherDescription;
+    private TextView wind;
     private TextView weatherTemperature;
     private TextView pmValue;
     private TextView cityName;
@@ -62,6 +63,7 @@ public class ForecastView extends LinearLayout {
         inflate(getContext(), R.layout.view_forecast, this);
 
         weatherDescription = (TextView) findViewById(R.id.weather_description);
+        wind = (TextView) findViewById(R.id.weather_wind);
         weatherImage = (ImageView) findViewById(R.id.weather_image);
         weatherTemperature = (TextView) findViewById(R.id.weather_temperature);
         pmValue = (TextView) findViewById(R.id.weather_pm_value);
@@ -83,6 +85,7 @@ public class ForecastView extends LinearLayout {
 
     public void setForecast(Forecast forecast) {
         weatherDescription.setText(forecast.getWeather());
+        wind.setText(forecast.getWind());
         weatherTemperature.setText(forecast.getTemperature());
         pmValue.setText("PM2.5："+ forecast.getPmvalue());
         cityName.setText(forecast.getCityName());
@@ -90,9 +93,9 @@ public class ForecastView extends LinearLayout {
         invalidate();
 
         weatherImage.animate()
-                .scaleX(1f).scaleY(1f)
+                .scaleX(1.8f).scaleY(1.8f)
                 .setInterpolator(new AccelerateDecelerateInterpolator())
-                .setDuration(300)
+                .setDuration(1000)
                 .start();
     }
 

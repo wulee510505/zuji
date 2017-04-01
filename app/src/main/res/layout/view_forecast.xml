@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f6a6c1">
 
     <Space
         android:layout_width="wrap_content"
@@ -10,7 +14,8 @@
     <ImageView
         android:id="@+id/weather_image"
         android:layout_width="wrap_content"
-        android:layout_height="160dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
         android:scaleType="centerInside"
         tools:src="@mipmap/ic_launcher" />
 
@@ -25,7 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:textColor="@android:color/white"
-            android:textSize="74sp"
+            android:textSize="64sp"
             tools:text="9" />
 
         <TextView
@@ -47,10 +52,20 @@
         android:id="@+id/weather_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+        android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
         android:textSize="30sp"
-        tools:text="Mostly Cloudy" />
+        tools:text="晴" />
+
+    <TextView
+        android:id="@+id/weather_wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        tools:text="东北风微风" />
 
 
     <TextView
@@ -58,24 +73,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-light"
+        android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
         android:textSize="30sp"
-        tools:text="PM2.5：" />
+        tools:text="PM2.5：50" />
 
     <TextView
         android:id="@+id/weather_city_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-light"
+        android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
         android:textSize="30sp"
-        tools:text="Xian" />
+        tools:text="西安" />
 
     <Space
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-</merge>
+</LinearLayout>

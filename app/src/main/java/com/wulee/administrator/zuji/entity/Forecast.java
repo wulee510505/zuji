@@ -11,13 +11,15 @@ public class Forecast {
     private final String pmvalue;
     private final String weatherimg;
     private final String weather;
+    private final String wind;
 
-    public Forecast(String cityName,String temperature,String pmvalue,String weatherimg ,String weather) {
+    public Forecast(String cityName,String temperature,String pmvalue,String weatherimg ,String weather,String wind) {
         this.cityName = cityName;
         this.temperature = temperature;
         this.pmvalue = pmvalue;
         this.weatherimg = weatherimg;
         this.weather = weather;
+        this.wind = wind;
     }
 
     public String getCityName() {
@@ -38,5 +40,9 @@ public class Forecast {
 
     public String getWeather() {
         return weather;
+    }
+
+    public String getWind() {
+        return wind;
     }
 }

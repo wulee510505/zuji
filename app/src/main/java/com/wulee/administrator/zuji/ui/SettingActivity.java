@@ -63,8 +63,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         mEtCompany = (TextView) findViewById(R.id.et_company);
 
         PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
-        mEtHome.setText(user.getHomeAddress());
-        mEtCompany.setText(user.getCompanyAddress());
+        if(user != null){
+            mEtHome.setText(user.getHomeAddress());
+            mEtCompany.setText(user.getCompanyAddress());
+        }
     }
 
     @Override

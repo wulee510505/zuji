@@ -116,7 +116,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  break;
              case R.id.circle_img_header:
 
-                 startActivity(new Intent(mContext,WeatherActivity.class));
+
                  break;
              case R.id.mml_setting_tv:
                  startActivity(new Intent(mContext,SettingActivity.class));
