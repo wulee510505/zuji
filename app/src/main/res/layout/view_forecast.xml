@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#f6a6c1">
+    android:background="#64a2ff">
 
     <Space
         android:layout_width="wrap_content"
@@ -17,32 +17,17 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerInside"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_def_weather" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/weather_temperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal|top">
-
-        <TextView
-            android:id="@+id/weather_temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@android:color/white"
-            android:textSize="64sp"
-            tools:text="9" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="14dp"
-            android:fontFamily="sans-serif-light"
-            android:gravity="top"
-            android:text="°C"
-            android:textColor="@android:color/white"
-            android:textSize="32sp" />
-    </LinearLayout>
+        android:gravity="center_horizontal|top"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/white"
+        android:textSize="60sp"
+        tools:text="9°C" />
 
     <Space
         android:layout_width="wrap_content"
@@ -69,23 +54,34 @@
 
 
     <TextView
-        android:id="@+id/weather_pm_value"
+        android:id="@+id/weather_air_quality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
         android:textSize="30sp"
-        tools:text="PM2.5：50" />
+        tools:text="空气质量指数：50" />
+
+
+    <TextView
+        android:id="@+id/weather_air_quality_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        tools:text="优" />
 
     <TextView
         android:id="@+id/weather_city_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textSize="28sp"
         tools:text="西安" />
 
     <Space

@@ -69,6 +69,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private boolean isRefresh = false;
 
     private TextView tvTime;
+    private long  currServerTime;
 
     private LocationChangeReceiver mReceiver;
 
@@ -101,6 +102,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void done(Long time, BmobException e) {
                 if(e == null){
+                    currServerTime = time;
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     String times = formatter.format(new Date(time * 1000L));
                     tvTime.setText(times);
@@ -305,7 +307,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 OpenLeftMenu();
                 break;
             case R.id.floatingbutton:
-                startActivity(new Intent(this,WeatherActivity.class));
+                startActivity(new Intent(this,WeatherActivity.class).putExtra("curr_time",currServerTime));
                 break;
         }
     }

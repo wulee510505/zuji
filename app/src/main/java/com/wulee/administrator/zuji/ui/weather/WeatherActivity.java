@@ -10,6 +10,9 @@ import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.Forecast;
 import com.wulee.administrator.zuji.entity.Weather;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cn.finalteam.okhttpfinal.BaseHttpRequestCallback;
 import cn.finalteam.okhttpfinal.HttpRequest;
 
@@ -26,11 +29,14 @@ public class WeatherActivity extends AppCompatActivity {
 
     private ForecastView forecastView;
 
+    private long  currtime;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
+        currtime = getIntent().getLongExtra("curr_time",0L);
         forecastView = (ForecastView) findViewById(R.id.forecast_view);
 
         initData();
@@ -60,7 +66,11 @@ public class WeatherActivity extends AppCompatActivity {
                             weatherDataEntity = resultenty.getWeather_data().get(0);
 
                             if(null != weatherDataEntity){
-                                forecast = new Forecast(resultenty.getCurrentCity(),weatherDataEntity.getTemperature(),resultenty.getPm25(),weatherDataEntity.getDayPictureUrl(),weatherDataEntity.getWeather(),weatherDataEntity.getWind());
+                                if(isNight()){
+                                    forecast = new Forecast(resultenty.getCurrentCity(),weatherDataEntity.getTemperature(),resultenty.getPm25(),weatherDataEntity.getNightPictureUrl(),weatherDataEntity.getWeather(),weatherDataEntity.getWind());
+                                }else{
+                                    forecast = new Forecast(resultenty.getCurrentCity(),weatherDataEntity.getTemperature(),resultenty.getPm25(),weatherDataEntity.getDayPictureUrl(),weatherDataEntity.getWeather(),weatherDataEntity.getWind());
+                                }
                                 forecastView.setForecast(forecast);
                             }
                         }
@@ -74,4 +84,19 @@ public class WeatherActivity extends AppCompatActivity {
         } );
     }
 
+
+    /**
+     * 判断是否是晚上
+     * @return
+     */
+    public boolean isNight(){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+        String hour= sdf.format(new Date(currtime * 1000L));
+        int k  = Integer.parseInt(hour)  ;
+        if ((k>=0 && k<6) ||(k >=18 && k<24)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
