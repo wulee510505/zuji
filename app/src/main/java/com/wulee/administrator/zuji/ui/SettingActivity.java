@@ -3,6 +3,7 @@ package com.wulee.administrator.zuji.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,8 +65,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
         if(user != null){
-            mEtHome.setText(user.getHomeAddress());
-            mEtCompany.setText(user.getCompanyAddress());
+            homeLat = user.getHomeLat();
+            homeLon = user.getHomeLon();
+            homeAddress = user.getHomeAddress();
+
+            companyLat = user.getCompanyLat();
+            companyLon = user.getCompanyLon();
+            companyAddress = user.getCompanyAddress();
+
+            mEtHome.setText(homeAddress);
+            mEtCompany.setText(companyAddress);
         }
     }
 
@@ -83,6 +92,23 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.iv_save:
                 PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
+                if(null == user)
+                    return;
+
+                if(equal(user.getHomeLat() , homeLat) && equal(user.getHomeLon(),homeLon) && equal(user.getCompanyLat(),companyLat) && equal(user.getCompanyLon(),companyLon)){
+                    return;
+                }
+                if(TextUtils.isEmpty(homeAddress)){
+                    toast("请选择家庭地址");
+                    return;
+                }
+                if(TextUtils.isEmpty(companyAddress)){
+                    toast("请选择公司地址");
+                    return;
+                }
+
+                showProgressDialog(false);
+
                 user.setHomeLat(homeLat);
                 user.setHomeLon(homeLon);
                 user.setHomeAddress(homeAddress);
@@ -93,6 +119,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 user.update(user.getObjectId(),new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
+                    stopProgressDialog();
                     if(e==null){
                         toast("保存成功");
                         finish();
@@ -101,7 +128,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     }
                 }
             });
-                break;
+             break;
         }
     }
 
@@ -132,5 +159,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             }
         }
+    }
+
+    /**
+     * 判断两个double类型值是否相等
+     * @param num1
+     * @param num2
+     * @return
+     */
+    private boolean equal(double num1,double num2) {
+        if((num1-num2>-0.000001)&&(num1-num2)<0.000001)
+            return true;
+        else
+            return false;
     }
 }

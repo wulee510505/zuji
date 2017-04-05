@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/base_progress_dialog"
+    android:layout_width="120.0dip"
+    android:layout_height="wrap_content"
+    android:background="@drawable/base_progress_dialog_bg"
+    android:gravity="center"
+    android:minHeight="120.0dip"
+    android:minWidth="120.0dip"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
+
+    <ProgressBar
+        android:id="@id/base_progress_bar"
+        style="@style/loading_progress_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="false" />
+
+    <TextView
+        android:id="@id/base_progress_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:text="正在加载..."
+        android:textColor="@color/color_white"
+        android:textSize="16sp" />
+</LinearLayout>

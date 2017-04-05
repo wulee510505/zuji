@@ -6,12 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.wulee.administrator.zuji.utils.AppUtils;
+import com.wulee.administrator.zuji.widget.BaseProgressDialog;
 
 /**
  * Created by mdw on 2016/1/27.
  */
 public class BaseActivity extends AppCompatActivity {
-
+    private BaseProgressDialog mProgressDialog = null;
 
     @Override
     protected void onDestroy() {
@@ -49,4 +50,39 @@ public class BaseActivity extends AppCompatActivity {
 
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
+
+
+    public void showProgressDialog(BaseProgressDialog.OnCancelListener cancelListener, boolean cancelable, String msg) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            return;
+        }
+        mProgressDialog = new BaseProgressDialog(this, msg);
+        if (cancelListener != null) {
+            mProgressDialog.setOnCancelListener(cancelListener);
+        }
+        mProgressDialog.setCancelable(cancelable);
+        mProgressDialog.show();
+    }
+
+    public void showProgressDialog(boolean cancelable, String msg) {
+        showProgressDialog(null, cancelable, msg);
+    }
+
+    public void showProgressDialog(boolean cancelable) {
+        showProgressDialog(cancelable, "");
+    }
+
+    public void stopProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.stop();
+        }
+        mProgressDialog = null;
+    }
+
+    protected void cancelProgressDialog() {
+        if (mProgressDialog.cancel()) {
+            mProgressDialog = null;
+        }
+    }
+
 }

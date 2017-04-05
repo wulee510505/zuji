@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="base_progress_bar" type="id"/>
+    <item name="base_progress_bar_img" type="id"/>
+    <item name="base_progress_message" type="id"/>
+    <item name="base_progress_dialog" type="id"/>
+    <item name="base_toast_message" type="id"/>
+    <item name="base_real_tab_content" type="id"/>
+    <item name="base_fragment_progress_container" type="id"/>
+    <item name="base_fragment_content_container" type="id"/>
+	
+</resources>
