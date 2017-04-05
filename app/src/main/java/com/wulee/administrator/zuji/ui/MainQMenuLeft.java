@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
-import com.wulee.administrator.zuji.ui.weather.WeatherActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 
@@ -41,7 +40,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
 
     private ImageView rbImage;
     private TextView mTvMobile;
-
+    private TextView tvVersionName;
     private TextView tvMsg,tvSetting,tvLoginOut,tvCheckUpdate; // 登录、退出登录提示语
 
     @Nullable
@@ -61,6 +60,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private void initUI(View view) {
         rbImage = (ImageView) view.findViewById(R.id.circle_img_header);
         mTvMobile = (TextView) view.findViewById(R.id.tv_mobile);
+        tvVersionName= (TextView) view.findViewById(R.id.tv_version_name);
 
         tvMsg = (TextView) view.findViewById(R.id.mml_pushmsg_tv);
         tvSetting = (TextView) view.findViewById(R.id.mml_setting_tv);
@@ -77,6 +77,9 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         if(null != piInfo){
             mTvMobile.setText(piInfo.getMobilePhoneNumber());
         }
+
+        String versionName = AppUtils.getVersionName();
+        tvVersionName.setText("V "+versionName);
     }
 
     @Override

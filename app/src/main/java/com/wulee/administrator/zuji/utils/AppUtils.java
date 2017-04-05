@@ -3,6 +3,8 @@ package com.wulee.administrator.zuji.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.wulee.administrator.zuji.App;
 
@@ -116,5 +118,39 @@ public class AppUtils {
 			}
 		}
 		return isRunning;
+	}
+
+	/**
+	 * 获取版本号
+	 * 也可使用 BuildConfig.VERSION_NAME 替换
+	 * @return 版本号
+	 */
+	public static String getVersionName() {
+		PackageManager packageManager = App.context.getPackageManager();
+		String packageName = App.context.getPackageName();
+		try {
+			PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+			return packageInfo.versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return "1.0.0";
+	}
+
+	/**
+	 * 获取版本code
+	 * 也可使用 BuildConfig.VERSION_CODE 替换
+	 * @return 版本code
+	 */
+	public static int getVersionCode() {
+		PackageManager packageManager = App.context.getPackageManager();
+		String packageName = App.context.getPackageName();
+		try {
+			PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+			return packageInfo.versionCode;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return 1;
 	}
 }

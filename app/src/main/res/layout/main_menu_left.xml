@@ -61,6 +61,19 @@
     </RelativeLayout>
 
 
+    <TextView
+        android:id="@+id/tv_version_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:text=""
+        android:textColor="@color/color_white"
+        android:layout_below="@id/mnfm_rl_person_login_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/sp_16" />
+
+
     <LinearLayout
         android:id="@+id/mml_loginout_rl"
         android:layout_width="match_parent"
