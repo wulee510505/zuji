@@ -110,6 +110,23 @@
             android:gravity="center_vertical"
             android:padding="15dp"
             android:text="签到"
+            android:visibility="gone"
+            android:textColor="@color/color_white"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cdcdcd"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/mml_feedback_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="反馈"
             android:textColor="@color/color_white"/>
 
         <View

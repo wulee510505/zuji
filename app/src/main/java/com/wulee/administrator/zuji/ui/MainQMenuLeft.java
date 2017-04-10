@@ -42,7 +42,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private ImageView rbImage;
     private TextView mTvMobile;
     private TextView tvVersionName;
-    private TextView tvSign,tvMsg,tvSetting,tvLoginOut,tvCheckUpdate; // 登录、退出登录提示语
+    private TextView tvSign,tvFeedBack,tvMsg,tvSetting,tvLoginOut,tvCheckUpdate; // 登录、退出登录提示语
 
     @Nullable
     @Override
@@ -64,12 +64,14 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         tvVersionName= (TextView) view.findViewById(R.id.tv_version_name);
 
         tvSign = (TextView) view.findViewById(R.id.mml_sign_tv);
+        tvFeedBack= (TextView) view.findViewById(R.id.mml_feedback_tv);
         tvMsg = (TextView) view.findViewById(R.id.mml_pushmsg_tv);
         tvSetting = (TextView) view.findViewById(mml_setting_tv);
         tvCheckUpdate = (TextView) view.findViewById(R.id.mml_checkupdate_tv);
         tvLoginOut = (TextView) view.findViewById(R.id.mml_loginout_tv);
 
         tvSign.setOnClickListener(this);
+        tvFeedBack.setOnClickListener(this);
         tvMsg.setOnClickListener(this);
         tvSetting.setOnClickListener(this);
         tvLoginOut.setOnClickListener(this);
@@ -126,6 +128,9 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  break;
              case R.id.mml_sign_tv:
                  startActivity(new Intent(mContext,SignActivity.class));
+                 break;
+             case R.id.mml_feedback_tv:
+                 startActivity(new Intent(mContext,FeedBackActivity.class));
                  break;
              case mml_setting_tv:
                  startActivity(new Intent(mContext,SettingActivity.class));
