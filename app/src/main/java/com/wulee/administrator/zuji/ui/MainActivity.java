@@ -113,14 +113,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        isRefresh = true;
-        query(0, STATE_REFRESH);
-    }
-
     private void addListener() {
         floatingButton.setOnClickListener(this);
         ivMenu.setOnClickListener(this);
@@ -153,7 +145,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onRefresh() {
                 isRefresh = true;
                 curPage = 0;
-                query(curPage, STATE_REFRESH);
+                getLocationList(curPage, STATE_REFRESH);
         }
         });
         //加载更多
@@ -161,7 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener(){
             @Override
             public void onLoadMoreRequested() {
-                query(curPage, STATE_MORE);
+                getLocationList(curPage, STATE_MORE);
             }
         });
     }
@@ -225,7 +217,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 }
                             }
                             isRefresh = true;
-                            query(0, STATE_REFRESH);
+                            getLocationList(0, STATE_REFRESH);
                             Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(MainActivity.this, "删除失败："+e.getMessage()+","+e.getErrorCode(), Toast.LENGTH_SHORT).show();
@@ -242,7 +234,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Runnable mRunnable = new Runnable() {
         public void run () {
             isRefresh = true;
-            query(0, STATE_REFRESH);
+            getLocationList(0, STATE_REFRESH);
             syncServerTime();
             mHandler.postDelayed(this,1000 * 60 * 1);
         }
@@ -252,7 +244,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 分页获取数据
      */
-    private void query(final int page, final int actionType){
+    private void getLocationList(final int page, final int actionType){
         if(!TextUtils.equals("yes",aCache.getAsString("isUploadLocation"))){
             return;
         }
@@ -346,7 +338,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             String action = intent.getAction();
             if (action.equals(LocationUtil.ACTION_LOCATION_CHANGE)) {
                 isRefresh = true;
-                query(0, STATE_REFRESH);
+                getLocationList(0, STATE_REFRESH);
             }
         }
     }
