@@ -1,6 +1,5 @@
 package com.wulee.administrator.zuji.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -25,8 +24,9 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.wulee.administrator.zuji.R;
+import com.wulee.administrator.zuji.base.BaseActivity;
 
-public class MapSelPointActivity extends Activity implements OnGetGeoCoderResultListener {
+public class MapSelPointActivity extends BaseActivity implements OnGetGeoCoderResultListener {
     /**
      * 定位SDK核心类
      */

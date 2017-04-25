@@ -40,6 +40,9 @@ public class LocationUtil{
 
     public static final String ACTION_LOCATION_CHANGE = "action_location_change";
 
+    private static double lastlat = 0; //最新一次定位的纬度
+    private static double lastlon = 0; //最新一次定位的经度度
+
     private LocationUtil() {
         mLocationClient = new LocationClient(App.context);     //声明LocationClient类
         LocationClientOption option = new LocationClientOption();
@@ -139,6 +142,12 @@ public class LocationUtil{
             }
 
             aCache.put("location_city",location.getCity());
+
+
+            if(OtherUtil.equal(location.getLatitude(),lastlat) && OtherUtil.equal(location.getLongitude(),lastlon))//避免上传相同的位置到云端
+                return;
+            lastlat = location.getLatitude();
+            lastlon = location.getLongitude();
 
             LocationInfo locationInfo = new LocationInfo();
             locationInfo.setLatitude(location.getLatitude()+"");

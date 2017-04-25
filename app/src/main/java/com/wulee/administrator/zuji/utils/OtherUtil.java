@@ -47,4 +47,17 @@ public class OtherUtil {
             return false;
         return Pattern.compile(pattern).matcher(str).matches();
     }
+
+    /**
+     * 判断两个double类型值是否相等
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public static boolean equal(double num1,double num2) {
+        if((num1-num2 >-0.000001)&&(num1-num2)<0.000001)
+            return true;
+        else
+            return false;
+    }
 }
