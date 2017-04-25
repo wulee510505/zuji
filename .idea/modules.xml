@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sign_calender/sign_calender.iml" filepath="$PROJECT_DIR$/sign_calender/sign_calender.iml" />
       <module fileurl="file://$PROJECT_DIR$/zuji.iml" filepath="$PROJECT_DIR$/zuji.iml" />
     </modules>
   </component>

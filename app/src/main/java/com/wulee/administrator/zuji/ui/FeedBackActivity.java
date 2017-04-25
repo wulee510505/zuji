@@ -56,12 +56,12 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_save:
-                addMyNote();
+                submitFeedback();
                 break;
         }
     }
 
-    public void addMyNote() {
+    public void submitFeedback() {
         String content = etContent.getText().toString().trim();
         if(TextUtils.isEmpty(content)){
             toast("请输入内容");

@@ -13,4 +13,6 @@
     <!-- 正文主要文字-->
     <color name="baseGrayNor">#656565</color>
 
+    <color name="baseGrayLit">#cdcdcd</color>
+
 </resources>

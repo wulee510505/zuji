@@ -68,9 +68,12 @@
                         android:id="@+id/et_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:hint=""
                         android:inputType="phone"
                         android:maxLength="11"
+                        android:background="@null"
+                        android:drawableBottom="@drawable/edittext_bottom_line"
                         android:textColor="@color/baseGrayNor"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -94,6 +97,7 @@
                     android:src="@mipmap/icon_pwd" />
 
                 <LinearLayout
+                    android:id="@+id/ll_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -113,11 +117,24 @@
                         android:id="@+id/et_pwd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:hint=""
                         android:inputType="textPassword"
                         android:textColor="@color/baseGrayNor"
+                        android:background="@null"
+                        android:drawableBottom="@drawable/edittext_bottom_line"
                         android:textSize="15sp" />
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ll_pwd"
+                    android:layout_alignLeft="@id/ll_pwd"
+                    android:layout_marginTop="16dp"
+                    android:hint="密码由6~16位数字和英文字母组成"
+                    android:textColor="@color/baseGrayLit"
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout

@@ -6,7 +6,7 @@ android {
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.wulee.administrator.zuji"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 23
         versionCode 6
         versionName "1.0.5"
@@ -61,5 +61,5 @@ dependencies {
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.github.wulee510505:Text2Speach:1.0.0'
     compile 'cn.finalteam:okhttpfinal:2.0.7'
-    compile project(path: ':sign_calender')
+    compile 'com.github.chenBingX:SuperTextView:v1.0'
 }

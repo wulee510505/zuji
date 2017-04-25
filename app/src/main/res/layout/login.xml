@@ -69,10 +69,13 @@
                         android:id="@+id/et_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:hint=""
                         android:inputType="phone"
                         android:maxLength="11"
                         android:textColor="@color/baseGrayNor"
+                        android:background="@null"
+                        android:drawableBottom="@drawable/edittext_bottom_line"
                         android:textSize="15sp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -114,9 +117,12 @@
                         android:id="@+id/et_pwd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:hint=""
                         android:inputType="textPassword"
                         android:textColor="@color/baseGrayNor"
+                        android:background="@null"
+                        android:drawableBottom="@drawable/edittext_bottom_line"
                         android:textSize="15sp" />
                 </LinearLayout>
             </RelativeLayout>
