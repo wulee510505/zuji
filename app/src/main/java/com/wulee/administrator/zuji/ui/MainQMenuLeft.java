@@ -1,10 +1,12 @@
 package com.wulee.administrator.zuji.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,11 +93,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
          switch (v.getId()){
              case R.id.mml_loginout_tv:
-                 aCache.put("has_login","no");
-                 LocationUtil.getInstance().stopGetLocation();
-                 AppUtils.AppExit(mContext);
-                 PersonInfo.logOut();
-                 startActivity(new Intent(mContext,LoginActivity.class));
+                 showLogoutDialog();
                  break;
              case R.id.mml_pushmsg_tv:
                  startActivity(new Intent(mContext,PushMsgListActivity.class));
@@ -136,6 +134,24 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  startActivity(new Intent(mContext,SettingActivity.class));
                  break;
          }
+    }
 
+
+    private void showLogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("提示");
+        builder.setMessage("确定要退出吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                aCache.put("has_login","no");
+                LocationUtil.getInstance().stopGetLocation();
+                AppUtils.AppExit(mContext);
+                PersonInfo.logOut();
+                startActivity(new Intent(mContext,LoginActivity.class));
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.create().show();
     }
 }

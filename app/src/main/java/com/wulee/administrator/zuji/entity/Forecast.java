@@ -6,6 +6,7 @@ package com.wulee.administrator.zuji.entity;
 
 public class Forecast {
 
+    private final String date;
     private final String cityName;
     private final String temperature;
     private final String airquality;
@@ -13,13 +14,18 @@ public class Forecast {
     private final String weather;
     private final String wind;
 
-    public Forecast(String cityName,String temperature,String airquality,String weatherimg ,String weather,String wind) {
+    public Forecast(String date,String cityName,String temperature,String airquality,String weatherimg ,String weather,String wind) {
+        this.date = date;
         this.cityName = cityName;
         this.temperature = temperature;
         this.airquality = airquality;
         this.weatherimg = weatherimg;
         this.weather = weather;
         this.wind = wind;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getCityName() {

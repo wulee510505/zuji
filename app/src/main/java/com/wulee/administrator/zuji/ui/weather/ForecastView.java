@@ -31,6 +31,7 @@ public class ForecastView extends LinearLayout {
 
     private Paint gradientPaint;
 
+    private TextView date;
     private TextView weatherDescription;
     private TextView wind;
     private TextView weatherTemperature;
@@ -65,6 +66,7 @@ public class ForecastView extends LinearLayout {
         setGravity(Gravity.CENTER_HORIZONTAL);
         inflate(getContext(), R.layout.view_forecast, this);
 
+        date = (TextView) findViewById(R.id.date);
         weatherDescription = (TextView) findViewById(R.id.weather_description);
         wind = (TextView) findViewById(R.id.weather_wind);
         weatherImage = (ImageView) findViewById(R.id.weather_image);
@@ -88,6 +90,7 @@ public class ForecastView extends LinearLayout {
     }
 
     public void setForecast(Forecast forecast) {
+        date.setText(forecast.getDate());
         weatherDescription.setText(forecast.getWeather());
         wind.setText(forecast.getWind());
         weatherTemperature.setText(forecast.getTemperature());
