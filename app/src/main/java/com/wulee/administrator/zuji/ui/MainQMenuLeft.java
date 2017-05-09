@@ -36,9 +36,6 @@ import static com.wulee.administrator.zuji.R.id.mml_setting_tv;
  */
 public class MainQMenuLeft extends Fragment implements View.OnClickListener {
 
-    private static final String REQ_CHECK_UPDATE = "menu_check_update";
-    private static final int REQUEST_CODE_IMAGE = 100;
-
     private Context mContext;
 
     private ImageView rbImage;

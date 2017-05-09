@@ -3,7 +3,6 @@ package com.wulee.administrator.zuji.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -14,8 +13,7 @@ import android.view.animation.ScaleAnimation;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
-
-import static com.wulee.administrator.zuji.App.aCache;
+import com.wulee.administrator.zuji.utils.OtherUtil;
 
 
 /**
@@ -53,7 +51,7 @@ public class SplashActivity extends BaseActivity {
         loadAlphaAnimation.setDuration(3000);
         loadScaleAnimation.setDuration(6000);
         animationSet.addAnimation(loadAlphaAnimation);
-        animationSet.addAnimation(loadScaleAnimation);
+        //animationSet.addAnimation(loadScaleAnimation);
         startView.setAnimation(animationSet);
         animationSet.setInterpolator(new AccelerateInterpolator());
         animationSet.startNow();
@@ -73,20 +71,15 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startActivity() {
-        boolean isLogin = false;
-        if(TextUtils.equals("yes",aCache.getAsString("has_login"))){
-            isLogin = true;
-        }else{
-            isLogin = false;
-        }
         Intent intent = null;
-        if(isLogin){
+        if(OtherUtil.hasLogin()){
             intent = new Intent(this, MainActivity.class);
         } else{
             intent = new Intent(this, LoginActivity.class);
         }
         startActivity(intent);
         finish();
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
 }

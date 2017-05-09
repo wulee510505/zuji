@@ -1,6 +1,10 @@
 package com.wulee.administrator.zuji.utils;
 
+import android.text.TextUtils;
+
 import java.util.regex.Pattern;
+
+import static com.wulee.administrator.zuji.App.aCache;
 
 /**
  * Created by wulee on 2017/4/25 10:40
@@ -60,4 +64,19 @@ public class OtherUtil {
         else
             return false;
     }
+
+    /**
+     * 判断是否登录
+     * @return
+     */
+    public static boolean hasLogin(){
+        boolean isLogin = false;
+        if(TextUtils.equals("yes",aCache.getAsString("has_login"))){
+            isLogin = true;
+        }else{
+            isLogin = false;
+        }
+        return isLogin;
+    }
+
 }

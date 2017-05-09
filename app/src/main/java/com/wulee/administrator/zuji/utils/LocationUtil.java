@@ -185,6 +185,8 @@ public class LocationUtil{
     private  void submitLocationInfo(final LocationInfo locationInfo){
         if(null == locationInfo)
             return;
+        if(!OtherUtil.hasLogin())
+            return;
         PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
         //添加一对一关联
         locationInfo.piInfo = user;
