@@ -13,7 +13,7 @@
             <!-- //半径    内边距="" 按钮文字和边缘距离="" -->
             <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
 
-            <solid android:color="@color/colorAccent"/>
+            <solid android:color="#FF3399"/>
         </shape></item>
     <item android:state_focused="true"> <!-- get the focus button sttaus -->
         <shape>
@@ -35,7 +35,7 @@
 
             <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
 
-            <solid android:color="#ff6666"/>
+            <solid android:color="@color/colorAccent"/>
         </shape></item>
 
 </selector>

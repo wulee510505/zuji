@@ -4,16 +4,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.wulee.administrator.zuji.R;
+import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.entity.Forecast;
 import com.wulee.administrator.zuji.entity.Weather;
+import com.wulee.administrator.zuji.widget.ScalePageTransformer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +30,7 @@ import static com.wulee.administrator.zuji.App.aCache;
  * Created by yarolegovich on 08.03.2017.
  */
 
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends BaseActivity {
 
 
     private ViewPager viewPager;
@@ -39,6 +41,9 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_weather);
 
         currtime = getIntent().getLongExtra("curr_time",0L);
@@ -50,8 +55,12 @@ public class WeatherActivity extends AppCompatActivity {
     private void initView() {
         viewPager = (ViewPager) findViewById(R.id.forecast_viewpager);
 
+        viewPager.setOffscreenPageLimit(4);
+        viewPager.setPageMargin(90);
+
         madapter = new ForecastPagerAdapter();
         viewPager.setAdapter(madapter);
+        viewPager.setPageTransformer(true, new ScalePageTransformer());
     }
 
     private void initData() {
@@ -73,7 +82,6 @@ public class WeatherActivity extends AppCompatActivity {
                 if(weather.getResults() != null && weather.getResults().size()>0){
                     resultenty = weather.getResults().get(0);
                     if(null != resultenty){
-
                         madapter.setWearthData(resultenty);
                     }
                 }
