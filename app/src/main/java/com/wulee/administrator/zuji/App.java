@@ -13,7 +13,6 @@ import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobConfig;
 import cn.bmob.v3.BmobInstallation;
-import cn.bmob.v3.statistics.AppStat;
 import cn.finalteam.okhttpfinal.OkHttpFinal;
 import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
 
@@ -68,8 +67,6 @@ public class App extends Application {
         BmobInstallation.getCurrentInstallation().save();
         // 启动推送服务
         BmobPush.startWork(this);
-
-        AppStat.i("ac67374a92fdca635c75eb6388e217a4", "");
     }
     
 }
