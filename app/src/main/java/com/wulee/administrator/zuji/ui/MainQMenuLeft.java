@@ -27,6 +27,7 @@ import cn.bmob.v3.update.UpdateResponse;
 import cn.bmob.v3.update.UpdateStatus;
 
 import static com.wulee.administrator.zuji.App.aCache;
+import static com.wulee.administrator.zuji.R.id.about_me_tv;
 import static com.wulee.administrator.zuji.R.id.mml_setting_tv;
 
 
@@ -41,7 +42,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private ImageView rbImage;
     private TextView mTvMobile;
     private TextView tvVersionName;
-    private TextView tvSign,tvFeedBack,tvMsg,tvSetting,tvLoginOut,tvCheckUpdate; // 登录、退出登录提示语
+    private TextView tvSign,tvFeedBack,tvMsg,tvSetting,tvLoginOut,tvCheckUpdate,tvAboutme; // 登录、退出登录提示语
 
     @Nullable
     @Override
@@ -68,6 +69,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         tvSetting = (TextView) view.findViewById(mml_setting_tv);
         tvCheckUpdate = (TextView) view.findViewById(R.id.mml_checkupdate_tv);
         tvLoginOut = (TextView) view.findViewById(R.id.mml_loginout_tv);
+        tvAboutme= (TextView) view.findViewById(R.id.about_me_tv);
 
         tvSign.setOnClickListener(this);
         tvFeedBack.setOnClickListener(this);
@@ -76,6 +78,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         tvLoginOut.setOnClickListener(this);
         tvCheckUpdate.setOnClickListener(this);
         rbImage.setOnClickListener(this);
+        tvAboutme.setOnClickListener(this);
 
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if(null != piInfo){
@@ -129,6 +132,9 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  break;
              case mml_setting_tv:
                  startActivity(new Intent(mContext,SettingActivity.class));
+                 break;
+             case about_me_tv:
+                 startActivity(new Intent(mContext,AboutMeActivity.class));
                  break;
          }
     }

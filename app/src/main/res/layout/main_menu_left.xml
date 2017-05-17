@@ -178,6 +178,24 @@
             android:background="#cdcdcd"/>
 
         <TextView
+            android:id="@+id/about_me_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:drawableLeft="@mipmap/icon_about_me"
+            android:drawablePadding="10dp"
+            android:textSize="15sp"
+            android:text="关于"
+            android:textColor="@color/color_white"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cdcdcd"/>
+
+        <TextView
             android:id="@+id/mml_loginout_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
