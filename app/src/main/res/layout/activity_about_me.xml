@@ -43,7 +43,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/icon_header"
         app:border_color="@color/colorAccent"
         app:border_width="1dp"/>
 

@@ -2,14 +2,22 @@ apply plugin: 'com.android.application'
 
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'wlandroid'
+            keyPassword 'android'
+            storeFile file('F:/signePackage/wlandroid')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.wulee.administrator.zuji"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -19,19 +27,21 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.debug
+        }
     }
     useLibrary 'org.apache.http.legacy'
-
     sourceSets {
         main {
             jniLibs.srcDir 'libs'
         }
     }
-    configurations{
+    configurations {
         all*.exclude module: 'okhttp'
         all*.exclude module: 'okio'
     }
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/rxjava.properties'
     }
@@ -57,9 +67,7 @@ dependencies {
     compile 'cn.bmob.android:http-legacy:1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
-    compile files('libs/baidumapapi_search_v4_2_0.jar')
     compile 'com.mylhyl:acp:1.1.7'
-    compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'org.greenrobot:greendao-generator:2.2.0'
     compile 'com.facebook.stetho:stetho:1.4.2'
@@ -68,4 +76,6 @@ dependencies {
     compile 'cn.finalteam:okhttpfinal:2.0.7'
     compile 'com.github.chenBingX:SuperTextView:v1.0'
     compile 'com.jakewharton:butterknife:5.1.1'
+    compile files('libs/baidumapapi_search_v4_2_0.jar')
+    compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
 }
