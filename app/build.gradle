@@ -31,6 +31,10 @@ android {
         all*.exclude module: 'okhttp'
         all*.exclude module: 'okio'
     }
+    packagingOptions{
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
@@ -60,6 +64,8 @@ dependencies {
     compile 'org.greenrobot:greendao-generator:2.2.0'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.github.wulee510505:Text2Speach:1.0.0'
+    compile 'com.github.24kpk:TakePhotoLib:1.0.4'
     compile 'cn.finalteam:okhttpfinal:2.0.7'
     compile 'com.github.chenBingX:SuperTextView:v1.0'
+    compile 'com.jakewharton:butterknife:5.1.1'
 }

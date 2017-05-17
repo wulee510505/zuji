@@ -19,8 +19,6 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 
-import static okhttp3.internal.Util.equal;
-
 /**
  * Created by wulee on 2017/1/11 16:59
  */
@@ -42,6 +40,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private Double  companyLat;
     private Double  companyLon;
     private String  companyAddress;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +64,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         ivSave = (ImageView) findViewById(R.id.iv_save);
         mEtHome = (TextView) findViewById(R.id.et_home);
         mEtCompany = (TextView) findViewById(R.id.et_company);
+
 
         PersonInfo user = BmobUser.getCurrentUser(PersonInfo.class);
         if(user != null){

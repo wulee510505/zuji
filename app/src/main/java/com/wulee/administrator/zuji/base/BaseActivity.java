@@ -1,6 +1,8 @@
 package com.wulee.administrator.zuji.base;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
@@ -108,6 +110,20 @@ public class BaseActivity extends AppCompatActivity {
 
     protected int getStateBarColor() {
         return -1;
+    }
+
+
+    /**
+     * 检查网络连接
+     * @return
+     */
+    public boolean checkInternetConnection() {
+        NetworkInfo info = null;
+        if (info == null) {
+            ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            info = manager.getActiveNetworkInfo();
+        }
+        return info != null && info.isAvailable();
     }
 
 }
