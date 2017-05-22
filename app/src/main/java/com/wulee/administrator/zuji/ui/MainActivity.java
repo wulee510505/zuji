@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -176,11 +175,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mRecyclerView = (EasyRecyclerView)findViewById(R.id.recyclerview);
 
         mAdapter = new LocationAdapter(R.layout.location_list_item,null);
-        View headerView = LayoutInflater.from(this).inflate(R.layout.location_list_header,null);
-        tvTime = (TextView) headerView.findViewById(R.id.tv_server_time);
-        //mAdapter.addHeaderView(headerView);
+        tvTime = (TextView)findViewById(R.id.tv_server_time);
 
-        //mRecyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL, 2, ContextCompat.getColor(this,R.color.divider_color)));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
     }
