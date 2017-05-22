@@ -109,6 +109,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
 
     private void doRegist(String mobile, String pwd) {
+        showProgressDialog(false);
         PersonInfo piInfo = new PersonInfo();
         piInfo.setMobilePhoneNumber(mobile);
         piInfo.setUsername(mobile);
@@ -127,6 +128,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         piInfo.signUp(new SaveListener<PersonInfo>() {
             @Override
             public void done(PersonInfo user,BmobException e) {
+                stopProgressDialog();
                 if(e==null){
                     Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(RegistActivity.this,LoginActivity.class));

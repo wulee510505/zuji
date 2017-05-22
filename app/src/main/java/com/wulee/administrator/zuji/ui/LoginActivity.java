@@ -80,12 +80,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void doLogin(String mobile, String pwd) {
+        showProgressDialog(false);
         PersonInfo user = new PersonInfo();
         user.setUsername(mobile);
         user.setPassword(pwd);
         user.login(new SaveListener<PersonInfo>() {
             @Override
             public void done(PersonInfo user, BmobException e) {
+                stopProgressDialog();
                 if(e == null){
                     aCache.put("has_login","yes");
                     startActivity(new Intent(LoginActivity.this,MainActivity.class));

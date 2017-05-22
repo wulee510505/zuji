@@ -203,9 +203,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 final LocationInfo location = new LocationInfo();
                 location.setObjectId(objectId);
                 final String finalObjectId = objectId;
+
+                showProgressDialog(false,"正在删除");
                 location.delete(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
+                        stopProgressDialog();
                         if(e == null){
                             List<LocationInfo> list =  dataList;
                             Iterator<LocationInfo> iter = list.iterator();
