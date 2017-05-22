@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/id_drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -44,19 +45,31 @@
         </RelativeLayout>
 
 
+        <include layout="@layout/location_list_header"
+            android:id="@+id/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_title"/>
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/rl_title"
+            android:layout_below="@id/layout_header"
             android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
+            <com.jude.easyrecyclerview.EasyRecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
-                android:scrollbars="none" />
+                app:layout_empty="@layout/com_view_empty"
+                app:layout_progress="@layout/com_view_progress"
+                app:layout_error="@layout/com_view_error"
+                app:recyclerClipToPadding="true"
+                app:recyclerPadding="8dp"
+                app:scrollbarStyle="insideOverlay"
+                app:scrollbars="none" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
 

@@ -11,18 +11,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.LocationAdapter;
 import com.wulee.administrator.zuji.base.BaseActivity;
@@ -53,7 +52,7 @@ import static com.wulee.administrator.zuji.App.aCache;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private SwipeRefreshLayout swipeLayout;
-    private RecyclerView mRecyclerView;
+    private EasyRecyclerView mRecyclerView;
     private LocationAdapter mAdapter;
 
     private ImageView ivMenu;
@@ -174,12 +173,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ivMenu = (ImageView) findViewById(R.id.iv_menu);
         ivSetting = (ImageView) findViewById(R.id.iv_setting);
         swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
-        mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview);
+        mRecyclerView = (EasyRecyclerView)findViewById(R.id.recyclerview);
 
         mAdapter = new LocationAdapter(R.layout.location_list_item,null);
         View headerView = LayoutInflater.from(this).inflate(R.layout.location_list_header,null);
         tvTime = (TextView) headerView.findViewById(R.id.tv_server_time);
-        mAdapter.addHeaderView(headerView);
+        //mAdapter.addHeaderView(headerView);
 
         //mRecyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL, 2, ContextCompat.getColor(this,R.color.divider_color)));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -279,9 +278,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             mAdapter.notifyDataChangedAfterLoadMore(dataList, true);
                         }else {
                             mAdapter.notifyDataChangedAfterLoadMore(false);
-                        }
-                        if (mAdapter.getData().size() == 0) {
-                            mAdapter.setEmptyView(LayoutInflater.from(MainActivity.this).inflate(R.layout.empty_view, (ViewGroup) mRecyclerView.getParent(), false));
                         }
                     }
                 }else{
