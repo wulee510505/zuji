@@ -80,11 +80,19 @@
         android:text="简书:http://www.jianshu.com/u/346d01ff61f1"
         android:textColorLink="@color/colorPrimary"/>
 
+    <TextView
+        android:id="@+id/tv_software_site"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="软件官网：http://zuji51.bmob.site/"
+        android:textColorLink="@color/colorPrimary"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="web"
+        android:autoLink="email"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="QQ邮箱:1241394859@qq.com"
         android:textColorLink="@color/colorPrimary"/>

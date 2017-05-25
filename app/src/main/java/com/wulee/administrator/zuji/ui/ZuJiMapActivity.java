@@ -26,12 +26,16 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolygonOptions;
+import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -54,7 +58,7 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
     private MapView mapView;
     private BaiduMap mBaiduMap;
 
-    private List<LocationInfo> zujiList;
+    private List<LatLng> locationList;
     private final int MSG_QUERY_ZUJI_DATA_OK = 1000;
 
     private Handler mHandler = new Handler(){
@@ -103,7 +107,7 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         query.include("piInfo");// 希望在查询位置信息的同时也把当前用户的信息查询出来
         query.order("-createdAt");
         // 设置每页数据个数
-        query.setLimit(50);
+        //query.setLimit(50);
         query.findObjects(new FindListener<LocationInfo>() {
             @Override
             public void done(List<LocationInfo> dataList, BmobException e) {
@@ -123,6 +127,9 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
 
     private void addLocation(List<LocationInfo> dataList) {
         LatLng lastLocation = null;
+        locationList = new ArrayList<>();
+        LocationInfo.SortClass sort = new LocationInfo.SortClass();
+        Collections.sort(dataList,sort);
         for (int i = 0; i < dataList.size(); i++) {
             LocationInfo location = dataList.get(i);
             //定义Maker坐标点
@@ -142,7 +149,15 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
             if(i == 0){
                 lastLocation = new LatLng(Double.parseDouble(location.getLatitude()), Double.parseDouble(location.getLontitude()));
             }
+
+            locationList.add(point);
         }
+        if(locationList.size()>3){
+            OverlayOptions ooPolygon = new PolygonOptions().points(locationList)
+                    .stroke(new Stroke(2, 0xAA00FF00)).fillColor(0x00FFFFFF);
+            mBaiduMap.addOverlay(ooPolygon);
+        }
+
         MapStatus.Builder builder = new MapStatus.Builder();
         builder.target(lastLocation).zoom(18.0f);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));

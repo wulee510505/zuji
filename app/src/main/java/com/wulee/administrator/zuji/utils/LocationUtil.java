@@ -143,6 +143,8 @@ public class LocationUtil{
             if(!TextUtils.isEmpty(location.getCity()))
                aCache.put("location_city",location.getCity());
 
+            if(location.getLatitude() == 0 || location.getLongitude()  == 0)
+                return;
 
             if(OtherUtil.equal(location.getLatitude(),lastlat) && OtherUtil.equal(location.getLongitude(),lastlon))//避免上传相同的位置到云端
                 return;
