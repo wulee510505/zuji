@@ -10,7 +10,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,9 +54,11 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
 
 
     public static final String ACTION_LOCATION_CHANGE = "action_location_change";
+    private  final int INTENT_SWITCH_MAP_TYPE = 100;
 
     private MapView mapView;
     private BaiduMap mBaiduMap;
+    private ImageView ivSwitch;
 
     private List<LatLng> locationList;
     private final int MSG_QUERY_ZUJI_DATA_OK = 1000;
@@ -72,6 +76,8 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         }
     };
 
+    private boolean isTrafficEnabled = false;  //是否开启交通图
+    private boolean isHeatMapEnabled = false;   //是否开启城市热力图
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +95,14 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         mapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mapView.getMap();
         mBaiduMap.setOnMarkerClickListener(this);
+
+        ivSwitch = (ImageView) findViewById(R.id.iv_map_type_switch);
+        ivSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(ZuJiMapActivity.this,SwitchMapTypeActivity.class),INTENT_SWITCH_MAP_TYPE);
+            }
+        });
     }
 
 
@@ -221,4 +235,47 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
         super.onDestroy();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && data != null){
+            switch (requestCode){
+                case INTENT_SWITCH_MAP_TYPE:
+                      int type = data.getIntExtra(SwitchMapTypeActivity.MAP_TYPE,-1);
+                      switch (type){
+                          case SwitchMapTypeActivity.TYPE_NORMAL:
+                              //普通地图
+                              mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+                              break;
+                          case SwitchMapTypeActivity.TYPE_SATELLITE:
+                              //卫星地图
+                              mBaiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+                              break;
+                          case SwitchMapTypeActivity.TYPE_TRAFFIC:
+                              if(isTrafficEnabled){
+                                  //关闭交通图
+                                  isTrafficEnabled = false;
+                                  mBaiduMap.setTrafficEnabled(false);
+                              }else{
+                                  //开启交通图
+                                  isTrafficEnabled = true;
+                                  mBaiduMap.setTrafficEnabled(true);
+                              }
+                              break;
+                          case SwitchMapTypeActivity.TYPE_HEATMAP:
+                              if(isHeatMapEnabled){
+                                  //关闭城市热力图
+                                  isHeatMapEnabled = false;
+                                  mBaiduMap.setBaiduHeatMapEnabled(false);
+                              }else{
+                                  //开启城市热力图
+                                  isHeatMapEnabled = true;
+                                  mBaiduMap.setBaiduHeatMapEnabled(true);
+                              }
+                              break;
+                      }
+                 break;
+            }
+        }
+    }
 }

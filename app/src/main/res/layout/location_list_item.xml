@@ -26,8 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="aaaaa"
-            android:drawableLeft="@mipmap/icon_address"
-            android:drawablePadding="5dp"
             android:gravity="center_vertical"
             android:textColor="@color/baseGrayMore"
             android:textSize="16sp" />
@@ -40,8 +38,6 @@
             android:layout_marginTop="5dp"
             android:text="bbbbb"
             android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/icon_address_desc"
-            android:drawablePadding="5dp"
             android:textColor="@color/baseGrayNor"
             android:textSize="15sp" />
 
@@ -53,8 +49,6 @@
             android:layout_marginTop="5dp"
             android:text="ccccc"
             android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/icon_time"
-            android:drawablePadding="5dp"
             android:textColor="@color/baseGrayNor"
             android:textSize="14sp" />
 
