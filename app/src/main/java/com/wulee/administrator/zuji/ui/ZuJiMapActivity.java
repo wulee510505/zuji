@@ -26,8 +26,6 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolygonOptions;
-import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
@@ -149,15 +147,13 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
             if(i == 0){
                 lastLocation = new LatLng(Double.parseDouble(location.getLatitude()), Double.parseDouble(location.getLontitude()));
             }
-
             locationList.add(point);
         }
-        if(locationList.size()>3){
+       /* if(locationList.size()>3){
             OverlayOptions ooPolygon = new PolygonOptions().points(locationList)
                     .stroke(new Stroke(2, 0xAA00FF00)).fillColor(0x00FFFFFF);
             mBaiduMap.addOverlay(ooPolygon);
-        }
-
+        }*/
         MapStatus.Builder builder = new MapStatus.Builder();
         builder.target(lastLocation).zoom(18.0f);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
