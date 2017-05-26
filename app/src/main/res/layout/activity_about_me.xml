@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
@@ -36,6 +36,15 @@
             android:textColor="@color/color_white"
             android:textSize="17sp" />
 
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="shareClick"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_share"/>
     </RelativeLayout>
 
     <com.wulee.administrator.zuji.widget.CircleImageView

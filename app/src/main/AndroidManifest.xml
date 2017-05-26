@@ -172,6 +172,22 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="tTPUoUgnb0BO9f9VEGtwLDclBmExPFEU" />       //key:开发者申请的Key
+
+       <!-- 友盟appkey-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="59279266b27b0a188d00044f" >
+        </meta-data>
+
+        <!-- 微信回调begin -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 微信回调end -->
     </application>
 
 </manifest>

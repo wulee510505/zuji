@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.stetho.Stetho;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 import com.wulee.administrator.zuji.database.dao.DaoMaster;
 import com.wulee.administrator.zuji.database.dao.DaoSession;
 import com.wulee.administrator.zuji.entity.Constant;
@@ -48,6 +50,14 @@ public class App extends Application {
 
         OkHttpFinalConfiguration.Builder builder = new OkHttpFinalConfiguration.Builder();
         OkHttpFinal.getInstance().init(builder.build());
+
+        initUMShareSDK();
+    }
+
+
+    private void initUMShareSDK() {
+        UMShareAPI.get(this);
+        PlatformConfig.setWeixin("wx4956c9ae7673c30d", "3ce5fa67d3b4b071be532d1fc3da5720");
     }
 
     private static void initDB(){
