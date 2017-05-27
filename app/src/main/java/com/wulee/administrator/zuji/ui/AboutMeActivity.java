@@ -21,7 +21,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
-
+import com.wulee.administrator.zuji.utils.AppUtils;
 
 
 /**
@@ -30,6 +30,7 @@ import com.wulee.administrator.zuji.base.BaseActivity;
 
 public class AboutMeActivity extends BaseActivity {
 
+    private TextView tvVersionName;
     private TextView tvSoftWareSite;
 
     @Override
@@ -50,6 +51,10 @@ public class AboutMeActivity extends BaseActivity {
                 finish();
             }
         });
+
+        tvVersionName= (TextView)findViewById(R.id.tv_version_name);
+        String versionName = AppUtils.getVersionName();
+        tvVersionName.setText("V "+versionName);
 
         tvSoftWareSite = (TextView) findViewById(R.id.tv_software_site);
         tvSoftWareSite.setText(getClickableSpan());
@@ -84,16 +89,17 @@ public class AboutMeActivity extends BaseActivity {
         UMWeb web = new UMWeb("http://zuji51.bmob.site/");
         web.setTitle("足迹 \n一款可以记录并查看出行轨迹的工具类软件");//标题
         web.setThumb(image);  //缩略图
-        web.setDescription("一款可以记录并查看出行轨迹的工具类软件");//描述
+        web.setDescription("一款可以记录并查看出行轨迹的工具类软件");
 
         new ShareAction(AboutMeActivity.this).withMedia(web)
-                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE)
+                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE /*,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE*/)
                 .setCallback(umShareListener).open();
     }
 
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA platform) {
+            Log.d("plat","platform"+platform);
             //分享开始的回调
         }
         @Override

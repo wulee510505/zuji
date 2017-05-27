@@ -25,7 +25,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
@@ -80,6 +80,9 @@ dependencies {
     compile 'com.github.chenBingX:SuperTextView:v1.0'
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.jude:easyrecyclerview:4.4.0'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.nineoldandroids:library:2.4.0'
+
     compile files('libs/baidumapapi_search_v4_2_0.jar')
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile files('libs/gson-2.6.2.jar')
@@ -93,4 +96,6 @@ dependencies {
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
     compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/open_sdk_r5781.jar')
+    compile files('libs/SocialSDK_QQ_Full.jar')
 }

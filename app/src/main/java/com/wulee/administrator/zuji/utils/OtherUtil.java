@@ -1,6 +1,15 @@
 package com.wulee.administrator.zuji.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.wulee.administrator.zuji.App;
+import com.wulee.administrator.zuji.R;
 
 import java.util.regex.Pattern;
 
@@ -79,4 +88,44 @@ public class OtherUtil {
         return isLogin;
     }
 
+
+    public static void showToastText(String msg) {
+        if (App.context != null) {
+            showNewToast(App.context, 0, msg, Toast.LENGTH_LONG);
+        }
+    }
+
+    private static Toast mToast;
+
+    /**
+     * 弹出Toast
+     *
+     * @param context
+     * @param resId
+     * @param text     提示内容
+     * @param duration
+     */
+    private static void showNewToast(Context context, int resId, CharSequence text, int duration) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.custom_toast, null);
+        ImageView imageView = (ImageView) layout.findViewById(R.id.iv_icon);
+        TextView textView = (TextView) layout.findViewById(R.id.tv_content);
+        if (resId > 0) {
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setBackgroundResource(resId);
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(text)) {
+            textView.setText(text);
+        } else {
+            textView.setText("");
+        }
+        if (null == mToast) {
+            mToast = new Toast(context);
+        }
+        mToast.setView(layout);
+        mToast.setDuration(duration);
+        mToast.show();
+    }
 }

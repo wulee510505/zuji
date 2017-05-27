@@ -18,6 +18,7 @@ import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
+import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 
 import cn.bmob.v3.BmobUser;
@@ -40,8 +41,8 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private Context mContext;
 
     private ImageView rbImage;
+    private TextView mTvName;
     private TextView mTvMobile;
-    private TextView tvVersionName;
     private TextView tvSign,tvFeedBack,tvMsg,tvSetting,tvLoginOut,tvCheckUpdate,tvAboutme; // 登录、退出登录提示语
 
     @Nullable
@@ -56,12 +57,15 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+
+        refreshUserInfo();
     }
+
 
     private void initUI(View view) {
         rbImage = (ImageView) view.findViewById(R.id.circle_img_header);
+        mTvName = (TextView) view.findViewById(R.id.tv_name);
         mTvMobile = (TextView) view.findViewById(R.id.tv_mobile);
-        tvVersionName= (TextView) view.findViewById(R.id.tv_version_name);
 
         tvSign = (TextView) view.findViewById(R.id.mml_sign_tv);
         tvFeedBack= (TextView) view.findViewById(R.id.mml_feedback_tv);
@@ -80,13 +84,15 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         rbImage.setOnClickListener(this);
         tvAboutme.setOnClickListener(this);
 
+    }
+
+    private void refreshUserInfo() {
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if(null != piInfo){
+            mTvName.setText(piInfo.getName());
             mTvMobile.setText(piInfo.getMobilePhoneNumber());
+            ImageUtil.setCircleImageView(rbImage,piInfo.getHeader_img_url(),R.mipmap.icon_user_def,mContext);
         }
-
-        String versionName = AppUtils.getVersionName();
-        tvVersionName.setText("V "+versionName);
     }
 
     @Override
@@ -121,8 +127,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  BmobUpdateAgent.forceUpdate(mContext);
                  break;
              case R.id.circle_img_header:
-
-
+                 startActivity(new Intent(mContext,PersonalInfoActivity.class));
                  break;
              case R.id.mml_sign_tv:
                  startActivity(new Intent(mContext,SignActivity.class));

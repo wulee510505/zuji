@@ -16,4 +16,14 @@
     <color name="baseGrayLit">#cdcdcd</color>
 
     <color name="light_red">#f6a6c1</color>
+
+    <!-- 纯白 -->
+    <color name="ctv_white">@color/color_white</color>
+    <!-- 淡黑色 -->
+    <color name="ctv_black_2">@color/baseGrayMore</color>
+    <!-- 灰色 -->
+    <color name="ctv_black_3">@color/baseGrayNor</color>
+    <!-- 淡灰色 -->
+    <color name="ctv_black_4">@color/baseGrayLit</color>
+
 </resources>

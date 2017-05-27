@@ -47,21 +47,20 @@
             android:src="@mipmap/icon_share"/>
     </RelativeLayout>
 
-    <com.wulee.administrator.zuji.widget.CircleImageView
+    <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:src="@mipmap/icon_header"
-        app:border_color="@color/colorAccent"
-        app:border_width="1dp"/>
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
+        android:id="@+id/tv_version_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="wulee"
+        android:text="足迹 1.1.0"
         android:textSize="16sp"/>
 
     <View
@@ -105,4 +104,5 @@
         android:padding="@dimen/activity_horizontal_margin"
         android:text="QQ邮箱:1241394859@qq.com"
         android:textColorLink="@color/colorPrimary"/>
+
 </LinearLayout>

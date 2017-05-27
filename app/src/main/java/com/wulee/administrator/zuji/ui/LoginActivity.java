@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
+import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.utils.ConfigKey;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -79,7 +81,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void doLogin(String mobile, String pwd) {
+    private void doLogin(final String mobile, String pwd) {
         showProgressDialog(false);
         PersonInfo user = new PersonInfo();
         user.setUsername(mobile);
@@ -90,6 +92,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 stopProgressDialog();
                 if(e == null){
                     aCache.put("has_login","yes");
+                    aCache.put(ConfigKey.KEY_CURR_LOGIN_MOBILE,mobile);
+
+                    PersonInfo pi = PersonInfo.getCurrentUser(PersonInfo.class);
+                    if(null != pi){
+                        pi.setMobile(mobile);
+                        DBHandler.insertPesonInfo(pi);
+                    }
                     startActivity(new Intent(LoginActivity.this,MainActivity.class));
                 }else{
                     toast("登录失败:" + e.getMessage());
