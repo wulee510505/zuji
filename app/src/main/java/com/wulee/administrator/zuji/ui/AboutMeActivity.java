@@ -79,20 +79,13 @@ public class AboutMeActivity extends BaseActivity {
         return spannableString;
     }
 
-
-
-    /**
-     * 分享功能
-     */
-    public synchronized void shareClick(View view) {
+    public void shareClick(View view){
         UMImage image = new UMImage(AboutMeActivity.this, R.mipmap.ic_launcher);
         UMWeb web = new UMWeb("http://zuji51.bmob.site/");
-        web.setTitle("足迹 \n一款可以记录并查看出行轨迹的工具类软件");//标题
-        web.setThumb(image);  //缩略图
+        web.setThumb(image);
+        web.setTitle("足迹 \n 一款可以记录并查看出行轨迹的工具类软件");
         web.setDescription("一款可以记录并查看出行轨迹的工具类软件");
-
-        new ShareAction(AboutMeActivity.this).withMedia(web)
-                .setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE /*,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE*/)
+        new ShareAction(AboutMeActivity.this).withMedia(web).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE)
                 .setCallback(umShareListener).open();
     }
 
@@ -125,5 +118,6 @@ public class AboutMeActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
 
 }

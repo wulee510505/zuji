@@ -28,7 +28,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
-        android:name="com.wulee.administrator.zuji.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -177,11 +177,6 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="tTPUoUgnb0BO9f9VEGtwLDclBmExPFEU" />       //key:开发者申请的Key
 
-       <!-- 友盟appkey-->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="59279266b27b0a188d00044f" >
-        </meta-data>
 
         <!-- 微信回调begin -->
         <activity
@@ -192,16 +187,21 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 微信回调end -->
 
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="59279266b27b0a188d00044f" >
+        </meta-data>
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
             android:noHistory="true" >
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent1106189026" />
             </intent-filter>
         </activity>

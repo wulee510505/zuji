@@ -82,20 +82,18 @@ dependencies {
     compile 'com.jude:easyrecyclerview:4.4.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
-
-    compile files('libs/baidumapapi_search_v4_2_0.jar')
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile files('libs/gson-2.6.2.jar')
     compile files('libs/BmobSDK_3.5.5_20170420.jar')
     compile files('libs/okhttp-3.3.1.jar')
     compile files('libs/okio-1.7.0.jar')
-    compile files('libs/umeng_social_tool.jar')
-    compile files('libs/umeng_social_shareboard.jar')
-    compile files('libs/umeng_social_net.jar')
-    compile files('libs/umeng_social_api.jar')
-    compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
-    compile files('libs/SocialSDK_WeiXin_Full.jar')
-    compile files('libs/open_sdk_r5781.jar')
     compile files('libs/SocialSDK_QQ_Full.jar')
+    compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/umeng_shareboard_widget.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_shareboard.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/BaiduLBS_Android.jar')
 }

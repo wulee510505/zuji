@@ -10,6 +10,8 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.SpatialRelationUtil;
 import com.liangmayong.text2speech.Text2Speech;
 import com.mylhyl.acp.Acp;
 import com.mylhyl.acp.AcpListener;
@@ -39,9 +41,6 @@ public class LocationUtil{
     public BDLocationListener myListener = new MyLocationListener();
 
     public static final String ACTION_LOCATION_CHANGE = "action_location_change";
-
-    private static double lastlat = 0; //最新一次定位的纬度
-    private static double lastlon = 0; //最新一次定位的经度度
 
     private LocationUtil() {
         mLocationClient = new LocationClient(App.context);     //声明LocationClient类
@@ -146,11 +145,21 @@ public class LocationUtil{
             if(location.getLatitude() == 0 || location.getLongitude()  == 0)
                 return;
 
-            if(OtherUtil.equal(location.getLatitude(),lastlat) && OtherUtil.equal(location.getLongitude(),lastlon))//避免上传相同的位置到云端
-                return;
-            lastlat = location.getLatitude();
-            lastlon = location.getLongitude();
+            if(!TextUtils.isEmpty(aCache.getAsString("lat")) &&!TextUtils.isEmpty(aCache.getAsString("lon"))  ){
+                if(OtherUtil.equal(location.getLatitude(),Double.parseDouble(aCache.getAsString("lat"))) && OtherUtil.equal(location.getLongitude(),Double.parseDouble(aCache.getAsString("lon"))))//避免上传相同的位置到云端
+                    return;
 
+                double lastlat = Double.parseDouble(aCache.getAsString("lat"));
+                double lastlon = Double.parseDouble(aCache.getAsString("lon"));
+
+                if(lastlat > 0 && lastlon >0){
+                    LatLng lastLatLng = new LatLng(lastlat,lastlon);
+                    boolean isContains  = SpatialRelationUtil.isCircleContainsPoint(lastLatLng, 5, new LatLng(location.getLatitude(),location.getLongitude()));
+                    if(isContains){
+                        return;
+                    }
+                }
+            }
             LocationInfo locationInfo = new LocationInfo();
             locationInfo.setLatitude(location.getLatitude()+"");
             locationInfo.setLontitude(location.getLongitude()+"");
@@ -181,6 +190,11 @@ public class LocationUtil{
             }
             Log.i("Location", sb.toString());
         }
+
+        @Override
+        public void onConnectHotSpotMessage(String s, int i) {
+
+        }
     }
 
 
@@ -199,6 +213,7 @@ public class LocationUtil{
                     DBHandler.insertLocationInfo(locationInfo);
                     aCache.put("lat",locationInfo.getLatitude());
                     aCache.put("lon",locationInfo.getLontitude());
+
                     aCache.put("isUploadLocation","yes");
                     speak(locationInfo.getAddress() + locationInfo.getLocationdescribe());
                     System.out.println("—— 位置同步成功 ——");

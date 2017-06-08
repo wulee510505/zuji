@@ -146,6 +146,11 @@ public class MapSelPointActivity extends BaseActivity implements OnGetGeoCoderRe
             }
         }
 
+        @Override
+        public void onConnectHotSpotMessage(String s, int i) {
+
+        }
+
     }
 
     @Override
