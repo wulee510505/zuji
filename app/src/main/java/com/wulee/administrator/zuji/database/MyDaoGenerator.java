@@ -68,6 +68,7 @@ public class MyDaoGenerator {
         locationInfo.addStringProperty("latitude");
         locationInfo.addStringProperty("address");
         locationInfo.addStringProperty("locationdescribe");
+        locationInfo.addLongProperty("time");
         locationInfo.addStringProperty("deviceId");
     }
 }

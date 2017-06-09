@@ -16,6 +16,7 @@ public class LocationInfo extends BmobObject{
     private String latitude;
     private String address;
     private String locationdescribe;
+    private Long time;
     private String deviceId;
 
     public PersonInfo piInfo;
@@ -23,12 +24,13 @@ public class LocationInfo extends BmobObject{
     public LocationInfo() {
     }
 
-    public LocationInfo(String nativePhoneNumber, String lontitude, String latitude, String address, String locationdescribe, String deviceId) {
+    public LocationInfo(String nativePhoneNumber, String lontitude, String latitude, String address, String locationdescribe, Long time, String deviceId) {
         this.nativePhoneNumber = nativePhoneNumber;
         this.lontitude = lontitude;
         this.latitude = latitude;
         this.address = address;
         this.locationdescribe = locationdescribe;
+        this.time = time;
         this.deviceId = deviceId;
     }
 
@@ -70,6 +72,14 @@ public class LocationInfo extends BmobObject{
 
     public void setLocationdescribe(String locationdescribe) {
         this.locationdescribe = locationdescribe;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
     }
 
     public String getDeviceId() {

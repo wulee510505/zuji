@@ -7,7 +7,7 @@ import cn.bmob.v3.BmobUser;
 /**
  * Entity mapped to table "PERSONINFO_TABLE".
  */
-public class PersonInfo  extends BmobUser{
+public class PersonInfo extends BmobUser {
 
     private String mobile;
     private String name;

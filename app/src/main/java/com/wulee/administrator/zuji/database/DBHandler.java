@@ -77,7 +77,6 @@ public class DBHandler {
     public static void insertLocationInfo(LocationInfo locationInfo) {
         locationInfoDao.insertOrReplace(locationInfo);
     }
-
     public static List<LocationInfo> getAllLocationInfo() {
         return  locationInfoDao.loadAll();
     }

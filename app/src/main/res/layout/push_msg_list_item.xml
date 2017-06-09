@@ -40,5 +40,12 @@
             android:textSize="15sp" />
 
 
+        <ImageView
+            android:id="@+id/iv_play_msg_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignBaseline="@+id/tv_content"
+            android:src="@mipmap/icon_voice"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

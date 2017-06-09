@@ -28,7 +28,8 @@ public class LocationInfoDao extends AbstractDao<LocationInfo, Void> {
         public final static Property Latitude = new Property(2, String.class, "latitude", false, "LATITUDE");
         public final static Property Address = new Property(3, String.class, "address", false, "ADDRESS");
         public final static Property Locationdescribe = new Property(4, String.class, "locationdescribe", false, "LOCATIONDESCRIBE");
-        public final static Property DeviceId = new Property(5, String.class, "deviceId", false, "DEVICE_ID");
+        public final static Property Time = new Property(5, Long.class, "time", false, "TIME");
+        public final static Property DeviceId = new Property(6, String.class, "deviceId", false, "DEVICE_ID");
     };
 
 
@@ -49,7 +50,8 @@ public class LocationInfoDao extends AbstractDao<LocationInfo, Void> {
                 "\"LATITUDE\" TEXT," + // 2: latitude
                 "\"ADDRESS\" TEXT," + // 3: address
                 "\"LOCATIONDESCRIBE\" TEXT," + // 4: locationdescribe
-                "\"DEVICE_ID\" TEXT);"); // 5: deviceId
+                "\"TIME\" INTEGER," + // 5: time
+                "\"DEVICE_ID\" TEXT);"); // 6: deviceId
     }
 
     /** Drops the underlying database table. */
@@ -88,9 +90,14 @@ public class LocationInfoDao extends AbstractDao<LocationInfo, Void> {
             stmt.bindString(5, locationdescribe);
         }
  
+        Long time = entity.getTime();
+        if (time != null) {
+            stmt.bindLong(6, time);
+        }
+ 
         String deviceId = entity.getDeviceId();
         if (deviceId != null) {
-            stmt.bindString(6, deviceId);
+            stmt.bindString(7, deviceId);
         }
     }
 
@@ -109,7 +116,8 @@ public class LocationInfoDao extends AbstractDao<LocationInfo, Void> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // latitude
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // address
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // locationdescribe
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // deviceId
+            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // time
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // deviceId
         );
         return entity;
     }
@@ -122,7 +130,8 @@ public class LocationInfoDao extends AbstractDao<LocationInfo, Void> {
         entity.setLatitude(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setAddress(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setLocationdescribe(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setDeviceId(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setTime(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setDeviceId(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     /** @inheritdoc */

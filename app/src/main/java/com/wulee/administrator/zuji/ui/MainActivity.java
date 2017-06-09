@@ -234,7 +234,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             isRefresh = true;
             getLocationList(0, STATE_REFRESH);
             syncServerTime();
-            mHandler.postDelayed(this,1000 * 60 * 1);
+            mHandler.postDelayed(this,1000 * 60 * 2);
         }
     };
 
