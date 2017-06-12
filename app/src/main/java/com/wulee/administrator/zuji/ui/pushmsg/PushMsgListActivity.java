@@ -1,5 +1,6 @@
 package com.wulee.administrator.zuji.ui.pushmsg;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PushMessage;
@@ -57,6 +59,21 @@ public class PushMsgListActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int pos) {
+                List<PushMessage> dataList = mAdapter.getData();
+                if(null != dataList && dataList.size()>0){
+                    PushMessage msg = dataList.get(pos);
+                    if(null != msg){
+                        Intent intent = new Intent(PushMsgListActivity.this,MsgDetailActivity.class);
+                        intent.putExtra("msg",msg);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     private void initData() {
