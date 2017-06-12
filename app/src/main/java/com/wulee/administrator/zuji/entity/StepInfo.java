@@ -12,9 +12,7 @@ public class StepInfo extends BmobObject{
 
     private int count;
     private String date;
-
     public PersonInfo personInfo;
-
 
     public int getCount() {
         return count;

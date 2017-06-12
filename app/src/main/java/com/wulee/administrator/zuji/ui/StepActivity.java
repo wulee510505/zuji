@@ -24,6 +24,9 @@ import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.utils.SortList;
 import com.wulee.administrator.zuji.widget.RecycleViewDivider;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -103,9 +106,9 @@ public class StepActivity extends BaseActivity{
                 swipeLayout.setRefreshing(false);
                 if(e == null){
                     if (null != dataList &&  dataList.size() > 0) {
-                        SortList<StepInfo> msList = new SortList<StepInfo>();
-                        msList.sortByMethod(dataList, "getCount", true);
-                        mAdapter.setNewData(dataList);
+                       //数据重复问题，暂未想到解决的好办法
+
+                        mAdapter.setNewData(processReturnList(dataList));
                     }
                 }else{
                     Toast.makeText(StepActivity.this,"查询失败"+e.getMessage()+","+e.getErrorCode(),Toast.LENGTH_SHORT).show();
@@ -113,6 +116,24 @@ public class StepActivity extends BaseActivity{
             }
         });
     }
+
+    private List<StepInfo>  processReturnList(List<StepInfo> dataList){
+        SortList<StepInfo> msList = new SortList<StepInfo>();
+        msList.sortByMethod(dataList, "getCount", true);
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currdate = dateFormat.format( now );
+
+        Iterator<StepInfo> iter = dataList.iterator();
+        while(iter.hasNext()){
+            StepInfo step = iter.next();
+            if(!TextUtils.equals(currdate,step.getUpdatedAt().substring(0,10))){
+                iter.remove();
+            }
+        }
+        return dataList;
+    }
+
 
     @Override
     protected void onResume() {
