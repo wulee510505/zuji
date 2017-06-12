@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,9 +90,14 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private void refreshUserInfo() {
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if(null != piInfo){
-            mTvName.setText(piInfo.getName());
+            if(!TextUtils.isEmpty(piInfo.getName()))
+                mTvName.setText(piInfo.getName());
+            else
+                mTvName.setText("游客");
             mTvMobile.setText(piInfo.getMobilePhoneNumber());
             ImageUtil.setCircleImageView(rbImage,piInfo.getHeader_img_url(),R.mipmap.icon_user_def,mContext);
+        }else{
+            mTvName.setText("游客");
         }
     }
 

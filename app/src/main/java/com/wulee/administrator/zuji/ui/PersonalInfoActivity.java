@@ -251,7 +251,7 @@ public class PersonalInfoActivity extends BaseActivity {
     /**
      * 上传计步信息
      */
-    private void uploadStepInfo(float stepcount) {
+    private void uploadStepInfo(int stepcount) {
         final PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
 
         final StepInfo stepInfo = new StepInfo();

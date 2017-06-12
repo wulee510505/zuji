@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/titlelayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:background="@color/colorAccent">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/icon_back" />
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/color_white"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+
+
+
+    <com.coorchice.library.SuperTextView
+        android:id="@+id/tv_step_count"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@id/titlelayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/ctv_white"
+        android:textSize="20sp"
+        app:corner="60dp"
+        app:solid="@color/colorAccent"
+        app:stroke_color="@color/light_red"
+        app:stroke_width="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_ranking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_step_count"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:text="第1名"
+        android:visibility="invisible"/>
+
+    <View
+        android:id="@+id/tv_line"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/tv_ranking"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/ctv_black_4" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_line"
+        android:orientation="vertical">
+
+        <com.jude.easyrecyclerview.EasyRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:fadingEdgeLength="0dp"
+            app:layout_empty="@layout/com_view_empty"
+            app:layout_progress="@layout/com_view_progress"
+            app:layout_error="@layout/com_view_error"
+            app:recyclerClipToPadding="true"
+            app:recyclerPadding="8dp"
+            app:scrollbarStyle="insideOverlay"
+            app:scrollbars="none" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

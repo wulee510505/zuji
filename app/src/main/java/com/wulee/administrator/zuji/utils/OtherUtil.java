@@ -128,4 +128,5 @@ public class OtherUtil {
         mToast.setDuration(duration);
         mToast.show();
     }
+
 }
