@@ -10,4 +10,16 @@
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
         android:src="@mipmap/bg_wellcome" />
+
+    <com.wulee.administrator.zuji.widget.FadeInTextView
+        android:id="@+id/fadeInTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:textColor="@color/color_white"/>
 </RelativeLayout>

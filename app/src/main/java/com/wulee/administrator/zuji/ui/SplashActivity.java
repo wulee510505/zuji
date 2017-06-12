@@ -14,6 +14,8 @@ import android.view.animation.ScaleAnimation;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.utils.OtherUtil;
+import com.wulee.administrator.zuji.widget.FadeInTextView;
+
 
 
 /**
@@ -22,9 +24,12 @@ import com.wulee.administrator.zuji.utils.OtherUtil;
 
 public class SplashActivity extends BaseActivity {
 
+    private FadeInTextView mFadeInTextView;
     private View startView = null;
     private AlphaAnimation loadAlphaAnimation=null;
     private ScaleAnimation loadScaleAnimation = null;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,9 @@ public class SplashActivity extends BaseActivity {
 
         startView = View.inflate(this, R.layout.splash, null);
         setContentView(startView);
+
+        mFadeInTextView = (FadeInTextView) findViewById(R.id.fadeInTextView);
+
         initData();
     }
 
@@ -65,7 +73,15 @@ public class SplashActivity extends BaseActivity {
             }
             @Override
             public void onAnimationEnd(Animation animation) {
-                startActivity();
+                mFadeInTextView
+                        .setTextString("一款可以记录并查看出行轨迹的工具类软件")
+                        .setTextAnimationListener(new FadeInTextView.TextAnimationListener() {
+                            @Override
+                            public void animationFinish() {
+                                startActivity();
+                            }
+                        });
+                mFadeInTextView.startFadeInAnimation();
             }
         });
     }
