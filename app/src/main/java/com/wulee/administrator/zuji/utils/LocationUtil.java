@@ -49,7 +49,7 @@ public class LocationUtil{
         );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
         int span= 1000 * 60 * 2; // 2分钟
-        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setScanSpan(0);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
         option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
@@ -145,6 +145,7 @@ public class LocationUtil{
             if(location.getLatitude() == 0 || location.getLongitude()  == 0)
                 return;
 
+            Log.i("location","获取位置信息成功---->"+ DateTimeUtils.getFullTime(System.currentTimeMillis()));
             if(!TextUtils.isEmpty(aCache.getAsString("lat")) &&!TextUtils.isEmpty(aCache.getAsString("lon"))  ){
                 if(OtherUtil.equal(location.getLatitude(),Double.parseDouble(aCache.getAsString("lat"))) && OtherUtil.equal(location.getLongitude(),Double.parseDouble(aCache.getAsString("lon"))))//避免上传相同的位置到云端
                     return;
@@ -215,7 +216,7 @@ public class LocationUtil{
                     aCache.put("lon",locationInfo.getLontitude());
 
                     aCache.put("isUploadLocation","yes");
-                    speak(locationInfo.getAddress() + locationInfo.getLocationdescribe());
+                    speak("您当前位置是"+ locationInfo.getAddress() + locationInfo.getLocationdescribe());
                     System.out.println("—— 位置同步成功 ——");
                 }else{
                     System.out.println("—— 位置同步失败 ——");

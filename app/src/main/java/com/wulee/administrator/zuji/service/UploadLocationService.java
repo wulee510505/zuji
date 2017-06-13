@@ -27,7 +27,7 @@ public class UploadLocationService extends Service {
         LocationUtil.getInstance().startGetLocation();
 
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int alarmTime = 2 * 1000 * 60; // 定时2分钟
+        int alarmTime = 2 *  1000 * 60; // 定时2分钟
         long trigerAtTime = SystemClock.elapsedRealtime() + alarmTime;
         Intent i = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
