@@ -35,27 +35,39 @@
 
 
             <ImageView
-                android:id="@+id/iv_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
-                android:src="@mipmap/icon_zuji" />
+            android:id="@+id/iv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_zuji" />
         </RelativeLayout>
 
 
-        <include layout="@layout/location_list_header"
-            android:id="@+id/layout_header"
+        <RelativeLayout
+            android:id="@+id/rl_banner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rl_title"/>
+            android:layout_height="150dp"
+            android:layout_below="@id/rl_title">
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
+            <include layout="@layout/location_list_header"
+                android:id="@+id/layout_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/layout_header"
+            android:layout_below="@id/rl_banner"
             android:orientation="vertical">
 
             <com.jude.easyrecyclerview.EasyRecyclerView

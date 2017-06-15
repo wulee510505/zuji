@@ -26,13 +26,18 @@ import com.wulee.administrator.zuji.adapter.LocationAdapter;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.entity.BannerInfo;
 import com.wulee.administrator.zuji.service.ScreenService;
 import com.wulee.administrator.zuji.service.UploadLocationService;
 import com.wulee.administrator.zuji.ui.weather.WeatherActivity;
+import com.wulee.administrator.zuji.utils.GlideImageLoader;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.widget.FloatingButton;
+import com.youth.banner.Banner;
+import com.youth.banner.Transformer;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -47,9 +52,10 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 
 import static com.wulee.administrator.zuji.App.aCache;
-
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
+
+    private Banner bannerLayout;
     private SwipeRefreshLayout swipeLayout;
     private EasyRecyclerView mRecyclerView;
     private LocationAdapter mAdapter;
@@ -154,6 +160,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getLocationList(curPage, STATE_MORE);
             }
         });
+
+
     }
 
     private void initView() {
@@ -169,6 +177,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         floatingButton.setLayoutParams(rlp);
 
+        bannerLayout = (Banner) findViewById(R.id.banner);
+        bannerLayout.setVisibility(View.GONE);
+
         ivMenu = (ImageView) findViewById(R.id.iv_menu);
         ivSetting = (ImageView) findViewById(R.id.iv_setting);
         swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
@@ -179,6 +190,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+
+        initBannerInfo();
+    }
+
+    /**
+     * 初始化banner
+     */
+    private void initBannerInfo() {
+        final List<String> urls =  new ArrayList<>();
+        BmobQuery<BannerInfo> query = new BmobQuery<>();
+        query.findObjects(new FindListener<BannerInfo>() {
+            @Override
+            public void done(List<BannerInfo> list, BmobException e) {
+                if(null != list && list.size()>0){
+                    for (BannerInfo banner: list){
+                        urls.add(banner.getBanner_url());
+                    }
+                    if(urls.size()>0){
+                        bannerLayout.setVisibility(View.VISIBLE);
+                        bannerLayout.setImages(urls);
+                        bannerLayout.setBannerAnimation(Transformer.DepthPage);
+                        bannerLayout.setImageLoader(new GlideImageLoader());
+                        bannerLayout.start();
+                    }else{
+                        bannerLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
 
@@ -342,5 +382,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //开始轮播
+        bannerLayout.startAutoPlay();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //结束轮播
+        bannerLayout.stopAutoPlay();
     }
 }

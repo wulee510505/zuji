@@ -82,7 +82,7 @@ dependencies {
     compile 'com.jude:easyrecyclerview:4.4.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
-
+    compile 'com.youth.banner:banner:1.4.9'
 
 
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')

@@ -16,7 +16,7 @@
         android:layout_below="@id/line"
         android:gravity="center"
         android:padding="10dp"
-        android:background="@color/colorAccent"
+        android:background="#80ffffff"
         android:layout_centerInParent="true"
         android:text="正在获取服务器时间..."
         android:textColor="@color/color_white"

@@ -41,14 +41,17 @@ public class PushMsgReceiver extends BroadcastReceiver {
                             .setContentTitle("新消息")
                             .setContentText(pushMessage.getContent());
             Intent resultIntent = new Intent(context, PushMsgListActivity.class);
+
+            int requestCode = (int) System.currentTimeMillis();
+
             PendingIntent resultPendingIntent = PendingIntent.getActivity(
-                    context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    context, requestCode , resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentIntent(resultPendingIntent);
 
             Notification notification = mBuilder.build();
 
             NotificationManager notificationManager = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.notify(0, notification);
+            notificationManager.notify(requestCode, notification);
         }
     }
 
