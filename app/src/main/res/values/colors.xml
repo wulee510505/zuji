@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="color_white">#FFFFFF</color>
     <color name="base_dialog_bg">#80000000</color>
-
+    <color name="left_menu_bg">#FF4081</color>
     <color name="divider_color">#cdcdcd</color>
 
     <!-- 标题强调文字-->

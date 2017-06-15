@@ -36,6 +36,14 @@
             android:textColor="@color/color_white"
             android:textSize="17sp" />
 
+        <ImageView
+            android:id="@+id/iv_history"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_history" />
     </RelativeLayout>
 
 
@@ -76,26 +84,40 @@
         android:layout_marginTop="10dp"
         android:background="@color/ctv_black_4" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tv_line"
-        android:orientation="vertical">
+        android:layout_below="@id/tv_line">
 
-        <com.jude.easyrecyclerview.EasyRecyclerView
-            android:id="@+id/recyclerview"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:fadingEdgeLength="0dp"
-            app:layout_empty="@layout/com_view_empty"
-            app:layout_progress="@layout/com_view_progress"
-            app:layout_error="@layout/com_view_error"
-            app:recyclerClipToPadding="true"
-            app:recyclerPadding="8dp"
-            app:scrollbarStyle="insideOverlay"
-            app:scrollbars="none" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
+
+            <com.jude.easyrecyclerview.EasyRecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:fadingEdgeLength="0dp"
+                app:layout_empty="@layout/com_view_empty"
+                app:layout_progress="@layout/com_view_progress"
+                app:layout_error="@layout/com_view_error"
+                app:recyclerClipToPadding="true"
+                app:recyclerPadding="8dp"
+                app:scrollbarStyle="insideOverlay"
+                app:scrollbars="none" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

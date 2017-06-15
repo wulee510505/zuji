@@ -31,9 +31,11 @@ import java.io.File;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -251,14 +253,14 @@ public class PersonalInfoActivity extends BaseActivity {
     /**
      * 上传计步信息
      */
-    private void uploadStepInfo(int stepcount) {
+    private void uploadStepInfo(final int stepcount) {
         final PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
 
         final StepInfo stepInfo = new StepInfo();
         stepInfo.setCount(stepcount);
         //添加一对一关联
         stepInfo.personInfo = piInfo;
-        String stepInfoId  = aCache.getAsString("step_info_id");
+        final String stepInfoId  = aCache.getAsString("step_info_id");
         if(TextUtils.isEmpty(stepInfoId)){
             stepInfo.save(new SaveListener<String>() {
                 @Override
@@ -272,14 +274,21 @@ public class PersonalInfoActivity extends BaseActivity {
                 }
             });
         }else{
-            stepInfo.update(stepInfoId, new UpdateListener() {
+            BmobQuery<StepInfo> query = new BmobQuery<StepInfo>();
+            query.getObject(stepInfoId, new QueryListener<StepInfo>() {
                 @Override
-                public void done(BmobException e) {
-                    if (e == null) {
-                        System.out.println("—— 步数更新成功 ——");
-                    } else {
-                        System.out.println("—— 步数更新失败 ——");
-                    }
+                public void done(StepInfo stepInfo, BmobException e) {
+                    stepInfo.setCount(stepcount);
+                    stepInfo.update(stepInfoId, new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                System.out.println("—— 步数更新成功 ——");
+                            } else {
+                                System.out.println("—— 步数更新失败 ——");
+                            }
+                        }
+                    });
                 }
             });
         }

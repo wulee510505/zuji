@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:background="#fff"
+    android:padding="15dp">
 
     <TextView
         android:id="@+id/tv_ranking"
@@ -19,7 +19,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_toRightOf="@id/tv_ranking"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="8dp"
         android:src="@mipmap/icon_user_def"/>
 
     <TextView
@@ -34,16 +34,37 @@
         android:textSize="15sp" />
 
 
+    <ImageView
+        android:id="@+id/iv_zan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/bg_btn_zan"/>
+
+    <TextView
+        android:id="@+id/tv_zannum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="13dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
+        android:text="2"
+        android:maxLength="4"
+        android:singleLine="true"/>
+
     <TextView
         android:id="@+id/tv_step"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/iv_zan"
+        android:layout_marginRight="10dp"
         android:layout_centerVertical="true"
         android:textColor="#F88F21"
         android:textSize="16sp"
         android:text="1024步" />
-
 
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class StepActivity extends BaseActivity{
+public class StepActivity extends BaseActivity {
     public static final String ACTION_ON_STEP_COUNT_CHANGE = "action_on_step_count_change";
     @InjectView(R.id.iv_back)
     ImageView ivBack;
@@ -53,6 +54,10 @@ public class StepActivity extends BaseActivity{
     EasyRecyclerView recyclerview;
     @InjectView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
+    @InjectView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @InjectView(R.id.iv_history)
+    ImageView ivHistory;
 
     private Pedometer pedometer;
     private OnStepCountChangeReceiver mReceiver;
@@ -78,11 +83,11 @@ public class StepActivity extends BaseActivity{
 
 
     private void initData() {
-        title.setText("我的行走");
+        title.setText("今日步数");
 
-        mAdapter = new StepRankingAdapter(this,R.layout.step_rank_list_item,null);
+        mAdapter = new StepRankingAdapter(this, R.layout.step_rank_list_item, null);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(new RecycleViewDivider(this,LinearLayoutManager.HORIZONTAL));
+        recyclerview.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
         recyclerview.setAdapter(mAdapter);
 
         queryStepRankList();
@@ -104,30 +109,30 @@ public class StepActivity extends BaseActivity{
             @Override
             public void done(List<StepInfo> dataList, BmobException e) {
                 swipeLayout.setRefreshing(false);
-                if(e == null){
-                    if (null != dataList &&  dataList.size() > 0) {
-                       //数据重复问题，暂未想到解决的好办法
-
+                progressBar.setVisibility(View.GONE);
+                if (e == null) {
+                    if (null != dataList && dataList.size() > 0) {
+                        //数据重复问题，暂未想到解决的好办法
                         mAdapter.setNewData(processReturnList(dataList));
                     }
-                }else{
-                    Toast.makeText(StepActivity.this,"查询失败"+e.getMessage()+","+e.getErrorCode(),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(StepActivity.this, "查询失败" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private List<StepInfo>  processReturnList(List<StepInfo> dataList){
+    private List<StepInfo> processReturnList(List<StepInfo> dataList) {
         SortList<StepInfo> msList = new SortList<StepInfo>();
         msList.sortByMethod(dataList, "getCount", true);
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String currdate = dateFormat.format( now );
+        String currdate = dateFormat.format(now);
 
         Iterator<StepInfo> iter = dataList.iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             StepInfo step = iter.next();
-            if(!TextUtils.equals(currdate,step.getUpdatedAt().substring(0,10))){
+            if (!TextUtils.equals(currdate, step.getUpdatedAt().substring(0, 10))) {
                 iter.remove();
             }
         }
@@ -142,14 +147,18 @@ public class StepActivity extends BaseActivity{
     }
 
 
-    @OnClick(R.id.iv_back)
+    @OnClick({R.id.iv_back,R.id.iv_history})
     public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.iv_history:
+                startActivity(new Intent(StepActivity.this,StepHistoryActivity.class));
+                break;
         }
     }
+
 
 
     class OnStepCountChangeReceiver extends BroadcastReceiver {

@@ -12,7 +12,16 @@ public class StepInfo extends BmobObject{
 
     private int count;
     private String date;
+    private int zannum;
     public PersonInfo personInfo;
+
+    public int getZannum() {
+        return zannum;
+    }
+
+    public void setZannum(int zannum) {
+        this.zannum = zannum;
+    }
 
     public int getCount() {
         return count;

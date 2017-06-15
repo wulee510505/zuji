@@ -2,7 +2,9 @@ package com.wulee.administrator.zuji.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -12,6 +14,9 @@ import com.wulee.administrator.zuji.entity.StepInfo;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 
 import java.util.ArrayList;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 
 public class StepRankingAdapter extends BaseQuickAdapter<StepInfo> {
@@ -24,7 +29,7 @@ public class StepRankingAdapter extends BaseQuickAdapter<StepInfo> {
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, StepInfo stepInfo) {
+    protected void convert(BaseViewHolder baseViewHolder, final StepInfo stepInfo) {
 
         PersonInfo piInfo = stepInfo.personInfo;
         if(null != piInfo){
@@ -39,5 +44,24 @@ public class StepRankingAdapter extends BaseQuickAdapter<StepInfo> {
         }
         baseViewHolder.setText(R.id.tv_step,stepInfo.getCount()+"步");
         baseViewHolder.setText(R.id.tv_ranking,(baseViewHolder.getLayoutPosition()+ 1)+"");
+
+        final TextView tvZanNum = baseViewHolder.getView(R.id.tv_zannum);
+        tvZanNum.setText(stepInfo.getZannum() +"");
+
+        ImageView ivZan = baseViewHolder.getView(R.id.iv_zan);
+        ivZan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stepInfo.setZannum(stepInfo.getZannum()+1);
+                stepInfo.update(stepInfo.getObjectId(),new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if(e==null){
+                            tvZanNum.setText(stepInfo.getZannum()+"");
+                        }
+                    }
+                });
+            }
+        });
     }
 }
