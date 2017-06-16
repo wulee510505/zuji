@@ -20,6 +20,7 @@ import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.StepRankingAdapter;
 import com.wulee.administrator.zuji.base.BaseActivity;
+import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.StepInfo;
 import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.utils.SortList;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
@@ -134,6 +136,17 @@ public class StepActivity extends BaseActivity {
             StepInfo step = iter.next();
             if (!TextUtils.equals(currdate, step.getCreatedAt().substring(0, 10))) {//去除非当天的数据
                 iter.remove();
+            }
+        }
+        PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
+        if(null != piInfo){
+            for (int i = 0; i < dataList.size(); i++) {
+                StepInfo step = dataList.get(i);
+                if(null != step){
+                    if(TextUtils.equals(step.personInfo.getObjectId(),piInfo.getObjectId())){
+                        tvRanking.setText("第 " + (i+1) + " 名");
+                    }
+                }
             }
         }
         return dataList;
