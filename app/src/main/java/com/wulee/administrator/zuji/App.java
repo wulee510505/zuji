@@ -12,6 +12,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.wulee.administrator.zuji.database.dao.DaoMaster;
 import com.wulee.administrator.zuji.database.dao.DaoSession;
 import com.wulee.administrator.zuji.entity.Constant;
+import com.wulee.administrator.zuji.utils.CrashHandlerUtil;
 
 import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
@@ -56,6 +57,10 @@ public class App extends MultiDexApplication {
         OkHttpFinal.getInstance().init(builder.build());
 
         initUMShareSDK();
+
+        //崩溃处理
+        CrashHandlerUtil crashHandlerUtil = CrashHandlerUtil.getInstance();
+        crashHandlerUtil.init(this);
     }
 
 

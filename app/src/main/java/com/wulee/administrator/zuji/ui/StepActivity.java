@@ -125,8 +125,6 @@ public class StepActivity extends BaseActivity {
     }
 
     private List<StepInfo> processReturnList(List<StepInfo> dataList) {
-        SortList<StepInfo> msList = new SortList<StepInfo>();
-        msList.sortByMethod(dataList, "getCount", true);
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currdate = dateFormat.format(now);
@@ -138,6 +136,10 @@ public class StepActivity extends BaseActivity {
                 iter.remove();
             }
         }
+
+        SortList<StepInfo> msList = new SortList<>();
+        msList.sortByMethod(dataList, "getCount", true);
+
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if(null != piInfo){
             for (int i = 0; i < dataList.size(); i++) {
