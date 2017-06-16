@@ -132,7 +132,7 @@ public class StepActivity extends BaseActivity {
         Iterator<StepInfo> iter = dataList.iterator();
         while (iter.hasNext()) {
             StepInfo step = iter.next();
-            if (!TextUtils.equals(currdate, step.getUpdatedAt().substring(0, 10))) {
+            if (!TextUtils.equals(currdate, step.getCreatedAt().substring(0, 10))) {//去除非当天的数据
                 iter.remove();
             }
         }

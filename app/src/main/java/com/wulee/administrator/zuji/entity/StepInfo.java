@@ -39,4 +39,8 @@ public class StepInfo extends BmobObject{
         this.date = date;
     }
 
+    // 设置分组的key
+    public String groupKey(){
+        return getCreatedAt().substring(0,10);
+    }
 }

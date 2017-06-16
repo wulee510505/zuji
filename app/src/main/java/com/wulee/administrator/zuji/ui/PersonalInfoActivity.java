@@ -22,11 +22,14 @@ import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.entity.StepInfo;
+import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.utils.Pedometer;
 
 import java.io.File;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,6 +38,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -256,42 +260,60 @@ public class PersonalInfoActivity extends BaseActivity {
     private void uploadStepInfo(final int stepcount) {
         final PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
 
-        final StepInfo stepInfo = new StepInfo();
-        stepInfo.setCount(stepcount);
-        //添加一对一关联
-        stepInfo.personInfo = piInfo;
-        final String stepInfoId  = aCache.getAsString("step_info_id");
-        if(TextUtils.isEmpty(stepInfoId)){
-            stepInfo.save(new SaveListener<String>() {
-                @Override
-                public void done(String objId, BmobException e) {
-                    if (e == null) {
-                        aCache.put("step_info_id",objId);
-                        System.out.println("—— 步数同步成功 ——");
-                    } else {
-                        System.out.println("—— 步数同步失败 ——");
-                    }
-                }
-            });
-        }else{
-            BmobQuery<StepInfo> query = new BmobQuery<StepInfo>();
-            query.getObject(stepInfoId, new QueryListener<StepInfo>() {
-                @Override
-                public void done(StepInfo stepInfo, BmobException e) {
-                    stepInfo.setCount(stepcount);
-                    stepInfo.update(stepInfoId, new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                System.out.println("—— 步数更新成功 ——");
-                            } else {
-                                System.out.println("—— 步数更新失败 ——");
+        BmobQuery<StepInfo> bmobQuery = new BmobQuery<>();
+        bmobQuery.addWhereEqualTo("personInfo", piInfo);
+        bmobQuery.findObjects(new FindListener<StepInfo>() {
+            @Override
+            public void done(List<StepInfo> list, BmobException e) {
+                if(e == null){
+                    if(list != null && list.size()>0){
+                        String currdateStr  = DateTimeUtils.formatTime(new Date());
+                        for (StepInfo step: list){
+                            if(TextUtils.equals(step.getCreatedAt().substring(0,10),currdateStr)){//认为一天只创建一条数据，保证数据的唯一性
+                                aCache.put("step_info_id",step.getObjectId());
                             }
                         }
-                    });
+                    }
+
+                    final StepInfo stepInfo = new StepInfo();
+                    stepInfo.setCount(stepcount);
+                    //添加一对一关联
+                    stepInfo.personInfo = piInfo;
+                    final String stepInfoId  = aCache.getAsString("step_info_id");
+                    if(TextUtils.isEmpty(stepInfoId)){
+                        stepInfo.save(new SaveListener<String>() {
+                            @Override
+                            public void done(String objId, BmobException e) {
+                                if (e == null) {
+                                    aCache.put("step_info_id",objId);
+                                    System.out.println("—— 步数同步成功 ——");
+                                } else {
+                                    System.out.println("—— 步数同步失败 ——");
+                                }
+                            }
+                        });
+                    }else{
+                        BmobQuery<StepInfo> query = new BmobQuery<StepInfo>();
+                        query.getObject(stepInfoId, new QueryListener<StepInfo>() {
+                            @Override
+                            public void done(StepInfo stepInfo, BmobException e) {
+                                stepInfo.setCount(stepcount);
+                                stepInfo.update(stepInfoId, new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        if (e == null) {
+                                            System.out.println("—— 步数更新成功 ——");
+                                        } else {
+                                            System.out.println("—— 步数更新失败 ——");
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
