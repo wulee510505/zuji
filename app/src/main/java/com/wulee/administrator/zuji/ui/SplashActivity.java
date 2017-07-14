@@ -1,6 +1,7 @@
 package com.wulee.administrator.zuji.ui;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +12,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 
+import com.mylhyl.acp.Acp;
+import com.mylhyl.acp.AcpListener;
+import com.mylhyl.acp.AcpOptions;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
+import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.widget.FadeInTextView;
 
+import net.youmi.android.AdManager;
+
+import java.util.List;
 
 
 /**
@@ -43,6 +51,18 @@ public class SplashActivity extends BaseActivity {
         mFadeInTextView = (FadeInTextView) findViewById(R.id.fadeInTextView);
 
         initData();
+
+
+        Acp.getInstance(this).request(new AcpOptions.Builder().setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ).build(), new AcpListener() {
+            @Override
+            public void onGranted() {
+                AdManager.getInstance(SplashActivity.this).init(Constant.YOUMI_APP_ID, Constant.YOUMI_APPSECRET, true);
+            }
+            @Override
+            public void onDenied(List<String> permissions) {
+            }
+        });
     }
 
     private void initData() {

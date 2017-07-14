@@ -163,17 +163,13 @@ public class CustomBarChart extends View {
     }
 
     /**
-     * 绘制单柱形
+     * 绘制柱形
      */
     private void drawBar(Canvas canvas, Paint paint, float data[], List<Integer> colorList) {
-        for (int i = 1; i <= (xLabel.length - 1); i++) {
-            int startX = xPoint + i * xScale;
-            RectF rect = new RectF(startX - 10, toY(data[i - 1]), startX + 10, this.getHeight() - margin - 2);
-            if (i % 2 == 1) {
-                paint.setColor(ContextCompat.getColor(getContext(), colorList.get(0)));
-            } else {
-                paint.setColor(ContextCompat.getColor(getContext(), colorList.get(1)));
-            }
+        for (int i = 0; i <= (xLabel.length - 1); i++) {
+            int startX = xPoint + i * xScale + 15;
+            RectF rect = new RectF(startX - 10, toY(data[i]), startX + 10, this.getHeight() - margin - 2);
+            paint.setColor(ContextCompat.getColor(getContext(), colorList.get(0)));
             canvas.drawRect(rect, paint);
         }
     }
@@ -184,11 +180,11 @@ public class CustomBarChart extends View {
      */
     private void drawValue(Canvas canvas, Paint paint, float data[], int color) {
         paint.setColor(ContextCompat.getColor(getContext(), color));
-        for (int i = 1; i <= (xLabel.length - 1); i++) {
-            if(data[i-1] > 15000){
-                canvas.drawText(">15000步", xPoint + i * xScale, toY(15500), paintValue);
+        for (int i = 0; i <= (xLabel.length - 1); i++) {
+            if(data[i] > 15000){
+                canvas.drawText(">15000步", xPoint + i * xScale + 15, toY(15500), paintValue);
             }else{
-                canvas.drawText(data[i - 1] + "步", xPoint + i * xScale, toY(data[i - 1]) - 5, paintValue);
+                canvas.drawText(data[i ] + "步", xPoint + i * xScale + 15, toY(data[i]) - 5, paintValue);
             }
         }
     }

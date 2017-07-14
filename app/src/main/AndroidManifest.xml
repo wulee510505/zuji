@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -176,6 +177,7 @@
         <receiver android:name=".AlarmReceiver" > </receiver>
         <service android:name="com.wulee.administrator.zuji.service.UploadLocationService" />
         <service android:name="com.wulee.administrator.zuji.service.ScreenService" />
+
 
         <service
             android:name="com.baidu.location.f"

@@ -4,4 +4,19 @@
         <attr name="border_width" format="dimension"></attr>
         <attr name="border_color" format="color"></attr>
     </declare-styleable>
+
+
+    <declare-styleable name="ProgressWheel">
+        <attr name="countText"      format="string"/>
+        <attr name="definitionText" format="string"/>
+        <attr name="progressColor"  format="color"/>
+        <attr name="rimColor"       format="color"/>
+        <attr name="countTextColor" format="color"/>
+        <attr name="defTextColor"   format="color"/>
+        <attr name="barWidth"       format="dimension"/>
+        <attr name="countTextSize"  format="dimension"/>
+        <attr name="defTextSize"    format="dimension"/>
+        <attr name="marginBtwText"  format="dimension"/>
+        <attr name="percentage"    format="integer"/>
+    </declare-styleable>
 </resources>

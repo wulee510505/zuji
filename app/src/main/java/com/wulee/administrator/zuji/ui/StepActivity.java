@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.coorchice.library.SuperTextView;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.StepRankingAdapter;
@@ -24,6 +23,7 @@ import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.StepInfo;
 import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.utils.SortList;
+import com.wulee.administrator.zuji.widget.ProgressWheel;
 import com.wulee.administrator.zuji.widget.RecycleViewDivider;
 
 import java.text.SimpleDateFormat;
@@ -46,8 +46,6 @@ public class StepActivity extends BaseActivity {
     ImageView ivBack;
     @InjectView(R.id.title)
     TextView title;
-    @InjectView(R.id.tv_step_count)
-    SuperTextView tvStepCount;
     @InjectView(R.id.tv_ranking)
     TextView tvRanking;
     @InjectView(R.id.tv_line)
@@ -60,6 +58,8 @@ public class StepActivity extends BaseActivity {
     ProgressBar progressBar;
     @InjectView(R.id.iv_history)
     ImageView ivHistory;
+    @InjectView(R.id.progress_step)
+    ProgressWheel progressStep;
 
     private Pedometer pedometer;
     private OnStepCountChangeReceiver mReceiver;
@@ -141,12 +141,12 @@ public class StepActivity extends BaseActivity {
         msList.sortByMethod(dataList, "getCount", true);
 
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
-        if(null != piInfo){
+        if (null != piInfo) {
             for (int i = 0; i < dataList.size(); i++) {
                 StepInfo step = dataList.get(i);
-                if(null != step){
-                    if(TextUtils.equals(step.personInfo.getObjectId(),piInfo.getObjectId())){
-                        tvRanking.setText("第 " + (i+1) + " 名");
+                if (null != step) {
+                    if (TextUtils.equals(step.personInfo.getObjectId(), piInfo.getObjectId())) {
+                        tvRanking.setText("第 " + (i + 1) + " 名");
                     }
                 }
             }
@@ -162,25 +162,25 @@ public class StepActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back,R.id.iv_history})
+    @OnClick({R.id.iv_back, R.id.iv_history})
     public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.iv_history:
-                startActivity(new Intent(StepActivity.this,StepHistoryActivity.class));
+                startActivity(new Intent(StepActivity.this, StepHistoryActivity.class));
                 break;
         }
     }
-
 
 
     class OnStepCountChangeReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(ACTION_ON_STEP_COUNT_CHANGE, intent.getAction())) {
-                tvStepCount.setText(pedometer.getStepCount() + ""); // 支付宝步数统计就是依据了此原理
+                // 支付宝步数统计就是依据了此原理
+                progressStep.setStepCountText(pedometer.getStepCount() + "");
             }
         }
     }
