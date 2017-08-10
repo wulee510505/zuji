@@ -11,7 +11,6 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.wulee.administrator.zuji.database.dao.DaoMaster;
 import com.wulee.administrator.zuji.database.dao.DaoSession;
-import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.utils.CrashHandlerUtil;
 
 import cn.bmob.push.BmobPush;
@@ -21,6 +20,8 @@ import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.statistics.AppStat;
 import cn.finalteam.okhttpfinal.OkHttpFinal;
 import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
+
+import static com.wulee.administrator.zuji.entity.Constant.BOMB_APP_ID;
 
 /**
  * Created by wulee on 2016/12/8 09:37
@@ -49,7 +50,7 @@ public class App extends MultiDexApplication {
 
         initBmobSDK();
 
-        Bmob.initialize(this,"ac67374a92fdca635c75eb6388e217a4");
+        Bmob.initialize(this,BOMB_APP_ID);
 
         Stetho.initializeWithDefaults(this);
 
@@ -61,6 +62,7 @@ public class App extends MultiDexApplication {
         //崩溃处理
         CrashHandlerUtil crashHandlerUtil = CrashHandlerUtil.getInstance();
         crashHandlerUtil.init(this);
+
     }
 
 
@@ -79,13 +81,13 @@ public class App extends MultiDexApplication {
 
     private void initBmobSDK() {
         BmobConfig config = new BmobConfig.Builder(this)
-                .setApplicationId(Constant.BOMB_APP_ID)  //设置appkey
+                .setApplicationId(BOMB_APP_ID)  //设置appkey
                 .setConnectTimeout(30)//请求超时时间（单位为秒）：默认15s
                 .setUploadBlockSize(1024 * 1024)//文件分片上传时每片的大小（单位字节），默认512*1024
                 .setFileExpiration(2500)//文件的过期时间(单位为秒)：默认1800s
                 .build();
         Bmob.initialize(config);
-        AppStat.i(Constant.BOMB_APP_ID, "",true);//统计初始化
+        AppStat.i(BOMB_APP_ID, "",true);//统计初始化
         // 使用推送服务时的初始化操作
         BmobInstallation.getCurrentInstallation().save();
         // 启动推送服务
