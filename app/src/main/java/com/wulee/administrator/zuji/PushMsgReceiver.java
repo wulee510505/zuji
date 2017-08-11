@@ -17,6 +17,7 @@ import com.wulee.administrator.zuji.utils.GsonUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 
 import cn.bmob.push.PushConstants;
+import de.greenrobot.event.EventBus;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -52,6 +53,9 @@ public class PushMsgReceiver extends BroadcastReceiver {
 
             NotificationManager notificationManager = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(0, notification);
+
+
+            EventBus.getDefault().post(pushMessage);
         }
     }
 }

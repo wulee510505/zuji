@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.utils.Pedometer;
+import com.wulee.administrator.zuji.widget.ActionSheet;
 
 import java.io.File;
 import java.util.Date;
@@ -52,7 +54,7 @@ import static com.wulee.administrator.zuji.ui.StepActivity.ACTION_ON_STEP_COUNT_
  * Created by wulee on 2016/12/15 17:25
  */
 
-public class PersonalInfoActivity extends BaseActivity {
+public class PersonalInfoActivity extends BaseActivity implements ActionSheet.MenuItemClickListener {
 
     private static final int AVATAR_REQUEST_CODE = 100;
     @InjectView(R.id.iv_back)
@@ -73,6 +75,16 @@ public class PersonalInfoActivity extends BaseActivity {
     TextView tvStep;
     @InjectView(R.id.rl_step)
     RelativeLayout rlStep;
+    @InjectView(R.id.rl_name)
+    RelativeLayout rlName;
+    @InjectView(R.id.et_gender)
+    TextView etGender;
+    @InjectView(R.id.rl_gender)
+    RelativeLayout rlGender;
+    @InjectView(R.id.step_tv)
+    TextView stepTv;
+    @InjectView(R.id.container)
+    LinearLayout container;
 
 
     private String headerimgurl;
@@ -110,6 +122,11 @@ public class PersonalInfoActivity extends BaseActivity {
             else
                 etName.setText("游客");
 
+            if (!TextUtils.isEmpty(personInfo.getSex()))
+                etGender.setText(personInfo.getSex());
+            else
+                etGender.setText("其他");
+
             ImageUtil.setCircleImageView(userPhoto, personInfo.getHeader_img_url(), R.mipmap.icon_user_def, this);
         }
     }
@@ -117,9 +134,11 @@ public class PersonalInfoActivity extends BaseActivity {
 
     private void updatePersonInfo() {
         final String name = etName.getText().toString().trim();
+        String genderStr = etGender.getText().toString().trim();
 
         PersonInfo personInfo = BmobUser.getCurrentUser(PersonInfo.class);
         personInfo.setName(name);
+        personInfo.setSex(genderStr);
 
         personInfo.setHeader_img_url(headerimgurl);
         personInfo.update(new UpdateListener() {
@@ -208,7 +227,7 @@ public class PersonalInfoActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.iv_submit, R.id.user_photo, R.id.rl_step})
+    @OnClick({R.id.iv_back, R.id.iv_submit, R.id.user_photo, R.id.rl_step,R.id.rl_gender})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -233,12 +252,39 @@ public class PersonalInfoActivity extends BaseActivity {
                 startActivityForResult(intent, AVATAR_REQUEST_CODE);
                 break;
             case R.id.rl_step:
-                if(pedometer.hasStepSensor()){
+                if (pedometer.hasStepSensor()) {
                     startActivity(new Intent(this, StepActivity.class));
-                }else{
+                } else {
                     Toast.makeText(this, "设备没有计步传感器", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.rl_gender:
+                ActionSheet menuView = new ActionSheet(this);
+                menuView.setCancelButtonTitle("取消");
+                menuView.addItems("男", "女", "其他");
+                menuView.setItemClickListener(this);
+                menuView.setCancelableOnTouchMenuOutside(true);
+                menuView.showMenu();
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClick(int pos) {
+         switch (pos){
+             case 0:
+                  etGender.setText("男");
+                 break;
+             case 1:
+                  etGender.setText("女");
+                 break;
+             case 2:
+                  etGender.setText("其他");
+                 break;
+         }
+        PersonInfo personInfo = DBHandler.getCurrPesonInfo();
+        if (null != personInfo) {
+            personInfo.setSex(etGender.getText().toString().trim());
         }
     }
 
@@ -265,12 +311,12 @@ public class PersonalInfoActivity extends BaseActivity {
         bmobQuery.findObjects(new FindListener<StepInfo>() {
             @Override
             public void done(List<StepInfo> list, BmobException e) {
-                if(e == null){
-                    if(list != null && list.size()>0){
-                        String currdateStr  = DateTimeUtils.formatTime(new Date());
-                        for (StepInfo step: list){
-                            if(TextUtils.equals(step.getCreatedAt().substring(0,10),currdateStr)){//认为一天只创建一条数据，保证数据的唯一性
-                                aCache.put("step_info_id",step.getObjectId());
+                if (e == null) {
+                    if (list != null && list.size() > 0) {
+                        String currdateStr = DateTimeUtils.formatTime(new Date());
+                        for (StepInfo step : list) {
+                            if (TextUtils.equals(step.getCreatedAt().substring(0, 10), currdateStr)) {//认为一天只创建一条数据，保证数据的唯一性
+                                aCache.put("step_info_id", step.getObjectId());
                             }
                         }
                     }
@@ -279,20 +325,20 @@ public class PersonalInfoActivity extends BaseActivity {
                     stepInfo.setCount(stepcount);
                     //添加一对一关联
                     stepInfo.personInfo = piInfo;
-                    final String stepInfoId  = aCache.getAsString("step_info_id");
-                    if(TextUtils.isEmpty(stepInfoId)){
+                    final String stepInfoId = aCache.getAsString("step_info_id");
+                    if (TextUtils.isEmpty(stepInfoId)) {
                         stepInfo.save(new SaveListener<String>() {
                             @Override
                             public void done(String objId, BmobException e) {
                                 if (e == null) {
-                                    aCache.put("step_info_id",objId);
+                                    aCache.put("step_info_id", objId);
                                     System.out.println("—— 步数同步成功 ——");
                                 } else {
                                     System.out.println("—— 步数同步失败 ——");
                                 }
                             }
                         });
-                    }else{
+                    } else {
                         BmobQuery<StepInfo> query = new BmobQuery<StepInfo>();
                         query.getObject(stepInfoId, new QueryListener<StepInfo>() {
                             @Override

@@ -71,25 +71,43 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="#cdcdcd" />
 
-        <TextView
-            android:id="@+id/mml_pushmsg_tv"
+        <RelativeLayout
+            android:id="@+id/rl_pushmsg_tv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:drawableLeft="@mipmap/icon_menu_pushmsg"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:padding="15dp"
-            android:text="消息"
-            android:textColor="@color/color_white"
-            android:textSize="15sp" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/mml_pushmsg_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@mipmap/icon_menu_pushmsg"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:padding="15dp"
+                android:text="消息"
+                android:textColor="@color/color_white"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_new_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:background="@drawable/shape_white_dot"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/mml_pushmsg_tv"/>
+
+        </RelativeLayout>
+
+
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="#cdcdcd" />
 
         <TextView
@@ -106,7 +124,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="#cdcdcd"
             android:visibility="gone" />
 
@@ -125,7 +143,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="#cdcdcd" />
 
         <TextView
@@ -143,7 +161,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="#cdcdcd" />
 
         <TextView
@@ -161,7 +179,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="#cdcdcd" />
 
         <TextView
@@ -179,7 +197,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="1px"
             android:background="#cdcdcd" />
 
         <TextView

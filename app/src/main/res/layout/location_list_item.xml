@@ -49,7 +49,7 @@
             android:layout_marginTop="5dp"
             android:text="ccccc"
             android:gravity="center_vertical"
-            android:textColor="@color/baseGrayLit"
+            android:textColor="@color/baseGrayNor"
             android:textSize="14sp" />
 
     </RelativeLayout>

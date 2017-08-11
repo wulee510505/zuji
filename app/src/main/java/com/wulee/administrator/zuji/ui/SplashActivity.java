@@ -155,7 +155,7 @@ public class SplashActivity extends BaseActivity {
                 LogUtil.d("请求开屏广告失败，errorCode: %s", errorCode);
                 switch (errorCode) {
                     case ErrorCode.NON_NETWORK:
-                        toast("网络异常");
+                        LogUtil.d("网络异常");
                         break;
                     case ErrorCode.NON_AD:
                         LogUtil.d("暂无开屏广告");
@@ -188,11 +188,11 @@ public class SplashActivity extends BaseActivity {
                 .showSplash(this, splashViewSettings, new SpotListener() {
                     @Override
                     public void onShowSuccess() {
-                        toast("开屏展示成功");
+                        LogUtil.d("开屏展示成功");
                     }
                     @Override
                     public void onShowFailed(int errorCode) {
-                        toast("开屏展示失败");
+                        LogUtil.d("开屏展示失败");
                         switch (errorCode) {
                             case ErrorCode.NON_NETWORK:
                                 LogUtil.d("网络异常");
@@ -220,8 +220,7 @@ public class SplashActivity extends BaseActivity {
                     }
                     @Override
                     public void onSpotClicked(boolean isWebPage) {
-                        toast("开屏被点击");
-                        LogUtil.d("是否是网页广告？%s", isWebPage ? "是" : "不是");
+                        LogUtil.d("开屏被点击,是否是网页广告？%s", isWebPage ? "是" : "不是");
                     }
                 });
     }

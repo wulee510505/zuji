@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,9 +35,6 @@ import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.widget.FloatingButton;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
-
-import net.youmi.android.nm.bn.BannerManager;
-import net.youmi.android.nm.bn.BannerViewListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -196,27 +192,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mRecyclerView.setAdapter(mAdapter);
 
         initBannerInfo();
-
-        // 获取广告条
-        View bannerView = BannerManager.getInstance(this)
-                .getBannerView(this, new BannerViewListener() {
-                    @Override
-                    public void onRequestSuccess() {
-
-                    }
-                    @Override
-                    public void onSwitchBanner() {
-
-                    }
-                    @Override
-                    public void onRequestFailed() {
-
-                    }
-                });
-        // 获取要嵌入广告条的布局
-        LinearLayout bannerLayout = (LinearLayout) findViewById(R.id.ll_banner);
-        // 将广告条加入到布局中
-        bannerLayout.addView(bannerView);
     }
 
     /**
@@ -299,7 +274,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         public void run () {
             isRefresh = true;
             getLocationList(0, STATE_REFRESH);
-            syncServerTime();
+            //syncServerTime();
             mHandler.postDelayed(this,1000 * 60 * 2);
         }
     };
@@ -423,4 +398,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         //结束轮播
         bannerLayout.stopAutoPlay();
     }
+
 }

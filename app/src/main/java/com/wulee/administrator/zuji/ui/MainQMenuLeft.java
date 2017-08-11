@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.database.bean.PushMessage;
 import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
@@ -27,6 +29,9 @@ import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import cn.bmob.v3.update.UpdateResponse;
 import cn.bmob.v3.update.UpdateStatus;
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 import static com.wulee.administrator.zuji.App.aCache;
 import static com.wulee.administrator.zuji.R.id.about_me_tv;
@@ -44,7 +49,9 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private ImageView rbImage;
     private TextView mTvName;
     private TextView mTvMobile;
-    private TextView tvSign,tvFeedBack,tvMsg,tvSetting,tvLoginOut,tvCheckUpdate,tvAboutme; // 登录、退出登录提示语
+    private TextView tvSign,tvFeedBack,tvSetting,tvLoginOut,tvCheckUpdate,tvAboutme; // 登录、退出登录提示语
+    private RelativeLayout mRlMsg;
+    private ImageView ivNewMsg;
 
     @Nullable
     @Override
@@ -54,6 +61,21 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         initUI(view);
         return view;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public  void onPushMsgEvent(PushMessage message){
+          if(null != message)
+              ivNewMsg.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public void onResume() {
@@ -70,7 +92,8 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
 
         tvSign = (TextView) view.findViewById(R.id.mml_sign_tv);
         tvFeedBack= (TextView) view.findViewById(R.id.mml_feedback_tv);
-        tvMsg = (TextView) view.findViewById(R.id.mml_pushmsg_tv);
+        mRlMsg = (RelativeLayout) view.findViewById(R.id.rl_pushmsg_tv);
+        ivNewMsg = (ImageView) view.findViewById(R.id.iv_new_msg);
         tvSetting = (TextView) view.findViewById(mml_setting_tv);
         tvCheckUpdate = (TextView) view.findViewById(R.id.mml_checkupdate_tv);
         tvLoginOut = (TextView) view.findViewById(R.id.mml_loginout_tv);
@@ -78,7 +101,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
 
         tvSign.setOnClickListener(this);
         tvFeedBack.setOnClickListener(this);
-        tvMsg.setOnClickListener(this);
+        mRlMsg.setOnClickListener(this);
         tvSetting.setOnClickListener(this);
         tvLoginOut.setOnClickListener(this);
         tvCheckUpdate.setOnClickListener(this);
@@ -107,8 +130,9 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
              case R.id.mml_loginout_tv:
                  showLogoutDialog();
                  break;
-             case R.id.mml_pushmsg_tv:
+             case R.id.rl_pushmsg_tv:
                  startActivity(new Intent(mContext,PushMsgListActivity.class));
+                 ivNewMsg.setVisibility(View.INVISIBLE);
                  break;
              case R.id.mml_checkupdate_tv:
                  BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
