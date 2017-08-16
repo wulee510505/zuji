@@ -343,17 +343,19 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
                         query.getObject(stepInfoId, new QueryListener<StepInfo>() {
                             @Override
                             public void done(StepInfo stepInfo, BmobException e) {
-                                stepInfo.setCount(stepcount);
-                                stepInfo.update(stepInfoId, new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        if (e == null) {
-                                            System.out.println("—— 步数更新成功 ——");
-                                        } else {
-                                            System.out.println("—— 步数更新失败 ——");
+                                if(e == null && stepInfo != null){
+                                    stepInfo.setCount(stepcount);
+                                    stepInfo.update(stepInfoId, new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if (e == null) {
+                                                System.out.println("—— 步数更新成功 ——");
+                                            } else {
+                                                System.out.println("—— 步数更新失败 ——");
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
                         });
                     }
@@ -366,5 +368,14 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
     protected void onPause() {
         super.onPause();
         pedometer.unRegister();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mReceiver != null){
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
     }
 }

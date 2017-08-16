@@ -190,4 +190,14 @@ public class StepActivity extends BaseActivity {
         super.onPause();
         pedometer.unRegister();
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mReceiver != null){
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
+    }
 }

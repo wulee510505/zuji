@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,8 +49,6 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
-
-import static com.wulee.administrator.zuji.App.aCache;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
@@ -88,6 +85,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         startService(new Intent(MainActivity.this,UploadLocationService.class));
         startService(new Intent(MainActivity.this,ScreenService.class));
+
+        getLocationList(0, STATE_REFRESH);
 
         mHandler.postDelayed(mRunnable,1000);
 
@@ -284,9 +283,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 分页获取数据
      */
     private void getLocationList(final int page, final int actionType){
-        if(!TextUtils.equals("yes",aCache.getAsString("isUploadLocation"))){
-            return;
-        }
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         BmobQuery<LocationInfo> query = new BmobQuery<LocationInfo>();
         query.addWhereEqualTo("piInfo", piInfo);    // 查询当前用户的所有位置信息
@@ -382,7 +378,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReceiver);
+        if(mReceiver != null){
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+         }
+
     }
 
     @Override

@@ -21,6 +21,15 @@ public class PersonInfo extends BmobUser {
     private Double companyLat;
     private Double companyLon;
     private String companyAddress;
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public PersonInfo() {
     }

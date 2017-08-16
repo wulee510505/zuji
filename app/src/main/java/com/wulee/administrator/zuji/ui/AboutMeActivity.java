@@ -85,7 +85,7 @@ public class AboutMeActivity extends BaseActivity {
         web.setThumb(image);
         web.setTitle("足迹 \n 一款可以记录并查看出行轨迹的工具类软件");
         web.setDescription("一款可以记录并查看出行轨迹的工具类软件");
-        new ShareAction(AboutMeActivity.this).withMedia(web).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE)
+        new ShareAction(AboutMeActivity.this).withMedia(web).setDisplayList(SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE)
                 .setCallback(umShareListener).open();
     }
 

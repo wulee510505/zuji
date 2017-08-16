@@ -69,7 +69,7 @@ public class App extends MultiDexApplication {
     private void initUMShareSDK() {
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wx1073aba850d8e7e9", "cab9b8657c10ed5c8c07ab78a4649935");
-        PlatformConfig.setWeixin("1106189026", "fyeuctD7ZssYvDcw");
+        PlatformConfig.setQQZone("1106248240", "GJqraocx5pCDcX6Z");
     }
 
     private static void initDB(){

@@ -27,7 +27,6 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -213,11 +212,9 @@
             android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="tencent1106189026" />
+                <data android:scheme="tencent1106248240" />
             </intent-filter>
         </activity>
         <activity

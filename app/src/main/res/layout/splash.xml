@@ -23,9 +23,15 @@
         android:textSize="18sp"
         android:textColor="@color/color_white"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_splash"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/tv_skip"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/bg_text_circle"
+        android:text="跳过"/>
 
 </RelativeLayout>

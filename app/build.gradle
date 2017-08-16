@@ -90,10 +90,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.youth.banner:banner:1.4.9'
-    compile name: 'YoumiSdk_v7.5.0_2017-07-18', ext: 'aar'
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
-
-
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile files('libs/gson-2.6.2.jar')
     compile files('libs/BmobSDK_3.5.5_20170420.jar')
@@ -108,4 +105,5 @@ dependencies {
     compile files('libs/umeng_social_shareboard.jar')
     compile files('libs/umeng_social_tool.jar')
     compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/open_sdk_r5788_lite.jar')
 }
