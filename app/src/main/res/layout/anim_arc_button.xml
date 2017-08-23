@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <Button
+        android:id="@+id/btn_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="invisible"
+        android:background="@mipmap/icon_circle" />
+
+    <Button
+        android:id="@+id/btn_nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="invisible"
+        android:background="@mipmap/icon_nav" />
+
+    <Button
+        android:id="@+id/btn_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:visibility="invisible"
+        android:background="@mipmap/icon_weather"
+        android:layout_alignBaseline="@+id/btn_sleep"
+        android:layout_alignBottom="@+id/btn_sleep"
+        android:layout_alignStart="@+id/btn_sleep" />
+
+    <Button
+        android:id="@+id/btn_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@mipmap/menu_open" />
+
+</RelativeLayout>

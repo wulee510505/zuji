@@ -49,7 +49,7 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
     private ImageView rbImage;
     private TextView mTvName;
     private TextView mTvMobile;
-    private TextView tvSign,tvFeedBack,tvSetting,tvLoginOut,tvCheckUpdate,tvAboutme; // 登录、退出登录提示语
+    private TextView tvFeedBack,tvSetting,tvLoginOut,tvCheckUpdate,tvAboutme; // 登录、退出登录提示语
     private RelativeLayout mRlMsg;
     private ImageView ivNewMsg;
 
@@ -90,7 +90,6 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         mTvName = (TextView) view.findViewById(R.id.tv_name);
         mTvMobile = (TextView) view.findViewById(R.id.tv_mobile);
 
-        tvSign = (TextView) view.findViewById(R.id.mml_sign_tv);
         tvFeedBack= (TextView) view.findViewById(R.id.mml_feedback_tv);
         mRlMsg = (RelativeLayout) view.findViewById(R.id.rl_pushmsg_tv);
         ivNewMsg = (ImageView) view.findViewById(R.id.iv_new_msg);
@@ -99,7 +98,6 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
         tvLoginOut = (TextView) view.findViewById(R.id.mml_loginout_tv);
         tvAboutme= (TextView) view.findViewById(R.id.about_me_tv);
 
-        tvSign.setOnClickListener(this);
         tvFeedBack.setOnClickListener(this);
         mRlMsg.setOnClickListener(this);
         tvSetting.setOnClickListener(this);
@@ -158,9 +156,6 @@ public class MainQMenuLeft extends Fragment implements View.OnClickListener {
                  break;
              case R.id.circle_img_header:
                  startActivity(new Intent(mContext,PersonalInfoActivity.class));
-                 break;
-             case R.id.mml_sign_tv:
-                 startActivity(new Intent(mContext,SignActivity.class));
                  break;
              case R.id.mml_feedback_tv:
                  startActivity(new Intent(mContext,FeedBackActivity.class));

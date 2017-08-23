@@ -145,37 +145,6 @@
                     android:text="我要注册" />
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="或者"
-                android:drawableLeft="@mipmap/line"
-                android:drawableRight="@mipmap/line"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_button"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-
-                <TextView
-                    android:id="@+id/tv_qq_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_white"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:drawablePadding="5dp"
-                    android:padding="2dp"
-                    android:drawableLeft="@mipmap/icon_qq_login"
-                    android:text="QQ登录"/>
-            </RelativeLayout>
-
 
         </LinearLayout>
     </ScrollView>

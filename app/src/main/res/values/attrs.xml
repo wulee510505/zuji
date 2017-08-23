@@ -37,4 +37,5 @@
         <attr name="cancelButtonMarginTop" format="dimension|reference" />
         <attr name="actionSheetTextSize" format="dimension|reference" />
     </declare-styleable>
+
 </resources>

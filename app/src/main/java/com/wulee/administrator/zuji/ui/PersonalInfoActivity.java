@@ -16,12 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jph.takephoto.PictureActivity;
+import com.jph.takephoto.app.TakePhoto;
+import com.jph.takephoto.app.TakePhotoActivity;
+import com.jph.takephoto.model.TResult;
 import com.wulee.administrator.zuji.R;
-import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
-import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.entity.StepInfo;
 import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
@@ -54,7 +54,7 @@ import static com.wulee.administrator.zuji.ui.StepActivity.ACTION_ON_STEP_COUNT_
  * Created by wulee on 2016/12/15 17:25
  */
 
-public class PersonalInfoActivity extends BaseActivity implements ActionSheet.MenuItemClickListener {
+public class PersonalInfoActivity extends TakePhotoActivity implements ActionSheet.MenuItemClickListener {
 
     private static final int AVATAR_REQUEST_CODE = 100;
     @InjectView(R.id.iv_back)
@@ -144,7 +144,7 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
         personInfo.update(new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                stopProgressDialog();
+               // stopProgressDialog();
                 if (e == null) {
                     PersonInfo pi = DBHandler.getCurrPesonInfo();
                     if (null != pi) {
@@ -168,7 +168,7 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
         switch (requestCode) {
             case AVATAR_REQUEST_CODE:// 头像的返回
                 if (resultCode == RESULT_OK && data != null) {
-                    String savePath = data.getStringExtra(PictureActivity.INTENT_KEY_RETURN_SAVE_PATH);
+                  /*  String savePath = data.getStringExtra(PictureActivity.INTENT_KEY_RETURN_SAVE_PATH);
                     if (!TextUtils.isEmpty(savePath)) {
                         Bitmap suitBitmap = BitmapFactory.decodeFile(savePath);
                         if (null != suitBitmap)
@@ -177,11 +177,34 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
                             return;
                         }
                         uploadImgFile(savePath);
-                    }
+                    }*/
                 }
                 break;
         }
     }
+
+
+    @Override
+    public void takeCancel() {
+        super.takeCancel();
+    }
+    @Override
+    public void takeFail(TResult result, String msg) {
+        super.takeFail(result, msg);
+    }
+    @Override
+    public void takeSuccess(TResult result) {
+        super.takeSuccess(result);
+        String savePath = result.getImages().get(0).getOriginalPath();
+        if (!TextUtils.isEmpty(savePath)) {
+            Bitmap suitBitmap = BitmapFactory.decodeFile(savePath);
+            if (null != suitBitmap)
+                userPhoto.setImageBitmap(ImageUtil.toRoundBitmap(suitBitmap));
+
+            uploadImgFile(savePath);
+        }
+    }
+
 
     /**
      * 上传图片
@@ -201,21 +224,21 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
                     personInfo.update(new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
-                            stopProgressDialog();
+                            //stopProgressDialog();
                             if (e == null) {
                                 PersonInfo piInfo = DBHandler.getCurrPesonInfo();
                                 if (null != piInfo) {
                                     piInfo.setHeader_img_url(headerimgurl);
                                 }
                                 DBHandler.updatePesonInfo(piInfo);
-                                toast("更新个人头像成功");
+                                Toast.makeText(PersonalInfoActivity.this, "更新个人头像成功", Toast.LENGTH_SHORT).show();
                             } else {
                                 OtherUtil.showToastText("更新个人头像失败:" + e.getMessage());
                             }
                         }
                     });
                 } else {
-                    toast("头像上传失败" + e.getMessage());
+                    Toast.makeText(PersonalInfoActivity.this, "头像上传失败", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -234,11 +257,11 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
                 finish();
                 break;
             case R.id.iv_submit:
-                showProgressDialog(false);
+                //showProgressDialog(false);
                 updatePersonInfo();
                 break;
             case R.id.user_photo:
-                Intent intent = new Intent(this, PictureActivity.class);
+               /* Intent intent = new Intent(this, PictureActivity.class);
                 //必须传入的输出临时文件夹路径
                 intent.putExtra(PictureActivity.INTENT_KEY_PHOTO_TMP_PATH_DIR, Constant.TEMP_FILE_PATH);
                 // 按比例剪切
@@ -249,7 +272,10 @@ public class PersonalInfoActivity extends BaseActivity implements ActionSheet.Me
                 intent.putExtra(PictureActivity.INTENT_KEY_COMPRESS_PHOTO, true);
                 intent.putExtra(PictureActivity.INTENT_KEY_ENABLE_CUSCOMPRESS, true);
                 intent.putExtra(PictureActivity.INTENT_KEY_COMPRESS_PHOTO_MAXPIXEL, 600);
-                startActivityForResult(intent, AVATAR_REQUEST_CODE);
+                startActivityForResult(intent, AVATAR_REQUEST_CODE);*/
+
+                TakePhoto takePhoto=getTakePhoto();
+                takePhoto.onPickFromGallery();
                 break;
             case R.id.rl_step:
                 if (pedometer.hasStepSensor()) {

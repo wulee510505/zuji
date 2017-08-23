@@ -12,9 +12,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +31,7 @@ import com.wulee.administrator.zuji.service.UploadLocationService;
 import com.wulee.administrator.zuji.ui.weather.WeatherActivity;
 import com.wulee.administrator.zuji.utils.GlideImageLoader;
 import com.wulee.administrator.zuji.utils.LocationUtil;
-import com.wulee.administrator.zuji.widget.FloatingButton;
+import com.wulee.administrator.zuji.widget.AnimArcButtons;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
 
@@ -49,6 +49,8 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
+
+
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
@@ -59,7 +61,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView ivMenu;
     private ImageView ivSetting;
-    private FloatingButton floatingButton ;
     private DrawerLayout mDrawerLayout;
 
 
@@ -74,6 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private LocationChangeReceiver mReceiver;
 
+    private AnimArcButtons menuBtns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +99,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         registerReceiver(mReceiver,filter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(menuBtns.isOpen())
+            menuBtns.closeMenu();
+    }
+
     /*
-      * 获取服务器时间
-     */
+          * 获取服务器时间
+         */
     private void syncServerTime() {
         Bmob.getServerTime(new QueryListener<Long>() {
             @Override
@@ -117,7 +126,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void addListener() {
-        floatingButton.setOnClickListener(this);
         ivMenu.setOnClickListener(this);
         ivSetting.setOnClickListener(this);
         mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
@@ -159,8 +167,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 getLocationList(curPage, STATE_MORE);
             }
         });
-
-
+        menuBtns.setOnButtonClickListener(new AnimArcButtons.OnButtonClickListener() {
+            @Override
+            public void onButtonClick(View v, int id) {
+               switch (id){
+                   case 0:
+                       startActivity(new Intent(MainActivity.this,WeatherActivity.class).putExtra("curr_time",currServerTime));
+                       break;
+                   case 2:
+                       startActivity(new Intent(MainActivity.this,CircleMainActivity.class));
+                       break;
+               }
+            }
+        });
     }
 
     private void initView() {
@@ -168,15 +187,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
         mDrawerLayout.setScrimColor(0x00000000);
 
-        floatingButton = (FloatingButton) findViewById(R.id.floatingbutton);
-        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) floatingButton.getLayoutParams();
-        rlp.rightMargin =  120;
-        rlp.bottomMargin = 120;
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        floatingButton.setLayoutParams(rlp);
+        menuBtns = (AnimArcButtons) findViewById(R.id.arc_menu_button);
 
-        bannerLayout = (Banner) findViewById(R.id.banner);
+
+        View headerView = LayoutInflater.from(this).inflate(R.layout.main_listview_header,null);
+
+        bannerLayout = (Banner)headerView.findViewById(R.id.banner);
         bannerLayout.setVisibility(View.GONE);
 
         ivMenu = (ImageView) findViewById(R.id.iv_menu);
@@ -187,6 +203,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mAdapter = new LocationAdapter(R.layout.location_list_item,null);
         tvTime = (TextView)findViewById(R.id.tv_server_time);
 
+        mAdapter.addHeaderView(headerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
@@ -330,9 +347,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.iv_menu:
                 OpenLeftMenu();
                 break;
-            case R.id.floatingbutton:
-                startActivity(new Intent(this,WeatherActivity.class).putExtra("curr_time",currServerTime));
-                break;
         }
     }
 
@@ -398,5 +412,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         //结束轮播
         bannerLayout.stopAutoPlay();
     }
+
+
 
 }

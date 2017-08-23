@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/userAvatar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@android:color/darker_gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp">
+
+            <TextView
+                android:id="@+id/userNick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="AAAAAAAAAAAAAA"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/userNick"
+                android:layout_marginTop="7dp"
+                android:text="BBBBBBBBBBBBBBBBBBBBBBBBB"
+                android:textSize="14sp" />
+
+
+            <com.jaeger.ninegridimageview.NineGridImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/nine_grid_view"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:layout_below="@+id/content"
+                app:imgGap="4dp"
+                app:showStyle="fill"
+                app:singleImgSize="120dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nine_grid_view">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text=""
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="ddddddddddddddddddd"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/album_toolbar"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#4f6591"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:id="@+id/toolbarLike"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/toolbarLikeImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:src="@mipmap/toolbar_like" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_toRightOf="@+id/toolbarLikeImage"
+                            android:text="赞"
+                            android:textColor="@android:color/white" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="21dp"
+                        android:background="#25255b" />
+
+                    <RelativeLayout
+                        android:id="@+id/toolbarComment"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/toolbarCommentImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="13dp"
+                            android:src="@mipmap/toolbar_comment" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_toRightOf="@+id/toolbarCommentImage"
+                            android:text="评论"
+                            android:textColor="@android:color/white" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

@@ -45,31 +45,13 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_banner"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_below="@id/rl_title"
-            android:visibility="visible">
-
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="150dp" />
-
-            <include layout="@layout/location_list_header"
-                android:id="@+id/layout_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-        </RelativeLayout>
 
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/rl_banner"
+            android:layout_below="@id/rl_title"
             android:orientation="vertical">
 
             <com.jude.easyrecyclerview.EasyRecyclerView
@@ -81,26 +63,17 @@
                 app:layout_progress="@layout/com_view_progress"
                 app:layout_error="@layout/com_view_error"
                 app:recyclerClipToPadding="true"
-                app:recyclerPadding="8dp"
+                app:recyclerPadding="0dp"
                 app:scrollbarStyle="insideOverlay"
                 app:scrollbars="none" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
 
-        <com.wulee.administrator.zuji.widget.FloatingButton
-            android:id="@+id/floatingbutton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@mipmap/icon_weather"/>
 
-
-        <LinearLayout
-            android:id="@+id/ll_banner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
-        </LinearLayout>
+        <com.wulee.administrator.zuji.widget.AnimArcButtons
+            android:id="@+id/arc_menu_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <fragment

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/titlelayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:background="@color/colorAccent">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/icon_back" />
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/color_white"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/iv_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_camer"/>
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlelayout"
+        android:orientation="vertical">
+
+        <com.jude.easyrecyclerview.EasyRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layout_empty="@layout/com_view_empty"
+            app:layout_progress="@layout/com_view_progress"
+            app:layout_error="@layout/com_view_error"
+            app:recyclerClipToPadding="true"
+            app:recyclerPadding="0dp"
+            app:scrollbarStyle="insideOverlay"
+            app:scrollbars="none" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

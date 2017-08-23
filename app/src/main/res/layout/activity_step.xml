@@ -55,7 +55,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         app:barWidth="12dp"
-        app:countText="931,199"
+        app:countText="0"
         app:countTextColor="@android:color/black"
         app:countTextSize="18sp"
         app:defTextColor="@android:color/black"

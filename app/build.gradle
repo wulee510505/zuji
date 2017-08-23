@@ -82,7 +82,7 @@ dependencies {
     compile 'org.greenrobot:greendao-generator:2.2.0'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.github.wulee510505:Text2Speach:1.0.0'
-    compile 'com.github.24kpk:TakePhotoLib:1.0.4'
+    compile 'com.jph.takephoto:takephoto_library:4.0.3'
     compile 'cn.finalteam:okhttpfinal:2.0.7'
     compile 'com.github.chenBingX:SuperTextView:v1.0'
     compile 'com.jakewharton:butterknife:5.1.1'
@@ -91,6 +91,9 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.youth.banner:banner:1.4.9'
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
+    compile 'com.jaeger.ninegridimageview:library:1.1.0'
+
+
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile files('libs/gson-2.6.2.jar')
     compile files('libs/BmobSDK_3.5.5_20170420.jar')
@@ -106,4 +109,5 @@ dependencies {
     compile files('libs/umeng_social_tool.jar')
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/open_sdk_r5788_lite.jar')
+
 }
