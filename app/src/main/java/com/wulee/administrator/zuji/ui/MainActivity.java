@@ -31,6 +31,7 @@ import com.wulee.administrator.zuji.service.UploadLocationService;
 import com.wulee.administrator.zuji.ui.weather.WeatherActivity;
 import com.wulee.administrator.zuji.utils.GlideImageLoader;
 import com.wulee.administrator.zuji.utils.LocationUtil;
+import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.widget.AnimArcButtons;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
@@ -77,6 +78,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private AnimArcButtons menuBtns;
 
+    private Pedometer pedometer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +100,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mReceiver = new LocationChangeReceiver();
         IntentFilter filter  = new IntentFilter(LocationUtil.ACTION_LOCATION_CHANGE);
         registerReceiver(mReceiver,filter);
+
+        pedometer = new Pedometer(this);
     }
 
     @Override
@@ -104,6 +109,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
         if(menuBtns.isOpen())
             menuBtns.closeMenu();
+
+        pedometer.register();
     }
 
     /*
@@ -173,6 +180,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                switch (id){
                    case 0:
                        startActivity(new Intent(MainActivity.this,WeatherActivity.class).putExtra("curr_time",currServerTime));
+                       break;
+                   case 1:
+                       if (pedometer.hasStepSensor()) {
+                           startActivity(new Intent(MainActivity.this, StepActivity.class));
+                       } else {
+                           Toast.makeText(MainActivity.this, "设备没有计步传感器", Toast.LENGTH_SHORT).show();
+                       }
                        break;
                    case 2:
                        startActivity(new Intent(MainActivity.this,CircleMainActivity.class));
@@ -396,7 +410,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             unregisterReceiver(mReceiver);
             mReceiver = null;
          }
-
+        pedometer.register();
     }
 
     @Override

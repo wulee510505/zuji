@@ -3,6 +3,7 @@ package com.wulee.administrator.zuji.ui;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -33,8 +34,6 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadBatchListener;
 import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by wulee on 2017/8/22 11:40
@@ -68,10 +67,10 @@ public class PublishCircleActivity extends TakePhotoActivity {
 
         initView();
         addListner();
-        EventBus.getDefault().register(this);
     }
 
     private void initView() {
+        title.setText("发表");
         PublishPicture pic = new PublishPicture();
         pic.setId(-1);
         pic.setPath("");
@@ -133,7 +132,10 @@ public class PublishCircleActivity extends TakePhotoActivity {
                 break;
             case R.id.iv_submit:
                 String content = edittext.getText().toString().trim();
-
+                if(TextUtils.isEmpty(content)){
+                    Toast.makeText(this, "说点什么吧@^@", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
                 if(null == piInfo)
                     return;
@@ -162,7 +164,16 @@ public class PublishCircleActivity extends TakePhotoActivity {
                                 for (int i = 0; i < urls.size(); i++) {
                                     imgUrls[i] = urls.get(i);
                                 }
-                                EventBus.getDefault().post(circlrContent);
+                                circlrContent.setImgUrls(imgUrls);
+                                circlrContent.save(new SaveListener<String>() {
+                                    @Override
+                                    public void done(String s, BmobException e) {
+                                        if(e == null){
+                                            EventBus.getDefault().post(new String("publish ok"));
+                                            PublishCircleActivity.this.finish();
+                                        }
+                                    }
+                                });
                             }
                         }
                         @Override
@@ -182,24 +193,5 @@ public class PublishCircleActivity extends TakePhotoActivity {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onEvent(CircleContent circlrContent){
-        circlrContent.save(new SaveListener<String>() {
-            @Override
-            public void done(String s, BmobException e) {
-                if(e == null){
-                    EventBus.getDefault().post(new String("publish ok"));
-                    PublishCircleActivity.this.finish();
-                }
-            }
-        });
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
 }

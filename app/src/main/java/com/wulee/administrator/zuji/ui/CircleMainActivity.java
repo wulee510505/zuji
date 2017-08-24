@@ -72,6 +72,7 @@ public class CircleMainActivity extends AppCompatActivity {
 
 
     private void initView() {
+        title.setText("圈子");
         View headerView = LayoutInflater.from(this).inflate(R.layout.circle_list_header, null);
         ImageView ivUserAvatar = (ImageView) headerView.findViewById(R.id.userAvatar);
         TextView tvNick = (TextView) headerView.findViewById(R.id.userNick);
@@ -129,34 +130,30 @@ public class CircleMainActivity extends AppCompatActivity {
                 swipeLayout.setRefreshing(false);
                 if(e == null){
                     if(null != list && list.size()>0){
-                        mAdapter.setNewData(list);
+                        processCircleContent(list);
                     }
                 }
             }
         });
+    }
 
-       /* PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
-        if(null == piInfo)
-            return;
-        for (int i = 0; i < 5; i++) {
-            CircleContent circlrContent = new CircleContent();
-            circlrContent.setId(SystemClock.currentThreadTimeMillis());
-            circlrContent.setUserId(piInfo.getUid());
-            circlrContent.setUserNick(piInfo.getName());
-            circlrContent.setUserAvatar(piInfo.getHeader_img_url());
-            circlrContent.setContent("这是内容");
-            circlrContent.personInfo = piInfo;
-            ArrayList<CircleContent.CircleImageBean> imgList = new ArrayList<>();
-            for (int j = 0; j < 9; j++) {
-                CircleContent.CircleImageBean  img = new CircleContent.CircleImageBean();
-                img.setId(j+"");
-                img.setUrl("http://bmob-cdn-8120.b0.upaiyun.com/2017/08/22/94ff4e17f3b84c21b17c8bbfada0486d.jpg");
-                imgList.add(img);
+    private void processCircleContent(List<CircleContent> list) {
+        for (int i = 0; i < list.size(); i++) {
+            CircleContent content =  list.get(i);
+            String[] imgUrls  = content.getImgUrls();
+            if(imgUrls != null && imgUrls.length>0){
+                ArrayList<CircleContent.CircleImageBean> imgList = new ArrayList<>();
+                for (int j = 0; j < imgUrls.length; j++) {
+                     String imgUrl = imgUrls[j];
+                     CircleContent.CircleImageBean circleImg = new CircleContent.CircleImageBean();
+                     circleImg.setId(j+"");
+                     circleImg.setUrl(imgUrl);
+                     imgList.add(circleImg);
+                }
+                content.setImageList(imgList);
             }
-            circlrContent.setImageList(imgList);
-            circleContentList.add(circlrContent);
         }
-        mAdapter.setNewData(circleContentList);*/
+        mAdapter.setNewData(list);
     }
 
     @Override

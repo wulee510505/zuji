@@ -1,9 +1,6 @@
 package com.wulee.administrator.zuji.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,32 +19,20 @@ import com.jph.takephoto.model.TResult;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
-import com.wulee.administrator.zuji.entity.StepInfo;
-import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
-import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.widget.ActionSheet;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.QueryListener;
-import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
-
-import static com.wulee.administrator.zuji.App.aCache;
-import static com.wulee.administrator.zuji.ui.StepActivity.ACTION_ON_STEP_COUNT_CHANGE;
 
 
 /**
@@ -71,27 +56,17 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
     TextView nameTv;
     @InjectView(R.id.et_name)
     EditText etName;
-    @InjectView(R.id.tv_step)
-    TextView tvStep;
-    @InjectView(R.id.rl_step)
-    RelativeLayout rlStep;
     @InjectView(R.id.rl_name)
     RelativeLayout rlName;
     @InjectView(R.id.et_gender)
     TextView etGender;
     @InjectView(R.id.rl_gender)
     RelativeLayout rlGender;
-    @InjectView(R.id.step_tv)
-    TextView stepTv;
     @InjectView(R.id.container)
     LinearLayout container;
 
 
     private String headerimgurl;
-
-    private Pedometer pedometer;
-    private OnStepCountChangeReceiver mReceiver;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,19 +74,9 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
         setContentView(R.layout.me_personal_center);
         ButterKnife.inject(this);
 
-        mReceiver = new OnStepCountChangeReceiver();
-        IntentFilter filter = new IntentFilter(ACTION_ON_STEP_COUNT_CHANGE);
-        registerReceiver(mReceiver, filter);
-        pedometer = new Pedometer(this);
-
         initData();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        pedometer.register();
-    }
 
     private void initData() {
         title.setText("个人中心");
@@ -250,7 +215,7 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.iv_submit, R.id.user_photo, R.id.rl_step,R.id.rl_gender})
+    @OnClick({R.id.iv_back, R.id.iv_submit, R.id.user_photo,R.id.rl_gender})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -276,13 +241,6 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
 
                 TakePhoto takePhoto=getTakePhoto();
                 takePhoto.onPickFromGallery();
-                break;
-            case R.id.rl_step:
-                if (pedometer.hasStepSensor()) {
-                    startActivity(new Intent(this, StepActivity.class));
-                } else {
-                    Toast.makeText(this, "设备没有计步传感器", Toast.LENGTH_SHORT).show();
-                }
                 break;
             case R.id.rl_gender:
                 ActionSheet menuView = new ActionSheet(this);
@@ -311,97 +269,6 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
         PersonInfo personInfo = DBHandler.getCurrPesonInfo();
         if (null != personInfo) {
             personInfo.setSex(etGender.getText().toString().trim());
-        }
-    }
-
-
-    class OnStepCountChangeReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(ACTION_ON_STEP_COUNT_CHANGE, intent.getAction())) {
-                tvStep.setText(pedometer.getStepCount() + ""); // 支付宝步数统计就是依据了此原理
-
-                uploadStepInfo(pedometer.getStepCount());
-            }
-        }
-    }
-
-    /**
-     * 上传计步信息
-     */
-    private void uploadStepInfo(final int stepcount) {
-        final PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
-
-        BmobQuery<StepInfo> bmobQuery = new BmobQuery<>();
-        bmobQuery.addWhereEqualTo("personInfo", piInfo);
-        bmobQuery.findObjects(new FindListener<StepInfo>() {
-            @Override
-            public void done(List<StepInfo> list, BmobException e) {
-                if (e == null) {
-                    if (list != null && list.size() > 0) {
-                        String currdateStr = DateTimeUtils.formatTime(new Date());
-                        for (StepInfo step : list) {
-                            if (TextUtils.equals(step.getCreatedAt().substring(0, 10), currdateStr)) {//认为一天只创建一条数据，保证数据的唯一性
-                                aCache.put("step_info_id", step.getObjectId());
-                            }
-                        }
-                    }
-
-                    final StepInfo stepInfo = new StepInfo();
-                    stepInfo.setCount(stepcount);
-                    //添加一对一关联
-                    stepInfo.personInfo = piInfo;
-                    final String stepInfoId = aCache.getAsString("step_info_id");
-                    if (TextUtils.isEmpty(stepInfoId)) {
-                        stepInfo.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String objId, BmobException e) {
-                                if (e == null) {
-                                    aCache.put("step_info_id", objId);
-                                    System.out.println("—— 步数同步成功 ——");
-                                } else {
-                                    System.out.println("—— 步数同步失败 ——");
-                                }
-                            }
-                        });
-                    } else {
-                        BmobQuery<StepInfo> query = new BmobQuery<StepInfo>();
-                        query.getObject(stepInfoId, new QueryListener<StepInfo>() {
-                            @Override
-                            public void done(StepInfo stepInfo, BmobException e) {
-                                if(e == null && stepInfo != null){
-                                    stepInfo.setCount(stepcount);
-                                    stepInfo.update(stepInfoId, new UpdateListener() {
-                                        @Override
-                                        public void done(BmobException e) {
-                                            if (e == null) {
-                                                System.out.println("—— 步数更新成功 ——");
-                                            } else {
-                                                System.out.println("—— 步数更新失败 ——");
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        pedometer.unRegister();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(mReceiver != null){
-            unregisterReceiver(mReceiver);
-            mReceiver = null;
         }
     }
 }

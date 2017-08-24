@@ -24,6 +24,7 @@ public class CircleContent extends BmobObject{
     private String location;
     public PersonInfo personInfo;
 
+    private String[] imgUrls;
     private ArrayList<CircleImageBean> imageList;
 
 
@@ -85,6 +86,13 @@ public class CircleContent extends BmobObject{
         this.location = location;
     }
 
+    public String[] getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String[] imgUrls) {
+        this.imgUrls = imgUrls;
+    }
 
     public List<CircleImageBean> getImageList() {
         return imageList;
