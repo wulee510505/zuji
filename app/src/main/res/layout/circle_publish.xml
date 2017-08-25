@@ -1,56 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
-    <RelativeLayout
+    <com.wulee.administrator.zuji.widget.BaseTitleLayout
         android:id="@+id/titlelayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlelayout"
         android:background="@color/colorAccent"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@mipmap/icon_back" />
-
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="@color/color_white"
-            android:textSize="17sp" />
-
-        <ImageView
-            android:id="@+id/iv_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/icon_submit" />
-    </RelativeLayout>
+        app:titleTextColor="@color/color_white"
+        app:titleRightImg1="@mipmap/icon_submit"
+        app:titleTextSize = "17sp"
+        app:titleCenterText="发表"
+        app:titleLeftText=""/>
 
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/edittext"
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:layout_below="@id/titlelayout"
         android:layout_margin="10dp"
         android:background="@drawable/umeng_socialize_edit_bg"
         android:gravity="top|left"
@@ -58,16 +31,24 @@
         android:padding="10dp" />
 
 
-    <GridView
+    <com.wulee.administrator.zuji.widget.MyGridView
         android:id="@+id/gridview_pic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/edittext"
         android:cacheColorHint="#00000000"
         android:layout_margin="10dp"
-        android:horizontalSpacing="10dp"
+        android:horizontalSpacing="20dp"
         android:listSelector="#00000000"
         android:numColumns="3"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+        android:verticalSpacing="20dp" />
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

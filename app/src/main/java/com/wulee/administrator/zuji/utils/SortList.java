@@ -28,10 +28,10 @@ public class SortList<T> {
             public int compare(Object arg1, Object arg2) {
                 int result = 0;
                 try {
-                    Method m1 = ((T) arg1).getClass().getMethod(method, null);
-                    Method m2 = ((T) arg2).getClass().getMethod(method, null);
-                    Object obj1 = m1.invoke(((T) arg1),  null);
-                    Object obj2 = m2.invoke(((T) arg2),  null);
+                    Method m1 = ((T) arg1).getClass().getMethod(method, (Class<?>[]) null);
+                    Method m2 = ((T) arg2).getClass().getMethod(method, (Class<?>[]) null);
+                    Object obj1 = m1.invoke(((T) arg1), (Object[]) null);
+                    Object obj2 = m2.invoke(((T) arg2),  (Object[]) null);
                     if (obj1 instanceof String) {
                         // 字符串
                         result = obj1.toString().compareTo(obj2.toString());

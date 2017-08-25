@@ -38,4 +38,25 @@
         <attr name="actionSheetTextSize" format="dimension|reference" />
     </declare-styleable>
 
+    <declare-styleable name="SuperImageView">
+        <attr name="show_progress" format="boolean" />
+        <attr name="error_res" format="reference" />
+        <attr name="placeholder_res" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="BaseTitleLayout">
+        <attr name="titleTextColor" format="color"/>
+        <attr name="titleTextSize" format="dimension"/>
+        <attr name="titleIconSize" format="dimension"/>
+        <attr name="titleLeftImg" format="reference"/>
+        <attr name="titleLeftImgVisible" format="enum">
+            <enum name="VISIBLE" value="1"/>
+            <enum name="GONE" value="0"/>
+        </attr>
+        <attr name="titleLeftText" format="string"/>
+        <attr name="titleCenterText" format="string"/>
+        <attr name="titleRightImg1" format="reference"/>
+        <attr name="titleRightImg2" format="reference"/>
+        <attr name="titleRightText" format="string"/>
+    </declare-styleable>
 </resources>

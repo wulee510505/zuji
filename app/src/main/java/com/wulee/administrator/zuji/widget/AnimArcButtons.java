@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.wulee.administrator.zuji.R;
+import com.wulee.administrator.zuji.utils.UIUtils;
 
 /**
  * Created by wulee on 2017/8/18 14:44
@@ -20,8 +21,8 @@ public class AnimArcButtons extends RelativeLayout {
 
     private Context context;
     private int leftMargin = 0, bottomMargin = 0;
-    private final int buttonWidth = 80;// 图片宽高
-    private final int r = 240;// 半径
+    private final int buttonWidth = UIUtils.dip2px(30);// 图片宽高
+    private final int r = UIUtils.dip2px(120);// 半径
     private final int maxTimeSpent = 200;// 最长动画耗时
     private final int minTimeSpent = 80;// 最短动画耗时
     private int intervalTimeSpent;// 每相邻2个的时间间隔

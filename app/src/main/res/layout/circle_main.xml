@@ -5,47 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+
+    <com.wulee.administrator.zuji.widget.BaseTitleLayout
         android:id="@+id/titlelayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="vertical"
-        android:background="@color/colorAccent">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@mipmap/icon_back" />
-
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="@color/color_white"
-            android:textSize="17sp" />
-
-        <ImageView
-            android:id="@+id/iv_publish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/icon_camer"/>
-    </RelativeLayout>
-
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titlelayout"
+        android:background="@color/colorAccent"
+        app:titleTextColor="@color/color_white"
+        app:titleRightImg1="@mipmap/icon_camer"
+        app:titleTextSize = "17sp"
+        app:titleCenterText="圈子"
+        app:titleLeftText=""/>
+    
+    
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"

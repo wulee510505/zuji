@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.PublishPicture;
 import com.wulee.administrator.zuji.utils.ImageUtil;
+import com.wulee.administrator.zuji.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +64,17 @@ public class PublishPicGridAdapter extends BaseAdapter {
         ViewHolder viewHolder = null;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(this.context).inflate(R.layout.circle_publish_grid_item, null);
+            convertView = LayoutInflater.from(this.context).inflate(R.layout.circle_publish_grid_item, parent,false);
             viewHolder.image = (ImageView) convertView.findViewById(R.id.grid_item_img);
+
+            int screenWidth = UIUtils.getScreenWidthAndHeight(context)[0];
+            int gridItemWidth = (screenWidth - UIUtils.dip2px(60)/3);
+
+            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) viewHolder.image.getLayoutParams();
+            rlp.width = gridItemWidth;
+            rlp.height = gridItemWidth;
+            viewHolder.image.setLayoutParams(rlp);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
