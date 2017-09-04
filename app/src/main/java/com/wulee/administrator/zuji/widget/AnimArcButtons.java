@@ -57,10 +57,11 @@ public class AnimArcButtons extends RelativeLayout {
 
     private void initButtons(View view) {
         // 可以根据按钮的个数自己增减
-        btns = new Button[3];
+        btns = new Button[4];
         btns[0] = (Button) view.findViewById(R.id.btn_weather);
         btns[1] = (Button) view.findViewById(R.id.btn_nav);
         btns[2] = (Button) view.findViewById(R.id.btn_circle);
+        btns[3] = (Button) view.findViewById(R.id.btn_fun_pic);
         btn_menu = (Button) view.findViewById(R.id.btn_menu);
 
         leftMargin = ((RelativeLayout.LayoutParams) (btn_menu.getLayoutParams())).leftMargin;

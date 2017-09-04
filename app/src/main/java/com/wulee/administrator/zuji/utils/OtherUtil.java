@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.wulee.administrator.zuji.App;
 import com.wulee.administrator.zuji.R;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import static com.wulee.administrator.zuji.App.aCache;
@@ -129,4 +131,30 @@ public class OtherUtil {
         mToast.show();
     }
 
+    /**
+     * 判断字符串是否为null或全为空格
+     * @param s 待校验字符串
+     * @return {@code true}: null或全空格<br> {@code false}: 不为null且不全空格
+     */
+    public static boolean isSpace(String s) {
+        return (s == null || s.trim().length() == 0);
+    }
+
+    /**
+     * 关闭IO
+     *
+     * @param closeables closeables
+     */
+    public static void closeIO(Closeable... closeables) {
+        if (closeables == null) return;
+        for (Closeable closeable : closeables) {
+            if (closeable != null) {
+                try {
+                    closeable.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

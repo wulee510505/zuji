@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:layout_marginTop="45dp"
+    android:layout_marginBottom="45dp"
+    android:clickable="true"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/com_tv_size_mid_lit"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="保存"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@mipmap/icon_save_pic"/>
+
+
+        <ImageView
+            android:id="@+id/iv_fun_pic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tv_save"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_pic_def_rect" />
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

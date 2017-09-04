@@ -90,11 +90,11 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void startActivity() {
-        Intent intent = null;
+        final Intent intent;
         if(OtherUtil.hasLogin()){
-            intent = new Intent(this, MainActivity.class);
+             intent = new Intent(SplashActivity.this, MainActivity.class);
         } else{
-            intent = new Intent(this, LoginActivity.class);
+             intent = new Intent(this, LoginActivity.class);
         }
         startActivity(intent);
         finish();

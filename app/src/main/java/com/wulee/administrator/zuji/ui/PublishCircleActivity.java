@@ -101,10 +101,6 @@ public class PublishCircleActivity extends TakePhotoActivity {
                 super.onRightImg1ClickListener();
                 publishCircleContent();
             }
-            @Override
-            public void onRightImg2ClickListener() {
-                super.onRightImg2ClickListener();
-            }
         });
     }
 

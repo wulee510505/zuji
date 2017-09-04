@@ -10,7 +10,6 @@
         android:id="@+id/titlelayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titlelayout"
         android:background="@color/colorAccent"
         app:titleTextColor="@color/color_white"
         app:titleRightImg1="@mipmap/icon_submit"

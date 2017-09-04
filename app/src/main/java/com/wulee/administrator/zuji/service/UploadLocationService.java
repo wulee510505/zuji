@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.os.SystemClock;
 
 import com.wulee.administrator.zuji.AlarmReceiver;
-import com.wulee.administrator.zuji.utils.LocationUtil;
 
 /**
  * Created by wulee on 2017/3/24 09:55
@@ -24,8 +23,6 @@ public class UploadLocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LocationUtil.getInstance().startGetLocation();
-
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         int alarmTime = 2 *  1000 * 60; // 定时2分钟
         long trigerAtTime = SystemClock.elapsedRealtime() + alarmTime;

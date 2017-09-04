@@ -13,13 +13,12 @@ import com.baidu.location.Poi;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.SpatialRelationUtil;
 import com.liangmayong.text2speech.Text2Speech;
-import com.mylhyl.acp.Acp;
-import com.mylhyl.acp.AcpListener;
-import com.mylhyl.acp.AcpOptions;
 import com.wulee.administrator.zuji.App;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
 import java.util.List;
 
@@ -70,18 +69,25 @@ public class LocationUtil{
     }
 
 
-    public void startGetLocation() {
-        Acp.getInstance(App.context).request(new AcpOptions.Builder().setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE
-        ).build(), new AcpListener() {
-            @Override
-            public void onGranted() {
-                mLocationClient.start();
-                mLocationClient.requestLocation();
-            }
-            @Override
-            public void onDenied(List<String> permissions) {
-            }
-        });
+    public boolean startGetLocation() {
+        final boolean[] isStart = {false};
+        AndPermission.with(App.context)
+            .permission(Manifest.permission.ACCESS_COARSE_LOCATION)
+            .callback(new PermissionListener() {
+                @Override
+                public void onSucceed(int requestCode, List<String> grantedPermissions) {
+                    mLocationClient.start();
+                    mLocationClient.requestLocation();
+                    isStart[0] = true;
+                }
+                @Override
+                public void onFailed(int requestCode, List<String> deniedPermissions) {
+
+                    isStart[0] = false;
+                }
+            })
+            .start();
+        return isStart[0];
     }
 
     public void stopGetLocation() {

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.wulee.administrator.zuji.widget.BaseTitleLayout
+        android:id="@+id/titlelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        app:titleTextColor="@color/color_white"
+        app:titleTextSize = "17sp"
+        app:titleCenterText="美图"
+        app:titleLeftText=""/>
+
+
+    <com.huxq17.swipecardsview.SwipeCardsView
+        android:id="@+id/swipCardsView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_below="@id/titlelayout"
+        android:background="#f3f3f3"
+        app:alphaOffsetStep="40"
+        app:scaleOffsetStep="0.08"
+        app:yOffsetStep="40dp" />
+
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

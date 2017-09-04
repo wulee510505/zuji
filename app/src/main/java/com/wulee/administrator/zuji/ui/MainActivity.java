@@ -33,6 +33,7 @@ import com.wulee.administrator.zuji.utils.GlideImageLoader;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.widget.AnimArcButtons;
+import com.yanzhenjie.permission.AndPermission;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
 
@@ -88,6 +89,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initView();
         addListener();
 
+        if(!LocationUtil.getInstance().startGetLocation()){
+            AndPermission.defaultSettingDialog(this).show();
+        }
+
         startService(new Intent(MainActivity.this,UploadLocationService.class));
         startService(new Intent(MainActivity.this,ScreenService.class));
 
@@ -103,6 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         pedometer = new Pedometer(this);
     }
+
 
     @Override
     protected void onResume() {
@@ -190,6 +196,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                        break;
                    case 2:
                        startActivity(new Intent(MainActivity.this,CircleMainActivity.class));
+                       break;
+                   case 3:
+                       startActivity(new Intent(MainActivity.this,FunPicActivity.class));
                        break;
                }
             }
@@ -426,7 +435,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         //结束轮播
         bannerLayout.stopAutoPlay();
     }
-
-
 
 }

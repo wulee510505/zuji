@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wulee.administrator.zuji">
+    package="com.wulee.administrator.zuji"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--允许联网 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -125,6 +126,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/DialogActivity.Transparent"/>
 
+        <activity android:name="com.wulee.administrator.zuji.ui.FunPicActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="cn.bmob.v3.update.UpdateDialogActivity"
@@ -137,6 +141,19 @@
         <activity
             android:name=".ui.pushmsg.MsgDetailActivity"
             android:configChanges="orientation|keyboardHidden" />
+
+
+        <!-- 解决 Android N 7.0 上 报错：android.os.FileUriExposedException-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.wulee.administrator.zuji.android7.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <!--bmob推送start-->
         <service
