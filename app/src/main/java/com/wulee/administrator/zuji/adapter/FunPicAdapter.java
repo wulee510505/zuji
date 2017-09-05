@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.huxq17.swipecardsview.BaseCardAdapter;
+import com.wulee.administrator.zuji.App;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.entity.FunPicInfo;
@@ -56,7 +57,7 @@ public class FunPicAdapter extends BaseCardAdapter {
         String url = meizi.getUrl();
         //ImageUtil.setDefaultImageView(imageView,url,R.mipmap.bg_pic_def_rect,context);
         final Bitmap[] bmpSource = {null};
-        Glide.with(context).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(App.context).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 bmpSource[0] = resource;

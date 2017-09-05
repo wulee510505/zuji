@@ -13,7 +13,7 @@
         android:background="@color/colorAccent"
         app:titleTextColor="@color/color_white"
         app:titleRightImg1="@mipmap/icon_submit"
-        app:titleTextSize = "17sp"
+        app:titleTextSize = "18sp"
         app:titleCenterText="发表"
         app:titleLeftText=""/>
 

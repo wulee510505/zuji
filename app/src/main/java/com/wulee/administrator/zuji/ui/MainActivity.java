@@ -200,6 +200,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                    case 3:
                        startActivity(new Intent(MainActivity.this,FunPicActivity.class));
                        break;
+                   case 4:
+                       startActivity(new Intent(MainActivity.this,JokeActivity.class));
+                       break;
                }
             }
         });

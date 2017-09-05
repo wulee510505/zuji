@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         app:titleTextColor="@color/color_white"
-        app:titleTextSize = "17sp"
+        app:titleTextSize = "18sp"
         app:titleCenterText="美图"
         app:titleLeftText=""/>
 
