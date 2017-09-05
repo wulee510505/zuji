@@ -34,7 +34,7 @@
             android:singleLine="true"
             android:text=""
             android:textColor="@color/color_white"
-            android:textSize="17sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/iv_share"
