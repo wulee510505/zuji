@@ -17,6 +17,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.wulee.administrator.zuji.R;
+import com.wulee.administrator.zuji.utils.UIUtils;
+
+import static com.wulee.administrator.zuji.utils.UIUtils.dip2px;
 
 /**
  * Created by wulee on 2017/8/25 14:41
@@ -32,15 +35,15 @@ public class BaseTitleLayout extends View {
     private int paddingLeft;
     private int paddingRight;
 
-    private int iconSize = dp2px(25);
+    private int iconSize = UIUtils.dip2px(25);
     private int leftImg = R.mipmap.icon_back;
-    private int textSize = dp2px(17);
+    private int textSize = UIUtils.dip2px(17);
     private String leftText = "";
     private String centerText = "";
     private int rightImg1 = -1, rightImg2 = -1;
     private String rightText = "";
     private Bitmap leftBitmap;
-    private LeftImgVisible mLeftImgVisible = LeftImgVisible.VISIBLE;
+    private boolean isLeftImgVisible = true;
 
     private TitleLayoutClickListener listener;
 
@@ -77,13 +80,7 @@ public class BaseTitleLayout extends View {
                 leftImg = typedArray.getResourceId(index, R.mipmap.icon_back);
 
             } else if (index == R.styleable.BaseTitleLayout_titleLeftImgVisible) {
-                int style = typedArray.getInt(index, LeftImgVisible.VISIBLE.ordinal());
-                for (LeftImgVisible leftImgVisible : LeftImgVisible.values()) {
-                    if(style == leftImgVisible.ordinal()) {
-                        mLeftImgVisible = leftImgVisible;
-                    }
-                }
-
+                isLeftImgVisible = typedArray.getBoolean(R.styleable.BaseTitleLayout_titleLeftImgVisible, true);
 
             } else if (index == R.styleable.BaseTitleLayout_titleLeftText) {
                 leftText = typedArray.getString(index);
@@ -108,7 +105,7 @@ public class BaseTitleLayout extends View {
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(textColor);
-        mPaint.setTextSize(dp2px(17));
+        mPaint.setTextSize(UIUtils.dip2px(17));
         mPaint.setTextAlign(Paint.Align.CENTER);
         // 绘制图片范围
         rect = new Rect();
@@ -120,10 +117,10 @@ public class BaseTitleLayout extends View {
         super.onDraw(canvas);
         this.mCanvas = canvas;
 
-        if(mLeftImgVisible == LeftImgVisible.VISIBLE) {
+        if(isLeftImgVisible) {
             leftBitmap = BitmapFactory.decodeResource(getResources(), leftImg);
-            rect.top = layoutHeight / 2 - (iconSize + dp2px(5)) / 2;
-            rect.bottom = layoutHeight / 2 + (iconSize + dp2px(5)) / 2;
+            rect.top = layoutHeight / 2 - (iconSize + dip2px(5)) / 2;
+            rect.bottom = layoutHeight / 2 + (iconSize + dip2px(5)) / 2;
             rect.left = paddingLeft;
             rect.right = paddingLeft + iconSize;
             mCanvas.drawBitmap(leftBitmap, null, rect, mPaint);
@@ -133,7 +130,7 @@ public class BaseTitleLayout extends View {
         float textCenterHeight = getHeight() / 2 - fontMetrics.descent + (fontMetrics.descent - fontMetrics.ascent) / 2;
 
         if (!TextUtils.isEmpty(leftText)) {
-            mCanvas.drawText(leftText, paddingLeft + (iconSize + dp2px(10)), textCenterHeight, mPaint);
+            mCanvas.drawText(leftText, paddingLeft + (iconSize + dip2px(10)), textCenterHeight, mPaint);
         }
 
         if (!TextUtils.isEmpty(centerText)) {
@@ -156,8 +153,8 @@ public class BaseTitleLayout extends View {
             mCanvas.drawBitmap(rightBitmap1, null, rect, mPaint);
             if (rightImg2 != -1) {
                 Bitmap rightBitmap2 = BitmapFactory.decodeResource(getResources(), rightImg2);
-                rect.left = layoutWidth - paddingRight - (iconSize * 2 + dp2px(5));
-                rect.right = layoutWidth - paddingRight - (iconSize + dp2px(5));
+                rect.left = layoutWidth - paddingRight - (iconSize * 2 + dip2px(5));
+                rect.right = layoutWidth - paddingRight - (iconSize + UIUtils.dip2px(5));
                 mCanvas.drawBitmap(rightBitmap2, null, rect, mPaint);
             }
         }
@@ -178,6 +175,12 @@ public class BaseTitleLayout extends View {
         this.leftText = str;
         invalidate();
     }
+
+    public void setLeftImgVisible(boolean isVisible) {
+        this.isLeftImgVisible = isVisible;
+        invalidate();
+    }
+
 
     public void setCenterText(String str) {
         if (TextUtils.isEmpty(str)) return;
@@ -211,9 +214,9 @@ public class BaseTitleLayout extends View {
             throw new IllegalStateException("Width must have an exact value or MATCH_PARENT");
         }
         layoutWidth = widthSize;
-        layoutHeight = dp2px(45);
-        paddingLeft = getPaddingLeft() == 0 ? dp2px(10) : getPaddingLeft();
-        paddingRight = getPaddingRight() == 0 ? dp2px(10) : getPaddingRight();
+        layoutHeight = dip2px(45);
+        paddingLeft = getPaddingLeft() == 0 ? dip2px(10) : getPaddingLeft();
+        paddingRight = getPaddingRight() == 0 ? dip2px(10) : getPaddingRight();
 
 
         setMeasuredDimension(layoutWidth, layoutHeight);
@@ -243,15 +246,5 @@ public class BaseTitleLayout extends View {
             }
         }
         return true;
-    }
-
-    private int dp2px(float dp) {
-        float scale = getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
-    }
-
-    private enum LeftImgVisible{
-        GONE,
-        VISIBLE
     }
 }

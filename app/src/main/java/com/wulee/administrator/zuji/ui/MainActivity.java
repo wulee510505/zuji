@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,8 +60,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private EasyRecyclerView mRecyclerView;
     private LocationAdapter mAdapter;
 
-    private ImageView ivMenu;
-    private ImageView ivSetting;
     private DrawerLayout mDrawerLayout;
 
 
@@ -139,8 +136,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void addListener() {
-        ivMenu.setOnClickListener(this);
-        ivSetting.setOnClickListener(this);
         mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int pos) {
@@ -195,13 +190,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                        }
                        break;
                    case 2:
-                       startActivity(new Intent(MainActivity.this,CircleMainActivity.class));
-                       break;
-                   case 3:
                        startActivity(new Intent(MainActivity.this,FunPicActivity.class));
-                       break;
-                   case 4:
-                       startActivity(new Intent(MainActivity.this,JokeActivity.class));
                        break;
                }
             }
@@ -221,8 +210,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         bannerLayout = (Banner)headerView.findViewById(R.id.banner);
         bannerLayout.setVisibility(View.GONE);
 
-        ivMenu = (ImageView) findViewById(R.id.iv_menu);
-        ivSetting = (ImageView) findViewById(R.id.iv_setting);
         swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
         mRecyclerView = (EasyRecyclerView)findViewById(R.id.recyclerview);
 
@@ -366,14 +353,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_setting:
-                startActivity(new Intent(this,ZuJiMapActivity.class));
-                break;
-            case R.id.iv_menu:
-                OpenLeftMenu();
-                break;
-        }
+
     }
 
     @Override

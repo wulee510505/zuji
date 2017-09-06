@@ -22,7 +22,7 @@ public class AnimArcButtons extends RelativeLayout {
     private Context context;
     private int leftMargin = 0, bottomMargin = 0;
     private final int buttonWidth = UIUtils.dip2px(30);// 图片宽高
-    private final int r = UIUtils.dip2px(120);// 半径
+    private final int r = UIUtils.dip2px(90);// 半径
     private final int maxTimeSpent = 200;// 最长动画耗时
     private final int minTimeSpent = 80;// 最短动画耗时
     private int intervalTimeSpent;// 每相邻2个的时间间隔
@@ -57,12 +57,10 @@ public class AnimArcButtons extends RelativeLayout {
 
     private void initButtons(View view) {
         // 可以根据按钮的个数自己增减
-        btns = new Button[5];
+        btns = new Button[3];
         btns[0] = (Button) view.findViewById(R.id.btn_weather);
         btns[1] = (Button) view.findViewById(R.id.btn_nav);
-        btns[2] = (Button) view.findViewById(R.id.btn_circle);
-        btns[3] = (Button) view.findViewById(R.id.btn_fun_pic);
-        btns[4] = (Button) view.findViewById(R.id.btn_joke);
+        btns[2] = (Button) view.findViewById(R.id.btn_fun_pic);
         btn_menu = (Button) view.findViewById(R.id.btn_menu);
 
         leftMargin = ((RelativeLayout.LayoutParams) (btn_menu.getLayoutParams())).leftMargin;

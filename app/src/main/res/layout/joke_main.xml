@@ -12,14 +12,6 @@
         android:orientation="vertical"
         android:background="@color/colorAccent">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@mipmap/icon_back" />
-
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -26,4 +26,6 @@
     <!-- 淡灰色 -->
     <color name="ctv_black_4">@color/baseGrayLit</color>
 
+    <!--半透明颜色-->
+    <color name="color_main_tab_top_line">#d9d9d9</color>
 </resources>

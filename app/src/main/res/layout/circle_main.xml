@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titlelayout"
         android:background="@color/colorAccent"
+        app:titleLeftImgVisible="false"
         app:titleTextColor="@color/color_white"
         app:titleRightImg1="@mipmap/icon_camer"
         app:titleTextSize = "18sp"

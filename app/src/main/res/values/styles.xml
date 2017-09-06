@@ -1,14 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Customize your theme here. -->
         <item name="actionBarSize">48dp</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!--透明的Activity theme ，类似Dialog-->
     <style name="DialogActivity.Transparent" parent="Base.Theme.AppCompat.Dialog">
@@ -37,5 +42,22 @@
         <item name="android:maxHeight">39dp</item>
     </style>
 
+
+    <!-- 主Tab页下方Radio按钮 -->
+    <style name="main_tabs_radiobtn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">0dip</item>
+        <item name="android:paddingRight">0dip</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:paddingBottom">3dip</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@drawable/tab_title_color</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+    </style>
 
 </resources>

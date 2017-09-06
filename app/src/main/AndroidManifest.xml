@@ -47,6 +47,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <activity android:name="com.wulee.administrator.zuji.ui.MainNewActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <activity android:name="com.wulee.administrator.zuji.ui.MapActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"

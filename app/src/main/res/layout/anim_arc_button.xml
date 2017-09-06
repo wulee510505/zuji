@@ -5,17 +5,6 @@
     android:layout_height="match_parent">
 
 
-    <Button
-        android:id="@+id/btn_joke"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:visibility="invisible"
-        android:background="@mipmap/icon_joke" />
-
 
     <Button
         android:id="@+id/btn_fun_pic"
@@ -28,17 +17,6 @@
         android:visibility="invisible"
         android:background="@mipmap/icon_pic" />
 
-
-    <Button
-        android:id="@+id/btn_circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:visibility="invisible"
-        android:background="@mipmap/icon_circle" />
 
     <Button
         android:id="@+id/btn_nav"

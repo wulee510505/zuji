@@ -9,49 +9,28 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff">
+        android:background="@color/ctv_white">
 
-        <RelativeLayout
-            android:id="@+id/rl_title"
+
+        <com.wulee.administrator.zuji.widget.BaseTitleLayout
+            android:id="@+id/titlelayout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/colorAccent">
-
-            <ImageView
-                android:id="@+id/iv_menu"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:src="@mipmap/icon_menu" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="我的足迹"
-                android:textColor="@color/color_white"
-                android:textSize="18sp" />
-
-
-            <ImageView
-            android:id="@+id/iv_setting"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/icon_zuji" />
-        </RelativeLayout>
-
-
+            android:background="@color/colorAccent"
+            app:titleLeftImgVisible="true"
+            app:titleLeftImg="@mipmap/icon_menu"
+            app:titleTextColor="@color/color_white"
+            app:titleRightImg1="@mipmap/icon_zuji"
+            app:titleTextSize = "18sp"
+            app:titleCenterText="我的足迹"
+            app:titleLeftText=""/>
 
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/rl_title"
+            android:layout_below="@id/titlelayout"
             android:orientation="vertical">
 
             <com.jude.easyrecyclerview.EasyRecyclerView
