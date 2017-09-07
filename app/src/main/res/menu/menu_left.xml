@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_pushmsg"
+            android:icon="@mipmap/icon_menu_pushmsg"
+            android:title="消息"/>
+
+        <item
+            android:id="@+id/item_feedback"
+            android:icon="@mipmap/icon_menu_feedback"
+            android:title="反馈"/>
+
+        <item
+            android:id="@+id/item_setting"
+            android:icon="@mipmap/icon_menu_setting"
+            android:title="设置"/>
+
+        <item
+            android:id="@+id/item_checkupdate"
+            android:icon="@mipmap/icon_menu_check_update"
+            android:title="检查更新"/>
+
+        <item
+            android:id="@+id/item_about"
+            android:icon="@mipmap/icon_about_me"
+            android:title="关于"/>
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/item_loginout"
+                android:icon="@mipmap/icon_menu_logoout"
+                android:title="退出登录"/>
+        </menu>
+    </item>
+
+</menu>

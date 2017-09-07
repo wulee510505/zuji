@@ -42,11 +42,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.wulee.administrator.zuji.ui.MainActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-
         <activity android:name="com.wulee.administrator.zuji.ui.MainNewActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask"
@@ -117,10 +112,6 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.wulee.administrator.zuji.ui.CircleMainActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" />
-
         <activity android:name="com.wulee.administrator.zuji.ui.PublishCircleActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
@@ -132,10 +123,6 @@
             android:theme="@style/DialogActivity.Transparent"/>
 
         <activity android:name="com.wulee.administrator.zuji.ui.FunPicActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" />
-
-        <activity android:name="com.wulee.administrator.zuji.ui.JokeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 

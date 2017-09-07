@@ -1,12 +1,15 @@
-package com.wulee.administrator.zuji.ui;
+package com.wulee.administrator.zuji.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,9 +18,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.CircleContentAdapter;
-import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.CircleContent;
+import com.wulee.administrator.zuji.ui.PublishCircleActivity;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
@@ -35,20 +38,20 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
-
 /**
- * Created by wulee on 2017/8/18 16:25
+ * Created by wulee on 2017/9/6 09:52
  */
+public class CircleFragment extends MainBaseFrag {
 
-public class CircleMainActivity extends BaseActivity {
-
+    @InjectView(R.id.titlelayout)
+    BaseTitleLayout titlelayout;
     @InjectView(R.id.recyclerview)
     EasyRecyclerView recyclerview;
     @InjectView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
-    @InjectView(R.id.titlelayout)
-    BaseTitleLayout titlelayout;
+    private View mRootView;
 
+    private Context mContext;
 
     private CircleContentAdapter mAdapter;
 
@@ -60,22 +63,41 @@ public class CircleMainActivity extends BaseActivity {
     private int curPage = 0;
     private boolean isRefresh = false;
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mContext = getActivity();
+        if (mRootView == null) {
+            mRootView = inflater.inflate(R.layout.circle_main, container, false);
+        }
+        ViewGroup parent = (ViewGroup) mRootView.getParent();
+        if (parent != null) {
+            parent.removeView(mRootView);
+        }
+        ButterKnife.inject(this, mRootView);
 
-        setContentView(R.layout.circle_main);
-        ButterKnife.inject(this);
-
-        initView();
+        initView(mRootView);
         addListener();
+        return mRootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getCircleContnets(0, STATE_REFRESH);
-        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();;
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
 
-    private void initView() {
-        View headerView = LayoutInflater.from(this).inflate(R.layout.circle_list_header, null);
+    private void initView(View view) {
+        View headerView = LayoutInflater.from(mContext).inflate(R.layout.circle_list_header, null);
         ImageView ivUserAvatar = (ImageView) headerView.findViewById(R.id.userAvatar);
         TextView tvNick = (TextView) headerView.findViewById(R.id.userNick);
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
@@ -84,14 +106,14 @@ public class CircleMainActivity extends BaseActivity {
                 tvNick.setText(piInfo.getName());
             else
                 tvNick.setText("游客");
-            ImageUtil.setRoundImageView(ivUserAvatar, piInfo.getHeader_img_url(), R.mipmap.icon_user_def, this);
+            ImageUtil.setRoundImageView(ivUserAvatar, piInfo.getHeader_img_url(), R.mipmap.icon_user_def, mContext);
         } else {
             tvNick.setText("游客");
         }
 
-        mAdapter = new CircleContentAdapter(R.layout.circle_content_list_item, circleContentList, this);
+        mAdapter = new CircleContentAdapter(R.layout.circle_content_list_item, circleContentList, mContext);
         mAdapter.addHeaderView(headerView);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerview.setAdapter(mAdapter);
     }
 
@@ -100,7 +122,6 @@ public class CircleMainActivity extends BaseActivity {
             @Override
             public void onLeftClickListener() {
                 super.onLeftClickListener();
-                finish();
             }
             @Override
             public void onRightTextClickListener() {
@@ -109,7 +130,7 @@ public class CircleMainActivity extends BaseActivity {
             @Override
             public void onRightImg1ClickListener() {
                 super.onRightImg1ClickListener();
-                startActivity(new Intent(CircleMainActivity.this, PublishCircleActivity.class));
+                startActivity(new Intent(mContext, PublishCircleActivity.class));
             }
             @Override
             public void onRightImg2ClickListener() {
@@ -173,7 +194,7 @@ public class CircleMainActivity extends BaseActivity {
                         }
                     }
                 } else {
-                    Toast.makeText(CircleMainActivity.this, "查询失败" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "查询失败" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -199,9 +220,13 @@ public class CircleMainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onFragmentFirstSelected() {
+
     }
 }
-

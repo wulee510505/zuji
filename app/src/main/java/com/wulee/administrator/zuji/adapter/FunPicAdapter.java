@@ -1,5 +1,6 @@
 package com.wulee.administrator.zuji.adapter;
 
+import android.Manifest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.entity.FunPicInfo;
 import com.wulee.administrator.zuji.utils.FileUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,25 +71,35 @@ public class FunPicAdapter extends BaseCardAdapter {
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bmpSource[0] != null){
-                    File dir = new File(Constant.SAVE_PIC);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-                    try {
-                        String filePath = Constant.SAVE_PIC + meizi.get_id()+".jpg";
-                        if(!FileUtils.isFileExists(filePath)){
-                            ImageUtil.saveBitmap(bmpSource[0],filePath);
-                        }
-                        Toast.makeText(context, "图片已保存至"+ Constant.SAVE_PIC , Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                AndPermission.with(context)
+                        .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .callback(new PermissionListener() {
+                            @Override
+                            public void onSucceed(int requestCode, List<String> grantedPermissions) {
+                                if(bmpSource[0] != null){
+                                    File dir = new File(Constant.SAVE_PIC);
+                                    if (!dir.exists()) {
+                                        dir.mkdirs();
+                                    }
+                                    try {
+                                        String filePath = Constant.SAVE_PIC + meizi.get_id()+".jpg";
+                                        if(!FileUtils.isFileExists(filePath)){
+                                            ImageUtil.saveBitmap(bmpSource[0],filePath);
+                                        }
+                                        Toast.makeText(context, "图片已保存至"+ Constant.SAVE_PIC , Toast.LENGTH_SHORT).show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onFailed(int requestCode, List<String> deniedPermissions) {
+
+                            }
+                        })
+                        .start();
             }
         });
-
-
     }
 
     /**

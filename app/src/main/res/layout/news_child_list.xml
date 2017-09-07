@@ -5,26 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/ctv_white">
 
-
-    <com.wulee.administrator.zuji.widget.BaseTitleLayout
-        android:id="@+id/titlelayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        app:titleCenterText="我的足迹"
-        app:titleLeftImg="@mipmap/icon_menu"
-        app:titleLeftImgVisible="true"
-        app:titleLeftText=""
-        app:titleRightImg1="@mipmap/icon_zuji"
-        app:titleTextColor="@color/color_white"
-        app:titleTextSize="18sp" />
-
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/titlelayout"
         android:orientation="vertical">
 
         <com.jude.easyrecyclerview.EasyRecyclerView
@@ -41,9 +25,10 @@
             app:scrollbars="none" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-    <com.wulee.administrator.zuji.widget.AnimArcButtons
-        android:id="@+id/arc_menu_button"
+    <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>

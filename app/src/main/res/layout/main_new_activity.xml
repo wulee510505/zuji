@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <LinearLayout
+        android:id="@+id/parentId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ctv_white"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/mviewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_main_tab_top_line" />
+
+        <RadioGroup
+            android:id="@+id/mnc_rg"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:background="@color/ctv_white"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/mnc_rbnt_one"
+                style="@style/main_tabs_radiobtn"
+                android:drawableTop="@drawable/tab_zuji"
+                android:text="足迹" />
+
+            <RadioButton
+                android:id="@+id/mnc_rbnt_two"
+                style="@style/main_tabs_radiobtn"
+                android:drawableTop="@drawable/tab_circle"
+                android:text="圈子" />
+
+            <RadioButton
+                android:id="@+id/mnc_rbnt_three"
+                style="@style/main_tabs_radiobtn"
+                android:drawableTop="@drawable/tab_joke"
+                android:text="笑话" />
+
+            <RadioButton
+                android:id="@+id/mnc_rbnt_four"
+                style="@style/main_tabs_radiobtn"
+                android:drawableTop="@drawable/tab_news"
+                android:text="新闻" />
+        </RadioGroup>
+    </LinearLayout>
+
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:itemTextColor="@drawable/nav_menu_text_color"
+        app:itemIconTint="@null"
+        app:menu="@menu/menu_left" />
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="8dp">
+
+    <RelativeLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:id="@+id/iv_news_pic"
+            android:layout_width="90dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/bg_pic_def_rect"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tv_news_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/iv_news_pic"
+            android:layout_alignTop="@id/iv_news_pic"
+            android:layout_marginRight="10dp"
+            android:maxLines="2"
+            android:text="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            android:gravity="center_vertical"
+            android:textColor="@color/baseGrayMore"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:id="@+id/tv_news_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_news_title"
+            android:layout_marginTop="15dp"
+            android:text="bbbbb"
+            android:gravity="center_vertical"
+            android:textColor="@color/baseGrayNor"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_news_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_news_title"
+            android:layout_toLeftOf="@id/iv_news_pic"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:text="ccccc"
+            android:gravity="center_vertical"
+            android:textColor="@color/baseGrayNor"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

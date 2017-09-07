@@ -1,4 +1,4 @@
-package com.wulee.administrator.zuji.ui;
+package com.wulee.administrator.zuji.ui.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.DrawerLayout;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,47 +21,54 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.LocationAdapter;
-import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.BannerInfo;
 import com.wulee.administrator.zuji.service.ScreenService;
 import com.wulee.administrator.zuji.service.UploadLocationService;
+import com.wulee.administrator.zuji.ui.FunPicActivity;
+import com.wulee.administrator.zuji.ui.MapActivity;
+import com.wulee.administrator.zuji.ui.StepActivity;
+import com.wulee.administrator.zuji.ui.ZuJiMapActivity;
 import com.wulee.administrator.zuji.ui.weather.WeatherActivity;
 import com.wulee.administrator.zuji.utils.GlideImageLoader;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.widget.AnimArcButtons;
+import com.wulee.administrator.zuji.widget.BaseTitleLayout;
+import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 import com.yanzhenjie.permission.AndPermission;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 
+import static com.wulee.administrator.zuji.ui.MainNewActivity.OpenLeftMenu;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+/**
+ * Created by wulee on 2017/9/6 09:52
+ */
+public class ZujiFragment extends MainBaseFrag{
 
+    private View mRootView;
 
     private Banner bannerLayout;
     private SwipeRefreshLayout swipeLayout;
     private EasyRecyclerView mRecyclerView;
     private LocationAdapter mAdapter;
 
-    private DrawerLayout mDrawerLayout;
+    private BaseTitleLayout titleLayout;
 
+    private Context mContext;
 
     private static final int STATE_REFRESH = 0;// 下拉刷新
     private static final int STATE_MORE = 1;// 加载更多
@@ -78,64 +85,68 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Pedometer pedometer;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.location_list_main);
 
-        initView();
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mContext = getActivity();
+        if (mRootView == null){
+            mRootView = inflater.inflate(R.layout.location_list_main,container,false);
+        }
+        ViewGroup parent = (ViewGroup) mRootView.getParent();
+        if (parent != null){
+            parent.removeView(mRootView);
+        }
+        initView(mRootView);
         addListener();
+        return mRootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         if(!LocationUtil.getInstance().startGetLocation()){
-            AndPermission.defaultSettingDialog(this).show();
+            AndPermission.defaultSettingDialog(mContext).show();
         }
 
-        startService(new Intent(MainActivity.this,UploadLocationService.class));
-        startService(new Intent(MainActivity.this,ScreenService.class));
+        mContext.startService(new Intent(mContext,UploadLocationService.class));
+        mContext.startService(new Intent(mContext,ScreenService.class));
 
         getLocationList(0, STATE_REFRESH);
 
         mHandler.postDelayed(mRunnable,1000);
 
-        BmobUpdateAgent.forceUpdate(this);
+        BmobUpdateAgent.forceUpdate(mContext);
 
         mReceiver = new LocationChangeReceiver();
         IntentFilter filter  = new IntentFilter(LocationUtil.ACTION_LOCATION_CHANGE);
-        registerReceiver(mReceiver,filter);
+        mContext.registerReceiver(mReceiver,filter);
 
-        pedometer = new Pedometer(this);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(menuBtns.isOpen())
-            menuBtns.closeMenu();
-
+        pedometer = new Pedometer(mContext);
         pedometer.register();
     }
 
-    /*
-          * 获取服务器时间
-         */
-    private void syncServerTime() {
-        Bmob.getServerTime(new QueryListener<Long>() {
-            @Override
-            public void done(Long time, BmobException e) {
-                if(e == null){
-                    currServerTime = time;
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    String times = formatter.format(new Date(time * 1000L));
-                    tvTime.setText(times);
-                }else{
-                    toast("获取服务器时间失败:" + e.getMessage());
-                }
-            }
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(menuBtns.isOpen())
+            menuBtns.closeMenu();
     }
 
     private void addListener() {
+        titleLayout.setOnTitleClickListener(new TitleLayoutClickListener() {
+            @Override
+            public void onLeftClickListener() {
+                super.onLeftClickListener();
+                OpenLeftMenu();
+            }
+            @Override
+            public void onRightImg1ClickListener() {
+                super.onRightImg1ClickListener();
+                startActivity(new Intent(mContext, ZuJiMapActivity.class));
+            }
+        });
         mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int pos) {
@@ -143,7 +154,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if(null != locationInfoList && locationInfoList.size()>0){
                     LocationInfo location = locationInfoList.get(pos);
                     if(null != location){
-                        Intent intent = new Intent(MainActivity.this,MapActivity.class);
+                        Intent intent = new Intent(mContext,MapActivity.class);
                         intent.putExtra(MapActivity.INTENT_KEY_LATITUDE,location.getLatitude());
                         intent.putExtra(MapActivity.INTENT_KEY_LONTITUDE,location.getLontitude());
                         startActivity(intent);
@@ -165,7 +176,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 isRefresh = true;
                 curPage = 0;
                 getLocationList(curPage, STATE_REFRESH);
-        }
+            }
         });
         //加载更多
         mAdapter.openLoadMore(PAGE_SIZE, true);
@@ -178,46 +189,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         menuBtns.setOnButtonClickListener(new AnimArcButtons.OnButtonClickListener() {
             @Override
             public void onButtonClick(View v, int id) {
-               switch (id){
-                   case 0:
-                       startActivity(new Intent(MainActivity.this,WeatherActivity.class).putExtra("curr_time",currServerTime));
-                       break;
-                   case 1:
-                       if (pedometer.hasStepSensor()) {
-                           startActivity(new Intent(MainActivity.this, StepActivity.class));
-                       } else {
-                           Toast.makeText(MainActivity.this, "设备没有计步传感器", Toast.LENGTH_SHORT).show();
-                       }
-                       break;
-                   case 2:
-                       startActivity(new Intent(MainActivity.this,FunPicActivity.class));
-                       break;
-               }
+                switch (id){
+                    case 0:
+                        startActivity(new Intent(mContext,WeatherActivity.class).putExtra("curr_time",currServerTime));
+                        break;
+                    case 1:
+                        if (pedometer.hasStepSensor()) {
+                            startActivity(new Intent(mContext, StepActivity.class));
+                        } else {
+                            Toast.makeText(mContext, "设备没有计步传感器", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case 2:
+                        startActivity(new Intent(mContext,FunPicActivity.class));
+                        break;
+                }
             }
         });
     }
 
-    private void initView() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawerLayout);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-        mDrawerLayout.setScrimColor(0x00000000);
+    private void initView(View view) {
+        titleLayout = (BaseTitleLayout) view.findViewById(R.id.titlelayout);
 
-        menuBtns = (AnimArcButtons) findViewById(R.id.arc_menu_button);
+        menuBtns = (AnimArcButtons) view.findViewById(R.id.arc_menu_button);
 
 
-        View headerView = LayoutInflater.from(this).inflate(R.layout.main_listview_header,null);
+        View headerView = LayoutInflater.from(mContext).inflate(R.layout.main_listview_header,null);
 
         bannerLayout = (Banner)headerView.findViewById(R.id.banner);
         bannerLayout.setVisibility(View.GONE);
 
-        swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
-        mRecyclerView = (EasyRecyclerView)findViewById(R.id.recyclerview);
+        swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipeLayout);
+        mRecyclerView = (EasyRecyclerView)view.findViewById(R.id.recyclerview);
 
         mAdapter = new LocationAdapter(R.layout.location_list_item,null);
-        tvTime = (TextView)findViewById(R.id.tv_server_time);
+        tvTime = (TextView)view.findViewById(R.id.tv_server_time);
 
         mAdapter.addHeaderView(headerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mAdapter);
 
         initBannerInfo();
@@ -253,7 +262,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void showDeleteDialog(final int pos) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("提示");
         builder.setMessage("确定要删除吗？");
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -269,7 +278,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 location.setObjectId(objectId);
                 final String finalObjectId = objectId;
 
-                showProgressDialog(false,"正在删除");
+                showProgressDialog(getActivity(),false);
                 location.delete(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
@@ -286,9 +295,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             }
                             isRefresh = true;
                             getLocationList(0, STATE_REFRESH);
-                            Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(MainActivity.this, "删除失败："+e.getMessage()+","+e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "删除失败："+e.getMessage()+","+e.getErrorCode(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -344,7 +353,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         }
                     }
                 }else{
-                    Toast.makeText(MainActivity.this,"查询失败"+e.getMessage()+","+e.getErrorCode(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"查询失败"+e.getMessage()+","+e.getErrorCode(),Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -352,37 +361,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     @Override
-    public void onClick(View view) {
+    public void onFragmentFirstSelected() {
 
     }
-
-    @Override
-    public void onBackPressed() {
-        //既没有阻碍用户操作（回到桌面），又没有关闭掉我们的应用（后台运行中），间接提高 App 的存活时间
-        Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
-        launcherIntent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(launcherIntent);
-    }
-
-
-    /**
-     * 打开左侧Menu的监听事件
-     */
-    public void OpenLeftMenu() {
-        mDrawerLayout.openDrawer(Gravity.LEFT);
-    }
-    /**
-     * 关闭Menu
-     */
-    public boolean CloseMenu() {
-        if (mDrawerLayout != null && (mDrawerLayout.isDrawerOpen(Gravity.LEFT)
-                || mDrawerLayout.isDrawerOpen(Gravity.RIGHT))) {
-            mDrawerLayout.closeDrawers();
-            return true;
-        }
-        return false;
-    }
-
 
     public class LocationChangeReceiver extends BroadcastReceiver {
         @Override
@@ -396,27 +377,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if(mReceiver != null){
-            unregisterReceiver(mReceiver);
+            mContext.unregisterReceiver(mReceiver);
             mReceiver = null;
-         }
+        }
         pedometer.register();
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         //开始轮播
         bannerLayout.startAutoPlay();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         //结束轮播
         bannerLayout.stopAutoPlay();
     }
-
 }
