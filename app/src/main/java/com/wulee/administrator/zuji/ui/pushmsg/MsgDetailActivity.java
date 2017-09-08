@@ -2,7 +2,6 @@ package com.wulee.administrator.zuji.ui.pushmsg;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -15,6 +14,7 @@ import com.liangmayong.text2speech.OnText2SpeechListener;
 import com.liangmayong.text2speech.Text2Speech;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.wulee.administrator.zuji.R;
+import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.PushMessage;
 import com.wulee.administrator.zuji.utils.DateTimeUtils;
 
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * 推送消息详情
  */
 
-public class MsgDetailActivity extends AppCompatActivity {
+public class MsgDetailActivity extends BaseActivity {
 
 
     @InjectView(R.id.iv_back)

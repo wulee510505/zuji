@@ -2,7 +2,6 @@ package com.wulee.administrator.zuji.ui.pushmsg;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wulee.administrator.zuji.R;
+import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PushMessage;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by wulee on 2017/2/28 21:15
  */
 
-public class PushMsgListActivity extends AppCompatActivity {
+public class PushMsgListActivity extends BaseActivity {
 
     private ProgressBar mPb;
     private TextView tvNodata;

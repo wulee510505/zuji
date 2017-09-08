@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/titlelayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="vertical"
-        android:background="@color/colorAccent">
+        android:layout_height="@dimen/com_title_height"
+        android:background="@color/colorAccent"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -40,12 +40,12 @@
             android:id="@+id/iv_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="shareClick"
-            android:visibility="visible"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:src="@mipmap/icon_share"/>
+            android:onClick="shareClick"
+            android:src="@mipmap/icon_share"
+            android:visibility="visible" />
     </RelativeLayout>
 
     <ImageView
@@ -62,14 +62,14 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="足迹 1.1.0"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
 
     <View
         android:layout_width="120dp"
         android:layout_height="1dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/textView"
@@ -79,7 +79,7 @@
         android:autoLink="web"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="GitHub:https://github.com/wulee510505"
-        android:textColorLink="@color/colorPrimary"/>
+        android:textColorLink="@color/colorPrimary" />
 
     <TextView
         android:layout_width="match_parent"
@@ -87,7 +87,7 @@
         android:autoLink="web"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="简书:http://www.jianshu.com/u/346d01ff61f1"
-        android:textColorLink="@color/colorPrimary"/>
+        android:textColorLink="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/tv_software_site"
@@ -96,7 +96,7 @@
         android:autoLink="web"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="软件官网：http://zuji51.bmob.site/"
-        android:textColorLink="@color/colorPrimary"/>
+        android:textColorLink="@color/colorPrimary" />
 
     <TextView
         android:layout_width="match_parent"
@@ -104,6 +104,6 @@
         android:autoLink="email"
         android:padding="@dimen/activity_horizontal_margin"
         android:text="QQ邮箱:1241394859@qq.com"
-        android:textColorLink="@color/colorPrimary"/>
+        android:textColorLink="@color/colorPrimary" />
 
 </LinearLayout>

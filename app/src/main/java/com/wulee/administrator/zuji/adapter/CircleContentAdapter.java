@@ -2,7 +2,10 @@ package com.wulee.administrator.zuji.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -13,6 +16,7 @@ import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.CircleContent;
 import com.wulee.administrator.zuji.ui.BigImageActivity;
+import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 
 import java.util.ArrayList;
@@ -36,7 +40,15 @@ public class CircleContentAdapter extends BaseQuickAdapter<CircleContent> {
 
         baseViewHolder.setText(R.id.userNick,content.getUserNick());
         baseViewHolder.setText(R.id.content , content.getContent());
-        baseViewHolder.setText(R.id.time , content.getCreatedAt());
+
+        TextView tvLocation = baseViewHolder.getView(R.id.location);
+        if(!TextUtils.isEmpty(content.getLocation())){
+            tvLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(content.getLocation());
+        }else{
+            tvLocation.setVisibility(View.GONE);
+        }
+        baseViewHolder.setText(R.id.time , DateTimeUtils.showDifferenceTime(DateTimeUtils.parseDateTime(content.getCreatedAt()), System.currentTimeMillis())+"前");
 
 
 

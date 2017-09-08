@@ -9,7 +9,7 @@
     <com.wulee.administrator.zuji.widget.BaseTitleLayout
         android:id="@+id/titlelayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/com_title_height"
         android:background="@color/colorAccent"
         app:titleTextColor="@color/color_white"
         app:titleRightImg1="@mipmap/icon_submit"

@@ -44,12 +44,18 @@ public class WeatherActivity extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
         setContentView(R.layout.activity_weather);
 
         currtime = getIntent().getLongExtra("curr_time",0L);
 
         initView();
         initData();
+    }
+
+    @Override
+    protected int getStateBarColor() {
+        return R.color.color_weather_view;
     }
 
     private void initView() {

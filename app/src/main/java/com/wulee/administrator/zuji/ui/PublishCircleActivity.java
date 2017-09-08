@@ -34,6 +34,8 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadBatchListener;
 import de.greenrobot.event.EventBus;
 
+import static com.wulee.administrator.zuji.App.aCache;
+
 /**
  * Created by wulee on 2017/8/22 11:40
  */
@@ -157,6 +159,9 @@ public class PublishCircleActivity extends TakePhotoActivity {
         circlrContent.setUserNick(piInfo.getName());
         circlrContent.setUserAvatar(piInfo.getHeader_img_url());
         circlrContent.setContent(content);
+        String currCity = aCache.getAsString("location_city");
+        if(!TextUtils.isEmpty(currCity))
+            circlrContent.setLocation(currCity);
         circlrContent.personInfo = piInfo;
         if (picList.size() > 1) {
             picList.remove(picList.size() - 1);

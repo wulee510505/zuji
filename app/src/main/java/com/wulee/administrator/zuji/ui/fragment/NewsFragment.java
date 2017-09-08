@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.NewsUrl;
+import com.wulee.administrator.zuji.utils.UIUtils;
 import com.wulee.administrator.zuji.widget.NoScroViewPager;
 
 import java.util.ArrayList;
@@ -47,12 +48,14 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
     private View mRootView;
     private Context mContext;
 
-    private NavigAdapter adapter;
+    private NavigAdapter titleAdapter;
     private MyFragmentPageAdapter pagerAdapter;
 
     private HashMap<Integer,String> urlsMap = new HashMap<>();
 
     private List<Fragment> mFragmentList = new ArrayList<>();
+
+    private String[] mTitleArray = new String[]{};
 
     @Nullable
     @Override
@@ -76,33 +79,14 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
         int spanCount = 1; // 只显示一行
         RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NavigAdapter();
-        recyclerView.setAdapter(adapter);
+        titleAdapter = new NavigAdapter();
+        recyclerView.setAdapter(titleAdapter);
 
         setOnTitleItemClickListener(new OnTitleItemClickListener() {
             @Override
             public void onTitleItemClick(int index) {
-                adapter.setSelectIndex(index);
-                switch (index) {
-                    case 0://社会新闻
-                        viewpager.setCurrentItem(0);
-                        break;
-                    case 1://娱乐新闻
-                        viewpager.setCurrentItem(1);
-                        break;
-                    case 2://体育新闻
-                        viewpager.setCurrentItem(2);
-                        break;
-                    case 3://科技新闻
-                        viewpager.setCurrentItem(3);
-                        break;
-                    case 4://旅游资讯
-                        viewpager.setCurrentItem(4);
-                        break;
-                    case 5://健康知识
-                        viewpager.setCurrentItem(5);
-                        break;
-                }
+                titleAdapter.setSelectIndex(index);
+                viewpager.setCurrentItem(index);
             }
         });
         pagerAdapter =  new MyFragmentPageAdapter(getChildFragmentManager(),mFragmentList);
@@ -112,7 +96,9 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
     }
 
     private void initNewsPagerData() {
-        for (int i = 0; i < 6; i++) {
+        titleAdapter.setTitleArray(mTitleArray);
+
+        for (int i = 0; i < mTitleArray.length; i++) {
             if(urlsMap.size()>0 && urlsMap.containsKey(i)){
                 String url = urlsMap.get(i);
                 NewsChildFragment newsFrag = NewsChildFragment.newInstance(url);
@@ -145,8 +131,10 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
             public void done(List<NewsUrl> list, BmobException e) {
                 if (e == null) {
                     if (list != null && list.size() > 0) {
+                        mTitleArray = new String[list.size()];
                         for (int i = 0; i < list.size() ; i++) {
                             String url = list.get(i).getUrl();
+                            mTitleArray[i] = list.get(i).getTitle();
                             urlsMap.put(i,url);
                         }
                         mHandler.sendEmptyMessage(MSG_GET_NEWS_URL_OK);
@@ -176,7 +164,7 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
 
     @Override
     public void onPageSelected(int position) {
-        adapter.setSelectIndex(position);
+        titleAdapter.setSelectIndex(position);
         recyclerView.smoothScrollToPosition(position);//标题滚动到相应的postion
     }
 
@@ -187,11 +175,14 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
 
 
     class NavigAdapter extends RecyclerView.Adapter<NavigAdapter.ViewHolder> {
-        String[] titleArray = new String[]{"社会新闻", "娱乐新闻", "体育新闻", "科技新闻", "旅游资讯", "健康知识"};
         int mIndex = 0;
-
         public void setSelectIndex(int index) {
             this.mIndex = index;
+            notifyDataSetChanged();
+        }
+
+        public void setTitleArray(String[] titleArray) {
+            mTitleArray = titleArray;
             notifyDataSetChanged();
         }
 
@@ -203,7 +194,12 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            holder.mTitle.setText(titleArray[position]);
+
+            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) holder.mTitle.getLayoutParams();
+            rlp.width = UIUtils.getScreenWidthAndHeight(mContext)[0] / mTitleArray.length;
+            holder.mTitle.setLayoutParams(rlp);
+
+            holder.mTitle.setText(mTitleArray[position]);
             if (mIndex == position) {
                 holder.mTitle.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
             } else {
@@ -219,7 +215,7 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
 
         @Override
         public int getItemCount() {
-            return titleArray.length;
+            return mTitleArray.length;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {

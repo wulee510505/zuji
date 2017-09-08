@@ -180,7 +180,8 @@ public class CircleFragment extends MainBaseFrag {
         query.findObjects(new FindListener<CircleContent>() {
             @Override
             public void done(List<CircleContent> list, BmobException e) {
-                swipeLayout.setRefreshing(false);
+                if(swipeLayout!=null && swipeLayout.isRefreshing())
+                   swipeLayout.setRefreshing(false);
                 if (e == null) {
                     curPage++;
                     if (isRefresh) {//下拉刷新需清理缓存

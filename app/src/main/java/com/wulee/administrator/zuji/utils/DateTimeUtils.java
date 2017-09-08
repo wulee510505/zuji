@@ -367,87 +367,6 @@ public class DateTimeUtils {
 		return sb.toString();
 	}
 
-	/**
-	 * @function getMsgShowTime 获取显示的日期，格式有：今天： xx点、昨天：月/日
-	 * @return String
-	 */
-	public static String getRecordShowDate(long timestamp) {
-		if (timestamp <= 0) {
-			return null;
-		}
-		SimpleDateFormat defaultDateFormat = new SimpleDateFormat("yyyy-MM-dd");// 默认的日期格式
-		SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-		SimpleDateFormat sf = new SimpleDateFormat("MM月dd日");
-		// 获取今天的日期
-		Calendar calendar = Calendar.getInstance();
-		String today = defaultDateFormat.format(calendar.getTime());
-
-		// 获取昨天的日期
-		calendar.add(Calendar.DATE, -1);// 日期减一
-		String yesterday = sf.format(calendar.getTime());
-
-		// 获取给定的日期
-		calendar.setTimeInMillis(timestamp);
-		String createDate = getShowTime(timestamp);
-		// String createDay = dayFormat.format(calendar.getTime());
-
-		String createDay = getStringDate(timestamp); // 2014-07-11
-
-		if (createDay.equals(today)) {
-			return createDate;
-		} else {
-			return createDay.substring(5, 10);
-		}
-	}
-
-	/**
-	 * @function getMsgShowTime 获取显示的日期，格式有：今天： xx点、昨天：月/日
-	 * @return String
-	 */
-	public static String getZiXunRecordShowDate(long timestamp) {
-		if (timestamp <= 0) {
-			return null;
-		}
-		SimpleDateFormat defaultDateFormat = new SimpleDateFormat("yyyy-MM-dd");// 默认的日期格式
-		// 获取今天的日期
-		Calendar calendar = Calendar.getInstance();
-		String today = defaultDateFormat.format(calendar.getTime());
-
-		// 获取昨天的日期
-		calendar.add(Calendar.DATE, -1);// 日期减一
-		String yesterday = defaultDateFormat.format(calendar.getTime());
-
-		// 获取给定的日期
-		calendar.setTimeInMillis(timestamp);
-		String createDate = getShowTime(timestamp);
-		String createDay = getStringDate(timestamp); // 2014-07-11
-
-		if (createDay.equals(today)) { // 12:20
-			String time[] = createDate.split(":");
-			if (time != null && time.length == 2) {
-				int hour = -1;
-				try {
-					hour = Integer.parseInt(time[0]);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-				if (hour >= 0 && hour < 6) {
-					return createDate;
-				} else if (hour >= 6 && hour < 12) {
-					return createDate;
-				} else if (hour >= 12 && hour < 18) {
-					return createDate;
-				} else if (hour >= 18 && hour < 24) {
-					return createDate;
-				}
-			}
-			return createDate;
-		} else if (createDay.equals(yesterday)) {
-			return "昨天" + createDate;
-		} else {
-			return createDay;
-		}
-	}
 
 	/**
 	 * 计算两个时间的差值
@@ -457,6 +376,28 @@ public class DateTimeUtils {
 		long diffHours = diff / (1000 * 60 * 60);
 		return diffHours;
 	}
+
+	/**
+	 * 计算给定时间与当前时间的差值
+	 * */
+	public static String showDifferenceTime(long t0, long currTime) {
+		 String result ="";
+		long diff = currTime - t0; // 微秒级别
+		long diffMinutes = diff / (1000 * 60);  //分钟
+		long diffHours = diffMinutes / 60;  //小时
+		long diffDays = diffHours / 24;  //天
+
+		if(diffMinutes < 60){
+			result =  diffMinutes > 0 ? diffMinutes + "分钟": "1分钟";
+		}else if(diffMinutes >= 60 && diffHours < 24){
+			result =  diffHours + "小时";
+		} else if(diffHours >= 24 ){
+			result =  diffDays  + "天";
+		}
+		return result;
+	}
+
+
 
 	/**
 	 * 获取预约日历界面显示的月份
