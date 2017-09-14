@@ -1,6 +1,5 @@
 package com.wulee.administrator.zuji.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -114,6 +113,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
         piInfo.setMobilePhoneNumber(mobile);
         piInfo.setUsername(mobile);
         piInfo.setPassword(pwd);
+        piInfo.setName("游客");//设置默认nickName
        /* piInfo.signOrLogin(authCode, new SaveListener<PersonalInfo>() {
             @Override
             public void done(PersonalInfo user,BmobException e) {
@@ -131,7 +131,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 stopProgressDialog();
                 if(e==null){
                     Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(RegistActivity.this,LoginActivity.class));
+                    RegistActivity.this.finish();
                 }else{
                     toast("注册失败:" + e.getMessage());
                 }

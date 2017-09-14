@@ -31,4 +31,5 @@
 
 
     <color name="color_weather_view">#64a2ff</color>
+    <color name="color_transparent">@android:color/transparent</color>
 </resources>

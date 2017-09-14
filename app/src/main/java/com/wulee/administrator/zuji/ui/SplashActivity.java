@@ -43,6 +43,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         btnSkip= (TextView) findViewById(R.id.tv_skip);
         btnSkip.setOnClickListener(this);
         mFadeInTextView = (FadeInTextView) findViewById(R.id.fadeInTextView);
+        mFadeInTextView.setDuration(150);
 
         initData();
 

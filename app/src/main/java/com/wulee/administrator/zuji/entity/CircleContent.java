@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * Created by wulee on 2017/8/22 10:21
@@ -16,7 +17,6 @@ public class CircleContent extends BmobObject{
 
     private String userId;
     private String userNick;
-    private String userAvatar;
 
     private String title;
     private String content;
@@ -27,6 +27,43 @@ public class CircleContent extends BmobObject{
     private String[] imgUrls;
     private ArrayList<CircleImageBean> imageList;
 
+    private BmobRelation likes;
+
+    private List<CircleComment> commentList;
+
+    public List<CircleComment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<CircleComment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public List<PersonInfo> getLikeList() {
+        return likeList;
+    }
+
+    public void setLikeList(List<PersonInfo> likeList) {
+        this.likeList = likeList;
+    }
+
+    private List<PersonInfo> likeList;//喜欢此圈子的用户集合
+
+    public BmobRelation getLikes() {
+        return likes;
+    }
+
+    public void setLikes(BmobRelation likes) {
+        this.likes = likes;
+    }
+
+    public PersonInfo getPersonInfo() {
+        return personInfo;
+    }
+
+    public void setPersonInfo(PersonInfo personInfo) {
+        this.personInfo = personInfo;
+    }
 
     public long getId() {
         return id;
@@ -53,13 +90,6 @@ public class CircleContent extends BmobObject{
         this.userNick = userNick;
     }
 
-    public String getUserAvatar() {
-        return userAvatar;
-    }
-
-    public void setUserAvatar(String userAvatar) {
-        this.userAvatar = userAvatar;
-    }
 
     public String getTitle() {
         return title;

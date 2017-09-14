@@ -153,4 +153,14 @@ public class AppUtils {
 		}
 		return 1;
 	}
+
+	/**
+	 * 改变状态栏颜色
+	 */
+	public static void setStateBarColor(Activity activity , int stateBarColor) {
+		SystemBarTintManager tintManager = new SystemBarTintManager(activity);
+		tintManager.setStatusBarTintEnabled(true);
+		tintManager.setStatusBarTintResource(stateBarColor);
+	}
+
 }

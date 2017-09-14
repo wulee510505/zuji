@@ -160,4 +160,9 @@ public class FadeInTextView extends AppCompatTextView {
     public interface TextAnimationListener {
         void animationFinish();
     }
+
+    public void setDuration(int duration){
+        this.duration = duration;
+        invalidate();
+    }
 }

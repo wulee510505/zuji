@@ -13,8 +13,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.facebook.stetho.common.LogUtil;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.StepRankingAdapter;
@@ -124,7 +124,7 @@ public class StepActivity extends BaseActivity {
                         mAdapter.setNewData(processReturnList(dataList));
                     }
                 } else {
-                    Toast.makeText(StepActivity.this, "查询失败" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                    LogUtil.d("查询StepInfo失败"+e.getMessage()+","+e.getErrorCode());
                 }
             }
         });

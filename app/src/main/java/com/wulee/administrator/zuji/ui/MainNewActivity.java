@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
     private boolean[] hasFragSelected = new boolean[POS_FOUR + 1];
     private MainBaseFrag[] mainBaseFrags = new MainBaseFrag[POS_FOUR + 1];
 
+    private long mLastClickReturnTime = 0l; // 记录上一次点击返回按钮的时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -404,5 +406,21 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+                if (CloseMenu())
+                    return true;
+                if(System.currentTimeMillis() - mLastClickReturnTime > 1000L) {
+                    mLastClickReturnTime = System.currentTimeMillis();
+                    toast("再按一次退出程序");
+                    return true;
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 }

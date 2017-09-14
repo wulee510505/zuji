@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.wulee.administrator.zuji.R;
-import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 
 import static com.wulee.administrator.zuji.App.aCache;
@@ -34,7 +34,7 @@ import static com.wulee.administrator.zuji.App.aCache;
  * Created by wulee on 2017/1/11 11:47
  */
 
-public class MapActivity extends BaseActivity {
+public class MapActivity extends AppCompatActivity {
 
     public static final String INTENT_KEY_LONTITUDE = "intent_key_lontitude";
     public static final String INTENT_KEY_LATITUDE = "intent_key_latitude";

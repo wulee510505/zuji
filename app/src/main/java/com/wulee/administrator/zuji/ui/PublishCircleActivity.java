@@ -1,10 +1,12 @@
 package com.wulee.administrator.zuji.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -19,6 +21,7 @@ import com.wulee.administrator.zuji.adapter.PublishPicGridAdapter;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.CircleContent;
 import com.wulee.administrator.zuji.entity.PublishPicture;
+import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 
@@ -60,6 +63,13 @@ public class PublishCircleActivity extends TakePhotoActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.circle_publish);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        AppUtils.setStateBarColor(this,R.color.colorAccent);
+
         ButterKnife.inject(this);
 
         initView();
@@ -156,8 +166,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
         final CircleContent circlrContent = new CircleContent();
         circlrContent.setId(SystemClock.currentThreadTimeMillis());
         circlrContent.setUserId(piInfo.getUid());
-        circlrContent.setUserNick(piInfo.getName());
-        circlrContent.setUserAvatar(piInfo.getHeader_img_url());
+        circlrContent.setUserNick(TextUtils.isEmpty(piInfo.getName())?"游客":piInfo.getName());
         circlrContent.setContent(content);
         String currCity = aCache.getAsString("location_city");
         if(!TextUtils.isEmpty(currCity))
@@ -186,7 +195,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
                             public void done(String s, BmobException e) {
                                 progressBar.setVisibility(View.GONE);
                                 if (e == null) {
-                                    EventBus.getDefault().post(new String("publish ok"));
+                                    EventBus.getDefault().post(new String("refresh"));
                                     PublishCircleActivity.this.finish();
                                 }
                             }

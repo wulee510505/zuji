@@ -9,12 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -29,8 +29,8 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.facebook.stetho.common.LogUtil;
 import com.wulee.administrator.zuji.R;
-import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 
@@ -50,7 +50,7 @@ import static com.wulee.administrator.zuji.App.aCache;
  * Created by wulee on 2017/3/15 11:47
  */
 
-public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerClickListener{
+public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMarkerClickListener{
 
 
     public static final String ACTION_LOCATION_CHANGE = "action_location_change";
@@ -131,7 +131,7 @@ public class ZuJiMapActivity extends BaseActivity implements BaiduMap.OnMarkerCl
                       mHandler.sendMessage(msg);
                     }
                 }else{
-                    Toast.makeText(ZuJiMapActivity.this,"查询失败"+e.getMessage()+","+e.getErrorCode(),Toast.LENGTH_SHORT).show();
+                    LogUtil.d("查询LocationInfo失败"+e.getMessage()+","+e.getErrorCode());
                 }
             }
         });

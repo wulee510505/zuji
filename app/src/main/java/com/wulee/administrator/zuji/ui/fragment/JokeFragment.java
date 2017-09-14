@@ -194,34 +194,60 @@ public class JokeFragment extends MainBaseFrag {
      * @return
      */
     private List<JokeInfo> jsonParse(String json) {
-        try {
-            List<JokeInfo> jokelist = new ArrayList<>();
-            JSONObject jsonObject = new JSONObject(json);
-            int errorCode = jsonObject.getInt("error_code");
-            if (errorCode == 0) {
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JokeInfo joke = new JokeInfo();
-                    JSONObject picData = jsonArray.getJSONObject(i);
-                    String id = picData.getString("hashId");
-                    String content = picData.getString("content");
-                    String url = "";
-                    if(jokeType == TYPE_JOKE_PIC){
-                        url = picData.optString("url");
+        if(jokeType == TYPE_JOKE_PIC){
+            try {
+                List<JokeInfo> jokelist = new ArrayList<>();
+                JSONObject jsonObject = new JSONObject(json);
+                int errorCode = jsonObject.getInt("error_code");
+                if (errorCode == 0) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JokeInfo joke = new JokeInfo();
+                        JSONObject picData = jsonArray.getJSONObject(i);
+                        String id = picData.getString("hashId");
+                        String content = picData.getString("content");
+                        String url = picData.optString("url");
+
+                        joke.setHashId(id);
+                        joke.setContent(content);
+                        joke.setUrl(url);
+                        jokelist.add(joke);
                     }
-                    joke.setHashId(id);
-                    joke.setContent(content);
-                    joke.setUrl(url);
-                    jokelist.add(joke);
+                    return jokelist;
+                } else {
+                    Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
                 }
-                return jokelist;
-            } else {
-                Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                LogUtil.e("JsonParseActivity", "json解析出现了问题");
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            LogUtil.e("JsonParseActivity", "json解析出现了问题");
+        }else  if(jokeType == TYPE_JOKE_TEXT){
+            try {
+                List<JokeInfo> jokelist = new ArrayList<>();
+                JSONObject jsonObject = new JSONObject(json);
+                int errorCode = jsonObject.getInt("error_code");
+                if (errorCode == 0) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JokeInfo joke = new JokeInfo();
+                        JSONObject picData = jsonArray.getJSONObject(i);
+                        String id = picData.getString("hashId");
+                        String content = picData.getString("content");
+
+                        joke.setHashId(id);
+                        joke.setContent(content);
+                        jokelist.add(joke);
+                    }
+                    return jokelist;
+                } else {
+                    Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                LogUtil.e("JsonParseActivity", "json解析出现了问题");
+            }
         }
+
         return null;
     }
 

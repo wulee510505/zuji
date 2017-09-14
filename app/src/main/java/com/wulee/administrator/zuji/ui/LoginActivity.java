@@ -110,6 +110,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                         DBHandler.insertPesonInfo(pi);
                     }
                     startActivity(new Intent(LoginActivity.this,MainNewActivity.class));
+                    LoginActivity.this.finish();
                 }else{
                     toast("登录失败:" + e.getMessage());
                 }

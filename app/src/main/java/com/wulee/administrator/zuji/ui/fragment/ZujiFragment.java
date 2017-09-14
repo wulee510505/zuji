@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.facebook.stetho.common.LogUtil;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.LocationAdapter;
@@ -353,7 +354,7 @@ public class ZujiFragment extends MainBaseFrag{
                         }
                     }
                 }else{
-                    Toast.makeText(mContext,"查询失败"+e.getMessage()+","+e.getErrorCode(),Toast.LENGTH_SHORT).show();
+                    LogUtil.d("查询LocationInfo失败"+e.getMessage()+","+e.getErrorCode());
                 }
             }
         });
