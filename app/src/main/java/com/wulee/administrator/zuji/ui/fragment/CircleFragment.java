@@ -69,6 +69,7 @@ public class CircleFragment extends MainBaseFrag {
     private int PAGE_SIZE = 10;
     private int curPage = 0;
     private boolean isRefresh = false;
+    private boolean isPullToRefresh = false;
 
     @Nullable
     @Override
@@ -83,7 +84,7 @@ public class CircleFragment extends MainBaseFrag {
         }
         ButterKnife.inject(this, mRootView);
 
-        initView(mRootView);
+        initView();
         addListener();
         return mRootView;
     }
@@ -103,7 +104,7 @@ public class CircleFragment extends MainBaseFrag {
     }
 
 
-    private void initView(View view) {
+    private void initView() {
         View headerView = LayoutInflater.from(mContext).inflate(R.layout.circle_list_header, null);
         ImageView ivUserAvatar = (ImageView) headerView.findViewById(R.id.userAvatar);
         TextView tvNick = (TextView) headerView.findViewById(R.id.userNick);
@@ -148,6 +149,7 @@ public class CircleFragment extends MainBaseFrag {
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                isPullToRefresh =  true;
                 isRefresh = true;
                 curPage = 0;
                 getCircleContnets(curPage, STATE_REFRESH);
@@ -179,7 +181,8 @@ public class CircleFragment extends MainBaseFrag {
 
 
     public void getCircleContnets(final int page, final int actionType) {
-        showProgressDialog(getActivity(),false);
+        if(!isPullToRefresh)
+           showProgressDialog(getActivity(),false);
         BmobQuery<CircleContent> query = new BmobQuery<>();
         query.include("personInfo");
         query.order("-createdAt");

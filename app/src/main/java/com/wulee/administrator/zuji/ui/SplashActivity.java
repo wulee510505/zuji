@@ -3,6 +3,7 @@ package com.wulee.administrator.zuji.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -10,12 +11,24 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
+import com.wulee.administrator.zuji.entity.Constant;
+import com.wulee.administrator.zuji.entity.SplashPic;
+import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.widget.FadeInTextView;
+
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+
+import static com.wulee.administrator.zuji.App.aCache;
 
 
 /**
@@ -26,6 +39,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
 
     private FadeInTextView mFadeInTextView;
     private View startView = null;
+    private ImageView ivSplash;
     private AlphaAnimation loadAlphaAnimation=null;
     private ScaleAnimation loadScaleAnimation = null;
     private TextView btnSkip;
@@ -40,6 +54,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         startView = View.inflate(this, R.layout.splash, null);
         setContentView(startView);
 
+        ivSplash = (ImageView) findViewById(R.id.iv_splash_bg);
         btnSkip= (TextView) findViewById(R.id.tv_skip);
         btnSkip.setOnClickListener(this);
         mFadeInTextView = (FadeInTextView) findViewById(R.id.fadeInTextView);
@@ -51,6 +66,27 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
 
     private void initData() {
         loadPage();
+
+        String url = aCache.getAsString(Constant.KEY_SPLASH_PIC_URL);
+        if(!TextUtils.isEmpty(url)){
+            ImageUtil.setDefaultImageView(ivSplash,url,R.mipmap.bg_wellcome,SplashActivity.this);
+        }else{
+            BmobQuery<SplashPic>  query  = new BmobQuery<>();
+            query.findObjects(new FindListener<SplashPic>() {
+                @Override
+                public void done(List<SplashPic> list, BmobException e) {
+                    if(e == null){
+                        if(list != null && list.size()>0){
+                            SplashPic picInfo = list.get(0);
+                            if(null != picInfo && !TextUtils.isEmpty(picInfo.getUrl())){
+                                ImageUtil.setDefaultImageView(ivSplash,picInfo.getUrl(),R.mipmap.bg_wellcome,SplashActivity.this);
+                                aCache.put(Constant.KEY_SPLASH_PIC_URL,picInfo.getUrl(),Constant.SPLASH_PIC_URL_SAVE_TIME);
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void loadPage() {

@@ -85,8 +85,11 @@ public class PublishPicGridAdapter extends BaseAdapter {
             ImageUtil.setDefaultImageView(viewHolder.image,"",R.mipmap.icon_add_pic,context);
         }else{
             String imgPath =  picture.getPath();
-            Bitmap bmp = BitmapFactory.decodeFile(imgPath);
-            viewHolder.image.setImageBitmap(bmp);
+            byte[] data = ImageUtil.getSmallBitmap(imgPath);
+            if(data != null && data.length>0){
+                Bitmap bmp = BitmapFactory.decodeByteArray(data,0,data.length);
+                viewHolder.image.setImageBitmap(bmp);
+            }
         }
         return convertView;
     }

@@ -19,6 +19,7 @@ import com.huxq17.swipecardsview.SwipeCardsView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.FunPicAdapter;
 import com.wulee.administrator.zuji.adapter.JokeAdapter;
+import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.entity.FunPicInfo;
 import com.wulee.administrator.zuji.entity.JokeInfo;
 import com.wulee.administrator.zuji.entity.JokeUrl;
@@ -39,6 +40,8 @@ import cn.bmob.v3.listener.FindListener;
 import cn.finalteam.okhttpfinal.BaseHttpRequestCallback;
 import cn.finalteam.okhttpfinal.HttpRequest;
 import okhttp3.Headers;
+
+import static com.wulee.administrator.zuji.App.aCache;
 
 /**
  * Created by wulee on 2017/9/6 09:52
@@ -104,7 +107,8 @@ public class JokeFragment extends MainBaseFrag {
                 //请求网络前
                 @Override
                 public void onStart() {
-                    progressBar.setVisibility(View.VISIBLE);
+                    if(progressBar != null)
+                       progressBar.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -140,50 +144,69 @@ public class JokeFragment extends MainBaseFrag {
     };
 
 
-    private String getJokeText() {
-        final String[] defUrl = {""};
-        BmobQuery<JokeUrl> query = new BmobQuery<>();
-        query.findObjects(new FindListener<JokeUrl>() {
-            @Override
-            public void done(List<JokeUrl> list, BmobException e) {
-                if (e == null) {
-                    if (list != null && list.size() > 0) {
-                        String url = list.get(0).getUrl();
-                        if (!TextUtils.isEmpty(url))
-                            defUrl[0] = url;
+    private void  getJokeText() {
+        final Message msg = new Message();
 
-                        Message msg = new Message();
-                        msg.obj = defUrl[0];
+        final String[] jokeTextUrl = {""};
 
-                        mHandler.sendMessage(msg);
+        String saveUrl = aCache.getAsString(Constant.KEY_JOKE_TEXT_URL);
+        if(!TextUtils.isEmpty(saveUrl)){
+            jokeTextUrl[0] =  saveUrl;
+
+            msg.obj = jokeTextUrl[0];
+            mHandler.sendMessage(msg);
+        }else{
+            BmobQuery<JokeUrl> query = new BmobQuery<>();
+            query.findObjects(new FindListener<JokeUrl>() {
+                @Override
+                public void done(List<JokeUrl> list, BmobException e) {
+                    if (e == null) {
+                        if (list != null && list.size() > 0) {
+                            String url = list.get(0).getUrl();
+                            if (!TextUtils.isEmpty(url)){
+                                jokeTextUrl[0] = url;
+                                aCache.put(Constant.KEY_JOKE_TEXT_URL,url,Constant.JOKE_TEXT_OR_PIC_URL_SAVE_TIME);
+
+                                msg.obj = jokeTextUrl[0];
+                                mHandler.sendMessage(msg);
+                            }
+                        }
                     }
                 }
-            }
-        });
-        return defUrl[0];
+            });
+        }
     }
 
-    private String getJokePic() {
-        final String[] defUrl = {""};
-        BmobQuery<JokeUrl> query = new BmobQuery<>();
-        query.findObjects(new FindListener<JokeUrl>() {
-            @Override
-            public void done(List<JokeUrl> list, BmobException e) {
-                if (e == null) {
-                    if (list != null && list.size() > 0) {
-                        String url = list.get(1).getUrl();
-                        if (!TextUtils.isEmpty(url))
-                            defUrl[0] = url;
+    private void  getJokePic() {
+        final Message msg = new Message();
 
-                        Message msg = new Message();
-                        msg.obj = defUrl[0];
+        final String[] jokePicUrl = {""};
+        String saveUrl = aCache.getAsString(Constant.KEY_JOKE_PIC_URL);
+        if(!TextUtils.isEmpty(saveUrl)){
+            jokePicUrl[0] =  saveUrl;
 
-                        mHandler.sendMessage(msg);
+            msg.obj = jokePicUrl[0];
+            mHandler.sendMessage(msg);
+        }else{
+            BmobQuery<JokeUrl> query = new BmobQuery<>();
+            query.findObjects(new FindListener<JokeUrl>() {
+                @Override
+                public void done(List<JokeUrl> list, BmobException e) {
+                    if (e == null) {
+                        if (list != null && list.size() > 0) {
+                            String url = list.get(1).getUrl();
+                            if (!TextUtils.isEmpty(url)){
+                                jokePicUrl[0] = url;
+                                aCache.put(Constant.KEY_JOKE_PIC_URL,url,Constant.JOKE_TEXT_OR_PIC_URL_SAVE_TIME);
+
+                                msg.obj = jokePicUrl[0];
+                                mHandler.sendMessage(msg);
+                            }
+                        }
                     }
                 }
-            }
-        });
-        return defUrl[0];
+            });
+        }
     }
 
 

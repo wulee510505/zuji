@@ -707,4 +707,46 @@ public class ImageUtil {
 		}
 	}
 
+
+	public static byte[] getSmallBitmap(String filePath) {
+		Bitmap bitmap;
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(filePath, options);
+		options.inPreferredConfig = Bitmap.Config.RGB_565;
+		options.inSampleSize = calculateInSampleSize(options, 1000, 1000);
+		options.inJustDecodeBounds = false;
+
+		try {
+			bitmap = BitmapFactory.decodeFile(filePath, options);
+		} catch (Exception e) {
+			options.inSampleSize = calculateInSampleSize(options, 500, 500);
+			options.inJustDecodeBounds = false;
+			bitmap = BitmapFactory.decodeFile(filePath, options);
+		}
+		byte[] bytes = Bitmap2Bytes(bitmap != null ? bitmap : null);
+		if (null != bitmap && !bitmap.isRecycled()) {
+			bitmap.recycle();
+		}
+		return bytes;
+	}
+
+	private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+			final int heightRatio = Math.round((float) height / (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+			inSampleSize = heightRatio > widthRatio ? heightRatio : widthRatio;
+		}
+		return inSampleSize;
+	}
+
+	private static byte[] Bitmap2Bytes(Bitmap bm) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bm.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+		return baos.toByteArray();
+	}
 }

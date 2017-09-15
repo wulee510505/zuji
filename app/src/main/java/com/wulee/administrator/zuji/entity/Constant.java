@@ -19,6 +19,15 @@ public interface Constant {
     String BOMB_APP_ID = "ac67374a92fdca635c75eb6388e217a4";
 
 
+    String KEY_SPLASH_PIC_URL = "key_splash_pic_url";
+    int SPLASH_PIC_URL_SAVE_TIME =  60 * 60 * 1; //1小时
+
+
+    String KEY_JOKE_TEXT_URL = "key_joke_text_url";
+    String KEY_JOKE_PIC_URL = "key_joke_pic_url";
+
+    int JOKE_TEXT_OR_PIC_URL_SAVE_TIME =  /*60 * 60 * 24 **/ 15; //1天
+
     // 日志过期时间，默认为10天
     int LOG_EXPIRED_TIME = 10;
 }

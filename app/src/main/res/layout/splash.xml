@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
+        android:id="@+id/iv_splash_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/bg_wellcome" />
+        android:scaleType="centerCrop" />
 
     <com.wulee.administrator.zuji.widget.FadeInTextView
         android:id="@+id/fadeInTextView"
