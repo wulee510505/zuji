@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -25,11 +26,14 @@ import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.CircleComment;
 import com.wulee.administrator.zuji.entity.CircleContent;
 import com.wulee.administrator.zuji.ui.BigImageActivity;
+import com.wulee.administrator.zuji.ui.PersonalInfoActivity;
+import com.wulee.administrator.zuji.ui.UserInfoActivity;
 import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.UIUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.bmob.v3.BmobUser;
@@ -44,6 +48,7 @@ public class CircleContentAdapter extends BaseQuickAdapter<CircleContent> {
 
     private Context mcontext;
     private PersonInfo piInfo;
+    private HashMap<Integer,LinearLayout> viewMap = new HashMap<>();
 
     public CircleContentAdapter(int layoutResId, ArrayList<CircleContent> dataList,Context context) {
         super(layoutResId, dataList);
@@ -60,6 +65,22 @@ public class CircleContentAdapter extends BaseQuickAdapter<CircleContent> {
         else
             ImageUtil.setDefaultImageView(ivAvatar,"",R.mipmap.icon_user_def,mcontext);
 
+
+        ivAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(null != piInfo){
+                    Intent intent = null;
+                    if(TextUtils.equals(piInfo.getUsername(),content.personInfo.getUsername())){
+                        intent = new Intent(mcontext, PersonalInfoActivity.class);
+                    }else{
+                        intent = new Intent(mcontext, UserInfoActivity.class);
+                        intent.putExtra("piInfo",content.personInfo);
+                    }
+                    mcontext.startActivity(intent);
+                }
+            }
+        });
 
         baseViewHolder.setText(R.id.userNick,content.getUserNick());
         baseViewHolder.setText(R.id.content , content.getContent());
@@ -94,6 +115,8 @@ public class CircleContentAdapter extends BaseQuickAdapter<CircleContent> {
         final boolean[] isToolbarLikeAndCommentVisible = {false};//喜欢、评论按钮是否显示
 
         final LinearLayout llLikeAndComment = baseViewHolder.getView(R.id.album_toolbar);
+        viewMap.put(pos,llLikeAndComment);
+
         final RelativeLayout rlLike = baseViewHolder.getView(R.id.toolbarLike);
         ImageView ivOpt = baseViewHolder.getView(R.id.album_opt);
         ivOpt.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +135,16 @@ public class CircleContentAdapter extends BaseQuickAdapter<CircleContent> {
         rlLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(content.getLikeList() != null && content.getLikeList().size()>0){
+                    for (PersonInfo likePiInfo : content.getLikeList()){
+                        if(TextUtils.equals(piInfo.getUsername(),likePiInfo.getUsername())){
+                            llLikeAndComment.setVisibility(View.GONE);
+                            Toast.makeText(mcontext, "您已经赞过了", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+
                //将当前用户添加到CircleContent表中的likes字段值中，表明当前用户喜欢该帖子
                 BmobRelation relation = new BmobRelation();
                //将当前用户添加到多对多关联中
@@ -216,20 +249,22 @@ public class CircleContentAdapter extends BaseQuickAdapter<CircleContent> {
     private void showComentDialog(final CircleContent content,final View likeAndCommentView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
         builder.setTitle("评论");
-        LinearLayout llContainer = new LinearLayout(mcontext);
+        RelativeLayout rlContainer = new RelativeLayout(mcontext);
         final EditText etComment = new EditText(mcontext);
         etComment.setPadding(10,5,10,5);
         etComment.setBackgroundResource(R.drawable.bg_text_rec);
-        llContainer.addView(etComment);
+        rlContainer.addView(etComment);
 
-        LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) etComment.getLayoutParams();
-        llp.leftMargin = UIUtils.dip2px(15);
-        llp.rightMargin = UIUtils.dip2px(15);
-        llp.topMargin = UIUtils.dip2px(10);
-        llp.width = UIUtils.getScreenWidthAndHeight(mcontext)[0]- UIUtils.dip2px(30)*2;
-        etComment.setLayoutParams(llp);
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) etComment.getLayoutParams();
+        rlp.leftMargin = UIUtils.dip2px(15);
+        rlp.rightMargin = UIUtils.dip2px(15);
+        rlp.topMargin = UIUtils.dip2px(10);
+        rlp.width = UIUtils.getScreenWidthAndHeight(mcontext)[0]- UIUtils.dip2px(30)*2;
+        rlp.height = UIUtils.dip2px(120);
+        rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        etComment.setLayoutParams(rlp);
 
-        builder.setView(llContainer);
+        builder.setView(rlContainer);
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -255,6 +290,18 @@ public class CircleContentAdapter extends BaseQuickAdapter<CircleContent> {
         Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
+    }
+
+
+    public void setLikeAndCommentViewGone(){
+        for (int i = 0; i < getData().size(); i++) {
+            LinearLayout llLikeAndComment =  viewMap.get(i);
+            if(llLikeAndComment != null){
+                if(llLikeAndComment.getVisibility() == View.VISIBLE){
+                    llLikeAndComment.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
 

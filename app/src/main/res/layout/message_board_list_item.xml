@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="aaaaa"
+        android:textColor="@color/baseGrayMore"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_content"
+        android:layout_marginTop="5dp"
+        android:text="bbbbb"
+        android:textColor="@color/baseGrayNor"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/tv_name"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="5dp"
+        android:text="ccccc"
+        android:textColor="@color/baseGrayNor"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/baseGrayLit"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tv_time"/>
+
+</RelativeLayout>

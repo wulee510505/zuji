@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/ctv_white">
+
+
+    <com.wulee.administrator.zuji.widget.BaseTitleLayout
+        android:id="@+id/titlelayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/com_title_height"
+        android:background="@color/colorAccent"
+        app:titleCenterText="留言板"
+        app:titleLeftImg="@mipmap/icon_back"
+        app:titleLeftImgVisible="true"
+        app:titleLeftText=""
+        app:titleTextColor="@color/color_white"
+        app:titleTextSize="18sp" />
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlelayout"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

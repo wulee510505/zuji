@@ -59,6 +59,7 @@ public class JokeFragment extends MainBaseFrag {
     @InjectView(R.id.progress_bar)
     ProgressBar progressBar;
     private View mRootView;
+    private RelativeLayout emptyView;
 
     private Context mContext;
 
@@ -66,7 +67,7 @@ public class JokeFragment extends MainBaseFrag {
     private FunPicAdapter mPicAdapter;
 
     private List<JokeInfo> mJokecDatas = new ArrayList<>();
-    List<FunPicInfo> mJokePicDatas = new ArrayList<>();
+    private List<FunPicInfo> mJokePicDatas = new ArrayList<>();
 
     private  final int TYPE_JOKE_TEXT = 2;
     private  final int TYPE_JOKE_PIC= 3;
@@ -84,19 +85,15 @@ public class JokeFragment extends MainBaseFrag {
             parent.removeView(mRootView);
         }
         ButterKnife.inject(this, mRootView);
-        initView();
+        initView(mRootView);
         return mRootView;
     }
 
-    private void initView() {
+    private void initView(View view) {
+        emptyView = (RelativeLayout) view.findViewById(R.id.emptyview);
         swipCardsView.retainLastCard(true);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getJokeText();
-    }
 
     private Handler mHandler = new Handler() {
         @Override
@@ -225,6 +222,7 @@ public class JokeFragment extends MainBaseFrag {
                 if (errorCode == 0) {
                     JSONArray jsonArray = jsonObject.getJSONArray("result");
                     for (int i = 0; i < jsonArray.length(); i++) {
+                        emptyView.setVisibility(View.GONE);
                         JokeInfo joke = new JokeInfo();
                         JSONObject picData = jsonArray.getJSONObject(i);
                         String id = picData.getString("hashId");
@@ -238,9 +236,11 @@ public class JokeFragment extends MainBaseFrag {
                     }
                     return jokelist;
                 } else {
+                    emptyView.setVisibility(View.VISIBLE);
                     Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
+                emptyView.setVisibility(View.VISIBLE);
                 e.printStackTrace();
                 LogUtil.e("JsonParseActivity", "json解析出现了问题");
             }
@@ -252,6 +252,7 @@ public class JokeFragment extends MainBaseFrag {
                 if (errorCode == 0) {
                     JSONArray jsonArray = jsonObject.getJSONArray("result");
                     for (int i = 0; i < jsonArray.length(); i++) {
+                        emptyView.setVisibility(View.GONE);
                         JokeInfo joke = new JokeInfo();
                         JSONObject picData = jsonArray.getJSONObject(i);
                         String id = picData.getString("hashId");
@@ -263,15 +264,17 @@ public class JokeFragment extends MainBaseFrag {
                     }
                     return jokelist;
                 } else {
+                    emptyView.setVisibility(View.VISIBLE);
                     Toast.makeText(mContext, "获取数据失败", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
+                emptyView.setVisibility(View.VISIBLE);
                 e.printStackTrace();
                 LogUtil.e("JsonParseActivity", "json解析出现了问题");
             }
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     private List<FunPicInfo>  processJokePicInfo(List<JokeInfo> list){
@@ -313,6 +316,6 @@ public class JokeFragment extends MainBaseFrag {
 
     @Override
     public void onFragmentFirstSelected() {
-
+          getJokeText();
     }
 }

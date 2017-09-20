@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,12 +91,6 @@ public class CircleFragment extends MainBaseFrag {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getCircleContnets(0, STATE_REFRESH);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();;
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -167,6 +162,17 @@ public class CircleFragment extends MainBaseFrag {
             @Override
             public void onDelBtnClick(int postion) {
                 showDeleteDialog(postion);
+            }
+        });
+        recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mAdapter.setLikeAndCommentViewGone();
             }
         });
     }
@@ -283,7 +289,7 @@ public class CircleFragment extends MainBaseFrag {
 
     @Override
     public void onFragmentFirstSelected() {
-
+        getCircleContnets(0, STATE_REFRESH);
     }
 
 

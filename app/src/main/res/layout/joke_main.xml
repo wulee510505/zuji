@@ -66,6 +66,10 @@
         app:scaleOffsetStep="0.08"
         app:yOffsetStep="40dp" />
 
+    <include
+        android:id="@+id/emptyview"
+        layout="@layout/com_view_empty"/>
+
 
     <ProgressBar
         android:id="@+id/progress_bar"

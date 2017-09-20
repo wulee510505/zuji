@@ -104,6 +104,10 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
+        <activity android:name="com.wulee.administrator.zuji.ui.UserInfoActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+
         <activity android:name="com.wulee.administrator.zuji.ui.StepActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
@@ -138,6 +142,11 @@
             android:name=".ui.pushmsg.MsgDetailActivity"
             android:configChanges="orientation|keyboardHidden" />
 
+
+        <activity android:name="com.wulee.administrator.zuji.ui.MessageBoardActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 解决 Android N 7.0 上 报错：android.os.FileUriExposedException-->
         <provider

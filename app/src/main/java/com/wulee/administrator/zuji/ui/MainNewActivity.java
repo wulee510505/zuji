@@ -295,6 +295,9 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
             showLogoutDialog();
         }else  if (id ==  R.id.item_pushmsg) {
             startActivity(new Intent(this,PushMsgListActivity.class));
+        }else  if (id ==  R.id.item_msg_board) {
+            PersonInfo personInfo = PersonInfo.getCurrentUser(PersonInfo.class);
+            startActivity(new Intent(this,MessageBoardActivity.class).putExtra("piInfo",personInfo));
         }else  if (id ==  R.id.item_checkupdate) {
             BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
                 @Override
@@ -423,4 +426,5 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         }
         return super.dispatchKeyEvent(event);
     }
+
 }
