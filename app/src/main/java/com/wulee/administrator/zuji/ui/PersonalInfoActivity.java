@@ -1,8 +1,10 @@
 package com.wulee.administrator.zuji.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,16 +19,21 @@ import android.widget.Toast;
 
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
+import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.TResult;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.widget.ActionSheet;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 
 import java.io.File;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -249,8 +256,27 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                 intent.putExtra(PictureActivity.INTENT_KEY_COMPRESS_PHOTO_MAXPIXEL, 600);
                 startActivityForResult(intent, AVATAR_REQUEST_CODE);*/
 
-                TakePhoto takePhoto=getTakePhoto();
-                takePhoto.onPickFromGallery();
+
+                AndPermission.with(this)
+                    .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .callback(new PermissionListener() {
+                        @Override
+                        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+                            TakePhoto takePhoto = getTakePhoto();
+                            File file=new File(Constant.TEMP_FILE_PATH, System.currentTimeMillis() + ".jpg");
+                            if (!file.getParentFile().exists())file.getParentFile().mkdirs();
+                            Uri imageUri = Uri.fromFile(file);
+
+                            CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
+                            takePhoto.onPickFromGalleryWithCrop(imageUri,cropOptions);
+                        }
+                        @Override
+                        public void onFailed(int requestCode, List<String> deniedPermissions) {
+                            if(AndPermission.hasAlwaysDeniedPermission(PersonalInfoActivity.this,deniedPermissions))
+                                AndPermission.defaultSettingDialog(PersonalInfoActivity.this).show();
+                        }
+                    })
+                    .start();
                 break;
             case R.id.rl_gender:
                 ActionSheet menuView = new ActionSheet(this);

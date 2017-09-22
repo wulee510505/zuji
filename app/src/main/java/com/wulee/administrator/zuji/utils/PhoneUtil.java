@@ -76,4 +76,13 @@ public class PhoneUtil {
         }
         return uuid;
     }
+
+    /**
+     *  将手机号码第4位到第7位替换成*
+     */
+    public static String encryptTelNum(String telnum){
+        // 括号表示组，被替换的部分$n表示第n组的内容
+       return telnum.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+    }
+
 }

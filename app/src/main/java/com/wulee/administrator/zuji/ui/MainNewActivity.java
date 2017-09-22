@@ -42,6 +42,7 @@ import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ConfigKey;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
+import com.wulee.administrator.zuji.utils.PhoneUtil;
 
 import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
@@ -157,7 +158,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
                 mTvName.setText(personalInfo.getName());
             else
                 mTvName.setText("游客");
-            mTvMobile.setText(personalInfo.getMobile());
+            mTvMobile.setText(PhoneUtil.encryptTelNum(personalInfo.getMobile()));
             ImageUtil.setCircleImageView(ivHeader,personalInfo.getHeader_img_url(),R.mipmap.icon_user_def,this);
         }
     }

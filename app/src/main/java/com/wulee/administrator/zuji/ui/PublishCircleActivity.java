@@ -1,5 +1,6 @@
 package com.wulee.administrator.zuji.ui;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
+import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
 import com.wulee.administrator.zuji.R;
@@ -26,6 +28,7 @@ import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -57,6 +60,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
 
     private PublishPicGridAdapter mGridAdapter;
     private List<PublishPicture> picList = new ArrayList<>();
+    private int maxSelPicNum = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +96,18 @@ public class PublishCircleActivity extends TakePhotoActivity {
                 PublishPicture pic = picList.get(pos);
                 if (null != pic) {
                     if (pic.getId() == -1) {
-                        TakePhoto takePhoto = getTakePhoto();
-                        takePhoto.onPickMultiple(9);
+                        TakePhoto mTakePhoto = getTakePhoto();
+
+                        CompressConfig config = new CompressConfig.Builder()
+                                .setMaxSize(102400) //100Kb
+                                .setMaxPixel(300)
+                                .create();
+                        mTakePhoto.onEnableCompress(config,false);
+                        mTakePhoto.onPickMultiple(maxSelPicNum - picList.size() + 1);
+                    }else{
+                        Intent intent = new Intent(PublishCircleActivity.this, BigImageActivity.class);
+                        intent.putExtra(BigImageActivity.IMAGE_URL,pic.getPath());
+                        startActivity(intent);
                     }
                 }
             }
@@ -130,7 +144,6 @@ public class PublishCircleActivity extends TakePhotoActivity {
     @Override
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
-        picList.clear();
         ArrayList<TImage> secImgs = result.getImages();
         for (int i = 0; i < secImgs.size(); i++) {
             TImage img = secImgs.get(i);
@@ -138,6 +151,12 @@ public class PublishCircleActivity extends TakePhotoActivity {
             pic.setId(i);
             pic.setPath(img.getOriginalPath());
             picList.add(pic);
+        }
+        Iterator<PublishPicture> picIter = picList.iterator();
+        while (picIter.hasNext()){
+            PublishPicture pic = picIter.next();
+            if (pic.getId()  == -1)
+                picIter.remove();
         }
         if (picList.size() < 9) {
             PublishPicture pic = new PublishPicture();
@@ -220,4 +239,11 @@ public class PublishCircleActivity extends TakePhotoActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(picList != null){
+            picList.clear();
+        }
+    }
 }

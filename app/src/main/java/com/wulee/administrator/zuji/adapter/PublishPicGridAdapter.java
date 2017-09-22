@@ -6,9 +6,9 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.PublishPicture;
@@ -68,12 +68,10 @@ public class PublishPicGridAdapter extends BaseAdapter {
             viewHolder.image = (ImageView) convertView.findViewById(R.id.grid_item_img);
 
             int screenWidth = UIUtils.getScreenWidthAndHeight(context)[0];
-            int gridItemWidth = (screenWidth - UIUtils.dip2px(60)/3);
+            int gridItemWidth = (screenWidth - UIUtils.dip2px(60))/3;
 
-            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) viewHolder.image.getLayoutParams();
-            rlp.width = gridItemWidth;
-            rlp.height = gridItemWidth;
-            viewHolder.image.setLayoutParams(rlp);
+            AbsListView.LayoutParams rlp =  new AbsListView.LayoutParams(gridItemWidth, gridItemWidth);
+            convertView.setLayoutParams(rlp);
 
             convertView.setTag(viewHolder);
         } else {
