@@ -23,6 +23,16 @@ public class PersonInfo extends BmobUser {
     private String companyAddress;
     private String uid;
 
+    public String getCircle_header_bg_url() {
+        return circle_header_bg_url;
+    }
+
+    public void setCircle_header_bg_url(String circle_header_bg_url) {
+        this.circle_header_bg_url = circle_header_bg_url;
+    }
+
+    private String circle_header_bg_url;
+
     public String getUid() {
         return uid;
     }

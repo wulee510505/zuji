@@ -79,14 +79,16 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@mipmap/icon_location"
                         android:drawablePadding="2dp"
+                        android:gravity="center_vertical"
                         android:text="cccccccccccccccc"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="10sp" />
+                        android:textColor="@color/baseGrayNor"
+                        android:textSize="12sp" />
 
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -98,7 +100,7 @@
                             android:textSize="12sp" />
 
                         <Space
-                            android:layout_width="10dp"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content" />
 
                         <TextView
@@ -106,7 +108,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="删除"
-                            android:textColor="@color/baseGrayNor"
+                            android:textColor="@color/color_light_blue"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -191,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_location_and_time"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:drawableLeft="@mipmap/icon_like_light"
                 android:drawablePadding="4dp"
                 android:text=""
@@ -203,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_likes"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:text=""
                 android:textColor="@color/baseGrayNor"
                 android:textSize="@dimen/com_tv_size_normal"

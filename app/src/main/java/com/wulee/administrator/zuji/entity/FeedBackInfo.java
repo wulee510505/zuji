@@ -13,6 +13,15 @@ public class FeedBackInfo extends BmobObject {
     private String mobile;
     private String content;
     public PersonInfo personInfo;
+    public String installationId;
+
+    public String getInstallationId() {
+        return installationId;
+    }
+
+    public void setInstallationId(String installationId) {
+        this.installationId = installationId;
+    }
 
     public FeedBackInfo() {
     }

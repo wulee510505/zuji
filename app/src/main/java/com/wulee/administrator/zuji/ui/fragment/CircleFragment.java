@@ -3,8 +3,10 @@ package com.wulee.administrator.zuji.ui.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,17 +21,27 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.stetho.common.LogUtil;
+import com.jph.takephoto.app.TakePhoto;
+import com.jph.takephoto.model.CropOptions;
+import com.jph.takephoto.model.TResult;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.CircleContentAdapter;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.CircleComment;
 import com.wulee.administrator.zuji.entity.CircleContent;
+import com.wulee.administrator.zuji.entity.Constant;
+import com.wulee.administrator.zuji.ui.LoginActivity;
 import com.wulee.administrator.zuji.ui.PublishCircleActivity;
+import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
+import com.wulee.administrator.zuji.utils.LocationUtil;
+import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
+import com.wulee.administrator.zuji.widget.RecycleViewDivider;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,13 +50,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
+
+import static com.wulee.administrator.zuji.App.aCache;
 
 /**
  * Created by wulee on 2017/9/6 09:52
@@ -58,6 +74,7 @@ public class CircleFragment extends MainBaseFrag {
     @InjectView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
     private View mRootView;
+    private ImageView ivHeaderBg;
 
     private Context mContext;
 
@@ -72,6 +89,7 @@ public class CircleFragment extends MainBaseFrag {
     private boolean isRefresh = false;
     private boolean isPullToRefresh = false;
 
+    private String circleHeaderBgUrl;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +119,22 @@ public class CircleFragment extends MainBaseFrag {
 
     private void initView() {
         View headerView = LayoutInflater.from(mContext).inflate(R.layout.circle_list_header, null);
+        ivHeaderBg = (ImageView) headerView.findViewById(R.id.iv_header_bg);
+        ivHeaderBg.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                TakePhoto takePhoto = getTakePhoto();
+                File file=new File(Constant.TEMP_FILE_PATH, "circle_header_bg" + ".jpg");
+                if (!file.getParentFile().exists())file.getParentFile().mkdirs();
+                Uri imageUri = Uri.fromFile(file);
+
+                CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
+                takePhoto.onPickFromGalleryWithCrop(imageUri,cropOptions);
+
+                return false;
+            }
+        });
+
         ImageView ivUserAvatar = (ImageView) headerView.findViewById(R.id.userAvatar);
         TextView tvNick = (TextView) headerView.findViewById(R.id.userNick);
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
@@ -110,6 +144,7 @@ public class CircleFragment extends MainBaseFrag {
             else
                 tvNick.setText("游客");
             ImageUtil.setRoundImageView(ivUserAvatar, piInfo.getHeader_img_url(), R.mipmap.icon_user_def, mContext);
+            ImageUtil.setDefaultImageView(ivHeaderBg, piInfo.getCircle_header_bg_url(), R.mipmap.bg_circle_header, mContext);
         } else {
             tvNick.setText("游客");
         }
@@ -117,6 +152,7 @@ public class CircleFragment extends MainBaseFrag {
         mAdapter = new CircleContentAdapter(R.layout.circle_content_list_item, circleContentList, mContext);
         mAdapter.addHeaderView(headerView);
         recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerview.addItemDecoration(new RecycleViewDivider(mContext,LinearLayoutManager.HORIZONTAL,1, ContextCompat.getColor(mContext,R.color.grayline)));
         recyclerview.setAdapter(mAdapter);
     }
 
@@ -173,6 +209,68 @@ public class CircleFragment extends MainBaseFrag {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 mAdapter.setLikeAndCommentViewGone();
+            }
+        });
+    }
+
+    @Override
+    public void takeCancel() {
+        super.takeCancel();
+    }
+    @Override
+    public void takeFail(TResult result, String msg) {
+        super.takeFail(result,msg);
+    }
+    @Override
+    public void takeSuccess(TResult result) {
+        super.takeSuccess(result);
+        String savePath = result.getImages().get(0).getOriginalPath();
+        uploadImgFile(savePath);
+    }
+
+    /**
+     * 上传图片
+     * @param picPath
+     */
+    private void uploadImgFile(final String picPath) {
+        final BmobFile bmobFile = new BmobFile(new File(picPath));
+        bmobFile.uploadblock(new UploadFileListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    circleHeaderBgUrl = bmobFile.getFileUrl();
+
+                    PersonInfo personInfo = BmobUser.getCurrentUser(PersonInfo.class);
+                    personInfo.setCircle_header_bg_url(circleHeaderBgUrl);
+                    personInfo.update(new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            stopProgressDialog();
+                            if (e == null) {
+                                ImageUtil.setDefaultImageView(ivHeaderBg,circleHeaderBgUrl,-1,mContext);
+                            } else {
+                                if(e.getErrorCode() == 206){
+                                    OtherUtil.showToastText("您的账号在其他地方登录，请重新登录");
+                                    aCache.put("has_login","no");
+                                    LocationUtil.getInstance().stopGetLocation();
+                                    AppUtils.AppExit(mContext);
+                                    PersonInfo.logOut();
+                                    startActivity(new Intent(mContext,LoginActivity.class));
+                                }else{
+                                    OtherUtil.showToastText("上传失败:" + e.getMessage());
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(mContext, "上传失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onProgress(Integer value) {
+                // 返回的上传进度（百分比）
+                OtherUtil.showToastText("上传" + value + "%");
             }
         });
     }

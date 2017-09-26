@@ -40,52 +40,68 @@
     <RelativeLayout
         android:layout_below="@id/titlelayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/ll_play_msg_content"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rl_play_msg_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/iv_play_msg_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:src="@mipmap/icon_voice"/>
 
             <TextView
                 android:id="@+id/tv_play_msg_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_play_msg_content"
+                android:layout_marginLeft="5dp"
                 android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:textColor="@color/baseGrayNor"
                 android:text="语音播报" />
-
-        </LinearLayout>
 
 
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/ll_play_msg_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:text="ttttt"
             android:textColor="@color/baseGrayNor"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/grayline"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/rl_play_msg_content"/>
+
 
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_play_msg_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="bbbbb"
+            android:layout_below="@id/line"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="sssssssssssssssssssssssssssssssssssss"
             android:lineSpacingMultiplier="1.2"
-            android:textColor="@color/baseGrayNor"
-            android:textSize="15sp" />
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/baseGrayMore"
+            android:textSize="16sp" />
     </RelativeLayout>
 
 </RelativeLayout>

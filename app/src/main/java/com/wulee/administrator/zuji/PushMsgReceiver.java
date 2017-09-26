@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 
 import com.liangmayong.text2speech.Text2Speech;
 import com.wulee.administrator.zuji.database.DBHandler;
@@ -27,10 +28,16 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class PushMsgReceiver extends BroadcastReceiver {
 
+    private NotificationManager mNotificationManager;
+    public static  final String ACTION_HIDE_PUSH_MSG_NOTIFICATION = "action_hide_push_msg_notification";
+    private static final int ID_PUSH_MSG = 0;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
-        if(intent.getAction().equals(PushConstants.ACTION_MESSAGE)){
+        mNotificationManager = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
+        String action = intent.getAction();
+        if(action.equals(PushConstants.ACTION_MESSAGE)){
 
             if(!OtherUtil.hasLogin())
                 return;
@@ -51,11 +58,11 @@ public class PushMsgReceiver extends BroadcastReceiver {
             mBuilder.setContentIntent(resultPendingIntent);
             Notification notification = mBuilder.build();
 
-            NotificationManager notificationManager = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.notify(0, notification);
-
+            mNotificationManager.notify(ID_PUSH_MSG, notification);
 
             EventBus.getDefault().post(pushMessage);
+        }else if(TextUtils.equals(action,ACTION_HIDE_PUSH_MSG_NOTIFICATION)){
+            mNotificationManager.cancel(ID_PUSH_MSG);
         }
     }
 }

@@ -27,6 +27,7 @@ import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
+import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.widget.ActionSheet;
 import com.yanzhenjie.permission.AndPermission;
@@ -38,11 +39,13 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
+
+import static cn.bmob.v3.BmobUser.getCurrentUser;
+import static com.wulee.administrator.zuji.App.aCache;
 
 
 /**
@@ -97,7 +100,7 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
 
     private void initData() {
         title.setText("个人中心");
-        PersonInfo personInfo = DBHandler.getCurrPesonInfo();
+        PersonInfo personInfo =  DBHandler.getCurrPesonInfo();
         if (null != personInfo) {
             if (!TextUtils.isEmpty(personInfo.getName()))
                 etName.setText(personInfo.getName());
@@ -118,7 +121,7 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
         final String name = etName.getText().toString().trim();
         String genderStr = etGender.getText().toString().trim();
 
-        PersonInfo personInfo = BmobUser.getCurrentUser(PersonInfo.class);
+        PersonInfo personInfo = getCurrentUser(PersonInfo.class);
         personInfo.setName(name);
         personInfo.setSex(genderStr);
 
@@ -137,7 +140,16 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                     }
                     OtherUtil.showToastText("更新个人信息成功");
                 } else {
-                    OtherUtil.showToastText("更新个人信息失败:" + e.getMessage());
+                    if(e.getErrorCode() == 206){
+                        OtherUtil.showToastText("您的账号在其他地方登录，请重新登录");
+                        aCache.put("has_login","no");
+                        LocationUtil.getInstance().stopGetLocation();
+                        AppUtils.AppExit(PersonalInfoActivity.this);
+                        PersonInfo.logOut();
+                        startActivity(new Intent(PersonalInfoActivity.this,LoginActivity.class));
+                    }else{
+                        OtherUtil.showToastText("更新个人信息失败:" + e.getMessage());
+                    }
                 }
             }
         });
@@ -201,7 +213,7 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                 if (e == null) {
                     headerimgurl = bmobFile.getFileUrl();
 
-                    PersonInfo personInfo = BmobUser.getCurrentUser(PersonInfo.class);
+                    PersonInfo personInfo = getCurrentUser(PersonInfo.class);
                     personInfo.setHeader_img_url(headerimgurl);
                     personInfo.update(new UpdateListener() {
                         @Override
@@ -215,7 +227,16 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                                 DBHandler.updatePesonInfo(piInfo);
                                 Toast.makeText(PersonalInfoActivity.this, "更新个人头像成功", Toast.LENGTH_SHORT).show();
                             } else {
-                                OtherUtil.showToastText("更新个人头像失败:" + e.getMessage());
+                                if(e.getErrorCode() == 206){
+                                    OtherUtil.showToastText("您的账号在其他地方登录，请重新登录");
+                                    aCache.put("has_login","no");
+                                    LocationUtil.getInstance().stopGetLocation();
+                                    AppUtils.AppExit(PersonalInfoActivity.this);
+                                    PersonInfo.logOut();
+                                    startActivity(new Intent(PersonalInfoActivity.this,LoginActivity.class));
+                                }else{
+                                    OtherUtil.showToastText("更新个人头像失败:" + e.getMessage());
+                                }
                             }
                         }
                     });
@@ -263,7 +284,7 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                         @Override
                         public void onSucceed(int requestCode, List<String> grantedPermissions) {
                             TakePhoto takePhoto = getTakePhoto();
-                            File file=new File(Constant.TEMP_FILE_PATH, System.currentTimeMillis() + ".jpg");
+                            File file=new File(Constant.TEMP_FILE_PATH, "header_img" + ".jpg");
                             if (!file.getParentFile().exists())file.getParentFile().mkdirs();
                             Uri imageUri = Uri.fromFile(file);
 

@@ -191,6 +191,7 @@
         <receiver android:name=".PushMsgReceiver">
             <intent-filter >
                 <action android:name="cn.bmob.push.action.MESSAGE"/>
+                <action android:name="action_hide_push_msg_notification"/>
             </intent-filter>
         </receiver>
 

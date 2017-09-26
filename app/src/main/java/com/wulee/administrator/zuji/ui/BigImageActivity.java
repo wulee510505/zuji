@@ -36,7 +36,7 @@ public class BigImageActivity extends BaseActivity {
         int sw = UIUtils.getScreenWidthAndHeight(this)[0];
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) ivBigimg.getLayoutParams();
         rlp.width = sw;
-        rlp.height = sw;
+        rlp.height = sw * 3/2;
         ivBigimg.setLayoutParams(rlp);
 
         imgUrl = getIntent().getStringExtra(IMAGE_URL);

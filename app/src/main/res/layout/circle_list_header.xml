@@ -4,10 +4,11 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/cover"
+        android:id="@+id/iv_header_bg"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="50dp"
+        android:scaleType="centerCrop"
         android:background="@mipmap/bg_circle_header" />
 
 

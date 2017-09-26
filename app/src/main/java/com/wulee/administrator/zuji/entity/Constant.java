@@ -28,6 +28,10 @@ public interface Constant {
 
     int JOKE_TEXT_OR_PIC_URL_SAVE_TIME =  /*60 * 60 * 24 **/ 15; //1天
 
+
+    String KEY_LAST_UPDATE_CURR_PERSONINFO_TIME = "key_last_update_curr_personinfo_time";
+    long UPDATE_CURR_PERSONINFO_INTERVAL = 5*60*60;// 5分钟
+
     // 日志过期时间，默认为10天
     int LOG_EXPIRED_TIME = 10;
 }

@@ -69,13 +69,13 @@ public class MsgDetailActivity extends BaseActivity {
         tvTime.setText(DateTimeUtils.getStringDateTime(msgObj.getTime()));
     }
 
-    @OnClick({R.id.iv_back, R.id.ll_play_msg_content})
+    @OnClick({R.id.iv_back, R.id.rl_play_msg_content})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.ll_play_msg_content:
+            case R.id.rl_play_msg_content:
                 final ScaleAnimation animation = new ScaleAnimation(1f, 1.2f, 1f, 1.2f,
                         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                         0.5f);

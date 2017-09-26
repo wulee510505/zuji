@@ -32,6 +32,7 @@ import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.ui.fragment.CircleFragment;
 import com.wulee.administrator.zuji.ui.fragment.JokeFragment;
 import com.wulee.administrator.zuji.ui.fragment.MainBaseFrag;
@@ -42,13 +43,17 @@ import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ConfigKey;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
+import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.utils.PhoneUtil;
 
+import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.BmobUpdateListener;
+import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import cn.bmob.v3.update.UpdateResponse;
 import cn.bmob.v3.update.UpdateStatus;
 
+import static cn.bmob.v3.BmobUser.getCurrentUser;
 import static com.wulee.administrator.zuji.App.aCache;
 
 /**
@@ -100,8 +105,40 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
     @Override
     protected void onResume() {
         super.onResume();
-
         initMenuHeaderInfo();
+
+        long lastUpdateCurrPersonInfoTime = 0L;
+        try {
+            String timeStr = aCache.getAsString(Constant.KEY_LAST_UPDATE_CURR_PERSONINFO_TIME);
+            if(!TextUtils.isEmpty(timeStr)){
+                lastUpdateCurrPersonInfoTime = Long.parseLong(timeStr);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        long interal = System.currentTimeMillis() - lastUpdateCurrPersonInfoTime;
+        if(interal > Constant.UPDATE_CURR_PERSONINFO_INTERVAL){
+            final PersonInfo personInfo = getCurrentUser(PersonInfo.class);
+            personInfo.update(new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if(e == null){
+                        aCache.put(Constant.KEY_LAST_UPDATE_CURR_PERSONINFO_TIME,System.currentTimeMillis());
+                        personInfo.setMobile(DBHandler.getCurrPesonInfo().getMobile());
+                        DBHandler.insertPesonInfo(personInfo);
+                    }else{
+                        if(e.getErrorCode() == 206){
+                            OtherUtil.showToastText("您的账号在其他地方登录，请重新登录");
+                            aCache.put("has_login","no");
+                            LocationUtil.getInstance().stopGetLocation();
+                            AppUtils.AppExit(MainNewActivity.this);
+                            PersonInfo.logOut();
+                            startActivity(new Intent(MainNewActivity.this,LoginActivity.class));
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -297,7 +334,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         }else  if (id ==  R.id.item_pushmsg) {
             startActivity(new Intent(this,PushMsgListActivity.class));
         }else  if (id ==  R.id.item_msg_board) {
-            PersonInfo personInfo = PersonInfo.getCurrentUser(PersonInfo.class);
+            PersonInfo personInfo = getCurrentUser(PersonInfo.class);
             startActivity(new Intent(this,MessageBoardActivity.class).putExtra("piInfo",personInfo));
         }else  if (id ==  R.id.item_checkupdate) {
             BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
