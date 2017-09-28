@@ -28,7 +28,7 @@ public interface Constant {
     String KEY_JOKE_TEXT_URL = "key_joke_text_url";
     String KEY_JOKE_PIC_URL = "key_joke_pic_url";
 
-    int JOKE_TEXT_OR_PIC_URL_SAVE_TIME =  /*60 * 60 * 24 **/ 15; //1天
+    int JOKE_TEXT_OR_PIC_URL_SAVE_TIME =  60 * 60 * 24; //24小时
 
 
     String KEY_LAST_UPDATE_CURR_PERSONINFO_TIME = "key_last_update_curr_personinfo_time";
