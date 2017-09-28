@@ -6,7 +6,6 @@
     android:fitsSystemWindows="true"
     android:background="@color/ctv_white">
 
-
     <com.wulee.administrator.zuji.widget.BaseTitleLayout
         android:id="@+id/titlelayout"
         android:layout_width="match_parent"
@@ -20,11 +19,55 @@
         app:titleTextSize="18sp" />
 
 
+    <LinearLayout
+        android:id="@+id/llayout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <Button
+            android:id="@+id/btn_submit_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:text="留言" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="20dp"
+            android:layout_height="wrap_content" />
+
+        <com.wulee.recordingibrary.view.RecordVoiceButton
+            android:id="@+id/btn_record"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_toLeftOf="@id/btn_submit_message"
+            android:background="@drawable/bg_button"
+            android:text="录音留言"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@id/llayout_bottom"
+        android:background="@color/baseGrayLit" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/titlelayout"
+        android:layout_above="@id/line"
         android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView

@@ -8,7 +8,7 @@ import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import java.util.ArrayList;
 
 
-public class LocationAdapter extends BaseQuickAdapter<LocationInfo> {
+public class LocationAdapter extends BaseQuickAdapter<LocationInfo,BaseViewHolder> {
 
     public LocationAdapter(int layoutResId, ArrayList<LocationInfo> dataList) {
         super(layoutResId, dataList);

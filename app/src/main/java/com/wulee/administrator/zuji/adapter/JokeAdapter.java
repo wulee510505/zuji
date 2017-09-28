@@ -1,6 +1,5 @@
 package com.wulee.administrator.zuji.adapter;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +8,7 @@ import android.widget.Toast;
 import com.huxq17.swipecardsview.BaseCardAdapter;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.entity.JokeInfo;
+import com.wulee.administrator.zuji.utils.OtherUtil;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class JokeAdapter extends BaseCardAdapter {
         tvCpoy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                copy(joke.getContent(),context);
+                OtherUtil.copy(joke.getContent(),context);
                 Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show();
             }
         });
@@ -66,14 +66,4 @@ public class JokeAdapter extends BaseCardAdapter {
         return super.getVisibleCardCount();
     }
 
-    /**
-     * 实现文本复制功能
-     * add by wangqianzhou
-     * @param content
-     */
-    private   void copy(String content, Context context){
-       // 得到剪贴板管理器
-        ClipboardManager cmb = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
-        cmb.setText(content.trim());
-    }
 }

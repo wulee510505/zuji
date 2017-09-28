@@ -15,8 +15,8 @@ android {
         applicationId "com.wulee.administrator.zuji"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 17
-        versionName "1.2.1"
+        versionCode 18
+        versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -75,13 +75,14 @@ dependencies {
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
     compile 'cn.bmob.android:http-legacy:1.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'com.yanzhenjie:permission:1.1.0'
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'org.greenrobot:greendao-generator:2.2.0'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.github.wulee510505:Text2Speach:1.0.0'
     compile 'com.github.wulee510505:ComWebActivity:6b02d33240'
+    compile 'com.github.wulee510505:Recording:1.0.1'
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
     compile 'cn.finalteam:okhttpfinal:2.0.7'
     compile 'com.github.chenBingX:SuperTextView:v1.0'
@@ -94,6 +95,8 @@ dependencies {
     compile 'com.jaeger.ninegridimageview:library:1.1.0'
     compile 'com.airbnb.android:lottie:2.2.0'
     compile 'com.huxq17.android:SwipeCardsView:1.3.5'
+
+
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile files('libs/gson-2.6.2.jar')
     compile files('libs/BmobSDK_3.5.5_20170420.jar')

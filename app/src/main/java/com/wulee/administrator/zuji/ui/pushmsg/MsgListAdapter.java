@@ -10,7 +10,7 @@ import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import java.util.ArrayList;
 
 
-public class MsgListAdapter extends BaseQuickAdapter<PushMessage> {
+public class MsgListAdapter extends BaseQuickAdapter<PushMessage,BaseViewHolder> {
 
     public MsgListAdapter(int layoutResId, ArrayList<PushMessage> dataList) {
         super(layoutResId, dataList);

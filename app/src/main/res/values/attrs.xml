@@ -56,4 +56,11 @@
         <attr name="titleRightImg2" format="reference"/>
         <attr name="titleRightText" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="ReadMoreTextView">
+        <attr name="rmtMoreText" format="string"/>
+        <attr name="rmtMoreColor" format="color"/>
+        <attr name="rmtLessText" format="string"/>
+        <attr name="rmtLessColor" format="color"/>
+    </declare-styleable>
 </resources>

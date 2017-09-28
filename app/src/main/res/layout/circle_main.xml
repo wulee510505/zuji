@@ -6,19 +6,39 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-
-    <com.wulee.administrator.zuji.widget.BaseTitleLayout
+    <RelativeLayout
         android:id="@+id/titlelayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/com_title_height"
-        android:layout_below="@id/titlelayout"
-        android:background="@color/colorAccent"
-        app:titleLeftImgVisible="false"
-        app:titleTextColor="@color/color_white"
-        app:titleRightImg1="@mipmap/icon_camer"
-        app:titleTextSize = "18sp"
-        app:titleCenterText="圈子"
-        app:titleLeftText=""/>
+        android:orientation="vertical"
+        android:background="@color/colorAccent">
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:singleLine="true"
+            android:text="圈子"
+            android:textColor="@color/color_white"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_publish_circle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_camer" />
+    </RelativeLayout>
+
     
     
     <android.support.v4.widget.SwipeRefreshLayout

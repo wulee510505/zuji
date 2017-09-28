@@ -1,5 +1,6 @@
 package com.wulee.administrator.zuji.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 
 import java.util.ArrayList;
@@ -12,7 +13,20 @@ import cn.bmob.v3.datatype.BmobRelation;
  * Created by wulee on 2017/8/22 10:21
  */
 
-public class CircleContent extends BmobObject{
+public class CircleContent extends BmobObject implements MultiItemEntity{
+
+    public static final int TYPE_TEXT_AND_IMG = 0;
+    public static final int TYPE_ONLY_TEXT = 1;
+    private int itemType;
+
+    public CircleContent(int itemType) {
+        this.itemType = itemType;
+    }
+    @Override
+    public int getItemType() {
+        return itemType;
+    }
+
     private long id;
 
     private String userId;
@@ -152,5 +166,4 @@ public class CircleContent extends BmobObject{
             this.url = url;
         }
     }
-
 }

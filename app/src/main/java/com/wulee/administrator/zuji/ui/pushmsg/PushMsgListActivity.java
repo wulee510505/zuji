@@ -62,12 +62,12 @@ public class PushMsgListActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int pos) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 List<PushMessage> dataList = mAdapter.getData();
                 if(null != dataList && dataList.size()>0){
-                    PushMessage msg = dataList.get(pos);
+                    PushMessage msg = dataList.get(position);
                     if(null != msg){
                         Intent intent = new Intent(PushMsgListActivity.this,MsgDetailActivity.class);
                         intent.putExtra("msg",msg);

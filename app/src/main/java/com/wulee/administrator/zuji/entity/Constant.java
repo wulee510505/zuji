@@ -12,7 +12,9 @@ public interface Constant {
     String LOG_PATH = String.format("%slog/", ROOT_PATH);// 日志目录
     String AVATAR_PATH = String.format("%savatar/", ROOT_PATH);// 头像目录
     String CRASH_PATH = String.format("%scrash/", ROOT_PATH);// 异常信息的目录
-    String SAVE_PIC = String.format("%ssavepic/", ROOT_PATH);// 异常信息的目录
+    String SAVE_PIC = String.format("%ssavepic/", ROOT_PATH);// 图片保存的目录
+    String SAVE_AUDIO = String.format("%ssaveaudio/", ROOT_PATH);// 音频保存的目录
+
 
     String TEMP_FILE_PATH = String.format("%stemp/", ROOT_PATH);// 临时文件存放的目录
 
@@ -31,6 +33,10 @@ public interface Constant {
 
     String KEY_LAST_UPDATE_CURR_PERSONINFO_TIME = "key_last_update_curr_personinfo_time";
     long UPDATE_CURR_PERSONINFO_INTERVAL = 5*60*60;// 5分钟
+
+
+    String KEY_LAST_CHECK_UPDATE_TIME = "key_last_check_update_time";
+    long CHECK_UPDATE_INTERVAL = 10*60*60;// 10分钟
 
     // 日志过期时间，默认为10天
     int LOG_EXPIRED_TIME = 10;

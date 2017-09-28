@@ -101,18 +101,19 @@ public class NewsChildFragment extends Fragment {
                 getNews(mUrl);
             }
         });
-        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int pos) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 List<NewsInfo.NewsEntity> newsList = mAdapter.getData();
                 if(newsList != null && newsList.size()>0){
-                    NewsInfo.NewsEntity news = newsList.get(pos);
+                    NewsInfo.NewsEntity news = newsList.get(position);
                     if(news != null){
                         WebActivity.launch(getActivity(),news.getUrl(),news.getTitle(),R.color.colorAccent);
                     }
                 }
             }
         });
+
     }
 
     private void getNews(String url) {

@@ -148,12 +148,12 @@ public class ZujiFragment extends MainBaseFrag{
                 startActivity(new Intent(mContext, ZuJiMapActivity.class));
             }
         });
-        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int pos) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 List<LocationInfo> locationInfoList = mAdapter.getData();
                 if(null != locationInfoList && locationInfoList.size()>0){
-                    LocationInfo location = locationInfoList.get(pos);
+                    LocationInfo location = locationInfoList.get(position);
                     if(null != location){
                         Intent intent = new Intent(mContext,MapActivity.class);
                         intent.putExtra(MapActivity.INTENT_KEY_LATITUDE,location.getLatitude());
@@ -163,10 +163,10 @@ public class ZujiFragment extends MainBaseFrag{
                 }
             }
         });
-        mAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
+        mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(View view, int pos) {
-                showDeleteDialog(pos);
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                showDeleteDialog(position);
                 return false;
             }
         });
@@ -180,7 +180,8 @@ public class ZujiFragment extends MainBaseFrag{
             }
         });
         //加载更多
-        mAdapter.openLoadMore(PAGE_SIZE, true);
+        mAdapter.setEnableLoadMore(true);
+        mAdapter.setPreLoadNumber(PAGE_SIZE);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener(){
             @Override
             public void onLoadMoreRequested() {
@@ -348,13 +349,15 @@ public class ZujiFragment extends MainBaseFrag{
                         isRefresh = false;
                     }else {//正常请求 或 上拉加载更多时处理流程
                         if (dataList.size() > 0) {
-                            mAdapter.notifyDataChangedAfterLoadMore(dataList, true);
+                             mAdapter.addData(dataList);
+                             mAdapter.loadMoreComplete();
                         }else {
-                            mAdapter.notifyDataChangedAfterLoadMore(false);
+                             mAdapter.loadMoreEnd();
                         }
                     }
                 }else{
                     LogUtil.d("查询LocationInfo失败"+e.getMessage()+","+e.getErrorCode());
+                    mAdapter.loadMoreFail();
                 }
             }
         });
@@ -363,7 +366,6 @@ public class ZujiFragment extends MainBaseFrag{
 
     @Override
     public void onFragmentFirstSelected() {
-
     }
 
     public class LocationChangeReceiver extends BroadcastReceiver {

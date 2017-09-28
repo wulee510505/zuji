@@ -37,36 +37,29 @@
                 android:textSize="18sp" />
 
 
-            <TextView
+            <com.wulee.administrator.zuji.widget.ReadMoreTextView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/userNick"
-                android:layout_marginTop="6dp"
+                android:layout_margin="6dp"
+                android:maxLines="3"
                 android:text="BBBBBBBBBBBBBBBBBBBBBBBBB"
                 android:textColor="@color/ctv_black_2"
                 android:textSize="@dimen/com_tv_size_mid_lit"
                 android:lineSpacingMultiplier="1.2"
-                android:lineSpacingExtra="2dp"/>
-
-
-            <com.jaeger.ninegridimageview.NineGridImageView
-                android:id="@+id/nine_grid_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/content"
-                android:layout_margin="8dp"
-                app:imgGap="4dp"
-                app:showStyle="fill"
-                app:singleImgSize="120dp" />
-
+                android:lineSpacingExtra="2dp"
+                app:rmtLessColor="@color/colorAccent"
+                app:rmtLessText=" \n收缩"
+                app:rmtMoreColor="@color/colorAccent"
+                app:rmtMoreText=" \n展开"/>
 
             <RelativeLayout
                 android:id="@+id/rl_location_and_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:layout_below="@id/nine_grid_view">
+                android:layout_below="@id/content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +74,7 @@
                         android:drawablePadding="2dp"
                         android:gravity="center_vertical"
                         android:text="cccccccccccccccc"
-                        android:textColor="@color/baseGrayNor"
+                        android:textColor="@color/color_light_blue"
                         android:textSize="12sp" />
 
 
@@ -129,7 +122,7 @@
                 android:id="@+id/album_toolbar"
                 android:layout_width="150dp"
                 android:layout_height="35dp"
-                android:layout_below="@id/nine_grid_view"
+                android:layout_below="@id/content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="4dp"
@@ -200,17 +193,15 @@
                 android:textColor="@color/baseGrayNor"
                 android:textSize="@dimen/com_tv_size_normal" />
 
-            <TextView
-                android:id="@+id/tv_comments"
+            <com.wulee.administrator.zuji.widget.NoScrollListView
+                android:id="@+id/lv_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_likes"
                 android:layout_marginTop="8dp"
-                android:text=""
-                android:textColor="@color/baseGrayNor"
-                android:textSize="@dimen/com_tv_size_normal"
-                android:lineSpacingMultiplier="1.2"
-                android:lineSpacingExtra="2dp"/>
+                android:scrollbars="none"
+                android:overScrollMode="never"/>
+
         </RelativeLayout>
 
     </LinearLayout>

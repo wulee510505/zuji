@@ -12,7 +12,7 @@ import com.wulee.administrator.zuji.utils.ImageUtil;
 import java.util.ArrayList;
 
 
-public class NewsAdapter extends BaseQuickAdapter<NewsInfo.NewsEntity> {
+public class NewsAdapter extends BaseQuickAdapter<NewsInfo.NewsEntity,BaseViewHolder> {
 
     private Context context;
 

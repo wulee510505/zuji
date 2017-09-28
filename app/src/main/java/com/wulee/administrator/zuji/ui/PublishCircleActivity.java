@@ -3,7 +3,6 @@ package com.wulee.administrator.zuji.ui;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
@@ -48,7 +47,6 @@ import static com.wulee.administrator.zuji.App.aCache;
 
 public class PublishCircleActivity extends TakePhotoActivity {
 
-
     @InjectView(R.id.edittext)
     AppCompatEditText edittext;
     @InjectView(R.id.gridview_pic)
@@ -58,9 +56,16 @@ public class PublishCircleActivity extends TakePhotoActivity {
     @InjectView(R.id.titlelayout)
     BaseTitleLayout titlelayout;
 
+
+    public static final String PUBLISH_TYPE = "publish_type";
+    private int mType;
+    public static final int TYPE_PUBLISH_TEXT_AND_IMG = 0;
+    public static final int TYPE_PUBLISH_TEXT_ONLY = 1;
+
     private PublishPicGridAdapter mGridAdapter;
     private List<PublishPicture> picList = new ArrayList<>();
     private int maxSelPicNum = 9;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,28 +73,54 @@ public class PublishCircleActivity extends TakePhotoActivity {
 
         setContentView(R.layout.circle_publish);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        AppUtils.setStateBarColor(this,R.color.colorAccent);
+        AppUtils.setStateBarColor(this, R.color.colorAccent);
 
         ButterKnife.inject(this);
+
+        mType = getIntent().getIntExtra(PUBLISH_TYPE, 0);
 
         initView();
         addListner();
     }
 
     private void initView() {
-        PublishPicture pic = new PublishPicture();
-        pic.setId(-1);
-        pic.setPath("");
-        picList.add(picList.size(), pic);
-        mGridAdapter = new PublishPicGridAdapter(picList, this);
-        gridviewPic.setAdapter(mGridAdapter);
+        if (mType == TYPE_PUBLISH_TEXT_AND_IMG) {
+            gridviewPic.setVisibility(View.VISIBLE);
+
+            PublishPicture pic = new PublishPicture();
+            pic.setId(-1);
+            pic.setPath("");
+            picList.add(picList.size(), pic);
+            mGridAdapter = new PublishPicGridAdapter(picList, this);
+            gridviewPic.setAdapter(mGridAdapter);
+        } else if (mType == TYPE_PUBLISH_TEXT_ONLY) {
+            gridviewPic.setVisibility(View.GONE);
+        }
     }
 
     private void addListner() {
+        titlelayout.setOnTitleClickListener(new TitleLayoutClickListener() {
+            @Override
+            public void onLeftClickListener() {
+                super.onLeftClickListener();
+                finish();
+            }
+
+            @Override
+            public void onRightTextClickListener() {
+                super.onRightTextClickListener();
+            }
+
+            @Override
+            public void onRightImg1ClickListener() {
+                super.onRightImg1ClickListener();
+                publishCircleContent();
+            }
+        });
         gridviewPic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -102,30 +133,14 @@ public class PublishCircleActivity extends TakePhotoActivity {
                                 .setMaxSize(102400) //100Kb
                                 .setMaxPixel(300)
                                 .create();
-                        mTakePhoto.onEnableCompress(config,false);
+                        mTakePhoto.onEnableCompress(config, false);
                         mTakePhoto.onPickMultiple(maxSelPicNum - picList.size() + 1);
-                    }else{
+                    } else {
                         Intent intent = new Intent(PublishCircleActivity.this, BigImageActivity.class);
-                        intent.putExtra(BigImageActivity.IMAGE_URL,pic.getPath());
+                        intent.putExtra(BigImageActivity.IMAGE_URL, pic.getPath());
                         startActivity(intent);
                     }
                 }
-            }
-        });
-        titlelayout.setOnTitleClickListener(new TitleLayoutClickListener() {
-            @Override
-            public void onLeftClickListener() {
-                super.onLeftClickListener();
-                finish();
-            }
-            @Override
-            public void onRightTextClickListener() {
-                super.onRightTextClickListener();
-            }
-            @Override
-            public void onRightImg1ClickListener() {
-                super.onRightImg1ClickListener();
-                publishCircleContent();
             }
         });
     }
@@ -153,9 +168,9 @@ public class PublishCircleActivity extends TakePhotoActivity {
             picList.add(pic);
         }
         Iterator<PublishPicture> picIter = picList.iterator();
-        while (picIter.hasNext()){
+        while (picIter.hasNext()) {
             PublishPicture pic = picIter.next();
-            if (pic.getId()  == -1)
+            if (pic.getId() == -1)
                 picIter.remove();
         }
         if (picList.size() < 9) {
@@ -168,7 +183,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
     }
 
     /**
-     *发表圈子内容
+     * 发表圈子内容
      */
     private void publishCircleContent() {
         String content = edittext.getText().toString().trim();
@@ -179,60 +194,80 @@ public class PublishCircleActivity extends TakePhotoActivity {
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if (null == piInfo)
             return;
-
         progressBar.setVisibility(View.VISIBLE);
+        if (mType == TYPE_PUBLISH_TEXT_AND_IMG) {
+            final CircleContent circlrContent = new CircleContent(CircleContent.TYPE_TEXT_AND_IMG);
+            circlrContent.setId(System.currentTimeMillis());
+            circlrContent.setUserId(piInfo.getUid());
+            circlrContent.setUserNick(TextUtils.isEmpty(piInfo.getName()) ? "游客" : piInfo.getName());
+            circlrContent.setContent(content);
+            String currCity = aCache.getAsString("location_city");
+            if (!TextUtils.isEmpty(currCity))
+                circlrContent.setLocation(currCity);
+            circlrContent.personInfo = piInfo;
+            if (picList.size() > 1) {
+                picList.remove(picList.size() - 1);
 
-        final CircleContent circlrContent = new CircleContent();
-        circlrContent.setId(SystemClock.currentThreadTimeMillis());
-        circlrContent.setUserId(piInfo.getUid());
-        circlrContent.setUserNick(TextUtils.isEmpty(piInfo.getName())?"游客":piInfo.getName());
-        circlrContent.setContent(content);
-        String currCity = aCache.getAsString("location_city");
-        if(!TextUtils.isEmpty(currCity))
-            circlrContent.setLocation(currCity);
-        circlrContent.personInfo = piInfo;
-        if (picList.size() > 1) {
-            picList.remove(picList.size() - 1);
-
-            final String[] filePaths = new String[picList.size()];
-            for (int i = 0; i < picList.size(); i++) {
-                filePaths[i] = picList.get(i).getPath();
-            }
-            BmobFile.uploadBatch(filePaths, new UploadBatchListener() {
-                @Override
-                public void onSuccess(List<BmobFile> files, List<String> urls) {
-                    //1、files-上传完成后的BmobFile集合，是为了方便大家对其上传后的数据进行操作，例如你可以将该文件保存到表中
-                    //2、urls-上传文件的完整url地址
-                    if (urls.size() == filePaths.length) {//如果数量相等，则代表文件全部上传完成
-                        String[] imgUrls = new String[urls.size()];
-                        for (int i = 0; i < urls.size(); i++) {
-                            imgUrls[i] = urls.get(i);
-                        }
-                        circlrContent.setImgUrls(imgUrls);
-                        circlrContent.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String s, BmobException e) {
-                                progressBar.setVisibility(View.GONE);
-                                if (e == null) {
-                                    EventBus.getDefault().post(new String("refresh"));
-                                    PublishCircleActivity.this.finish();
-                                }
+                final String[] filePaths = new String[picList.size()];
+                for (int i = 0; i < picList.size(); i++) {
+                    filePaths[i] = picList.get(i).getPath();
+                }
+                BmobFile.uploadBatch(filePaths, new UploadBatchListener() {
+                    @Override
+                    public void onSuccess(List<BmobFile> files, List<String> urls) {
+                        //1、files-上传完成后的BmobFile集合，是为了方便大家对其上传后的数据进行操作，例如你可以将该文件保存到表中
+                        //2、urls-上传文件的完整url地址
+                        if (urls.size() == filePaths.length) {//如果数量相等，则代表文件全部上传完成
+                            String[] imgUrls = new String[urls.size()];
+                            for (int i = 0; i < urls.size(); i++) {
+                                imgUrls[i] = urls.get(i);
                             }
-                        });
+                            circlrContent.setImgUrls(imgUrls);
+                            circlrContent.save(new SaveListener<String>() {
+                                @Override
+                                public void done(String s, BmobException e) {
+                                    progressBar.setVisibility(View.GONE);
+                                    if (e == null) {
+                                        EventBus.getDefault().post(new String("refresh"));
+                                        PublishCircleActivity.this.finish();
+                                    }
+                                }
+                            });
+                        }
                     }
-                }
 
-                @Override
-                public void onError(int statuscode, String errormsg) {
-                    Toast.makeText(PublishCircleActivity.this, "错误码" + statuscode + ",错误描述：" + errormsg, Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onError(int statuscode, String errormsg) {
+                        Toast.makeText(PublishCircleActivity.this, "错误码" + statuscode + ",错误描述：" + errormsg, Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onProgress(int curIndex, int curPercent, int total, int totalPercent) {
+                        //1、curIndex--表示当前第几个文件正在上传
+                        //2、curPercent--表示当前上传文件的进度值（百分比）
+                        //3、total--表示总的上传文件数
+                        //4、totalPercent--表示总的上传进度（百分比）
+                    }
+                });
+            }
+        } else if (mType == TYPE_PUBLISH_TEXT_ONLY) {
+            final CircleContent circlrContent = new CircleContent(CircleContent.TYPE_ONLY_TEXT);
+            circlrContent.setId(System.currentTimeMillis());
+            circlrContent.setUserId(piInfo.getUid());
+            circlrContent.setUserNick(TextUtils.isEmpty(piInfo.getName()) ? "游客" : piInfo.getName());
+            circlrContent.setContent(content);
+            String currCity = aCache.getAsString("location_city");
+            if (!TextUtils.isEmpty(currCity))
+                circlrContent.setLocation(currCity);
+            circlrContent.personInfo = piInfo;
+            circlrContent.save(new SaveListener<String>() {
                 @Override
-                public void onProgress(int curIndex, int curPercent, int total, int totalPercent) {
-                    //1、curIndex--表示当前第几个文件正在上传
-                    //2、curPercent--表示当前上传文件的进度值（百分比）
-                    //3、total--表示总的上传文件数
-                    //4、totalPercent--表示总的上传进度（百分比）
+                public void done(String s, BmobException e) {
+                    progressBar.setVisibility(View.GONE);
+                    if (e == null) {
+                        EventBus.getDefault().post(new String("refresh"));
+                        PublishCircleActivity.this.finish();
+                    }
                 }
             });
         }
@@ -242,7 +277,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(picList != null){
+        if (picList != null) {
             picList.clear();
         }
     }

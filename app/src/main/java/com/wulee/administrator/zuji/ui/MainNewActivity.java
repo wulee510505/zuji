@@ -32,7 +32,6 @@ import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
-import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.ui.fragment.CircleFragment;
 import com.wulee.administrator.zuji.ui.fragment.JokeFragment;
 import com.wulee.administrator.zuji.ui.fragment.MainBaseFrag;
@@ -43,12 +42,9 @@ import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ConfigKey;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
-import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.utils.PhoneUtil;
 
-import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.BmobUpdateListener;
-import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import cn.bmob.v3.update.UpdateResponse;
 import cn.bmob.v3.update.UpdateStatus;
@@ -107,7 +103,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         super.onResume();
         initMenuHeaderInfo();
 
-        long lastUpdateCurrPersonInfoTime = 0L;
+      /*  long lastUpdateCurrPersonInfoTime = 0L;
         try {
             String timeStr = aCache.getAsString(Constant.KEY_LAST_UPDATE_CURR_PERSONINFO_TIME);
             if(!TextUtils.isEmpty(timeStr)){
@@ -138,13 +134,26 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
                     }
                 }
             });
-        }
+        }*/
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        BmobUpdateAgent.forceUpdate(this);
+     /*   long lastCheckUpdateTime = 0L;
+        try {
+            String timeStr = aCache.getAsString(Constant.KEY_LAST_CHECK_UPDATE_TIME);
+            if(!TextUtils.isEmpty(timeStr)){
+                lastCheckUpdateTime = Long.parseLong(timeStr);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        long interal = System.currentTimeMillis() - lastCheckUpdateTime;
+        if(interal > Constant.CHECK_UPDATE_INTERVAL){
+            BmobUpdateAgent.forceUpdate(this);
+            aCache.put(Constant.KEY_LAST_CHECK_UPDATE_TIME,System.currentTimeMillis());
+        }*/
     }
 
     private void init() {

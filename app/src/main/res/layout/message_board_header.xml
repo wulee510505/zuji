@@ -3,38 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/et_message_content"
+    <LinearLayout
+        android:id="@+id/llayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:minHeight="120dp"
-        android:background="@drawable/bg_com_edittext"
-        android:gravity="top|left"
-        android:textSize="15sp"
-        android:hint="请输入留言内容" />
+        android:orientation="horizontal"
+        android:padding="20dp">
 
+        <Button
+            android:id="@+id/btn_submit_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:text="留言" />
 
-    <Button
-        android:id="@+id/btn_submit_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@id/et_message_content"
-        android:layout_below="@id/et_message_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_button"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:text="留言" />
+        <android.support.v4.widget.Space
+            android:layout_width="20dp"
+            android:layout_height="wrap_content" />
+
+        <com.wulee.recordingibrary.view.RecordVoiceButton
+            android:id="@+id/btn_record"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_toLeftOf="@id/btn_submit_message"
+            android:background="@drawable/bg_button"
+            android:text="录音留言"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/btn_submit_message"
-        android:background="@color/baseGrayLit"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_below="@id/llayout"
+        android:background="@color/baseGrayLit" />
 
 </RelativeLayout>

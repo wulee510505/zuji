@@ -19,7 +19,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 
 
-public class StepRankingAdapter extends BaseQuickAdapter<StepInfo> {
+public class StepRankingAdapter extends BaseQuickAdapter<StepInfo,BaseViewHolder> {
 
     private Context mcontext;
 
