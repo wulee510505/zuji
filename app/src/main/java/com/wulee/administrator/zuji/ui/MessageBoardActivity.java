@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.facebook.stetho.common.LogUtil;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.MessageAdapter;
 import com.wulee.administrator.zuji.base.BaseActivity;
@@ -24,6 +25,7 @@ import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 import com.wulee.recordingibrary.entity.Voice;
 import com.wulee.recordingibrary.view.RecordVoiceButton;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +33,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * Created by wulee on 2017/9/19 10:46
@@ -99,9 +103,8 @@ public class MessageBoardActivity extends BaseActivity {
         btnRecord.setEnrecordVoiceListener(new RecordVoiceButton.EnRecordVoiceListener() {
             @Override
             public void onFinishRecord(long length, String strLength, String filePath) {
-                //adapter.add(new Voice(length, strLength, filePath) )
 
-                MessageInfo messageInfo = new MessageInfo(MessageInfo.TYPE_AUDIO);
+                final MessageInfo messageInfo = new MessageInfo(MessageInfo.TYPE_AUDIO);
                 messageInfo.voice = new Voice(length, strLength, filePath);
                 if (currPiInfo != null)
                     messageInfo.piInfo = currPiInfo;
@@ -116,15 +119,32 @@ public class MessageBoardActivity extends BaseActivity {
                 messageInfo.setSender(relation);
 
                 showProgressDialog(false);
-                messageInfo.save(new SaveListener<String>() {
+
+                final BmobFile bmobFile = new BmobFile(new File(filePath));
+                bmobFile.uploadblock(new UploadFileListener() {
                     @Override
-                    public void done(String s, BmobException e) {
-                        stopProgressDialog();
-                        if (e == null) {
-                            if (!TextUtils.isEmpty(s)) {
-                                getMessageList();
-                            }
+                    public void done(BmobException e) {
+                        if(e == null){
+                            LogUtil.d("上传文件成功:" + bmobFile.getFileUrl());
+                            messageInfo.audioUrl = bmobFile.getFileUrl();
+                            messageInfo.save(new SaveListener<String>() {
+                                @Override
+                                public void done(String s, BmobException e) {
+                                    stopProgressDialog();
+                                    if (e == null) {
+                                        if (!TextUtils.isEmpty(s)) {
+                                            getMessageList();
+                                        }
+                                    }
+                                }
+                            });
+                        }else{
+                            LogUtil.d("上传文件失败：" + e.getMessage());
                         }
+                    }
+                    @Override
+                    public void onProgress(Integer value) {
+                        // 返回的上传进度（百分比）
                     }
                 });
             }

@@ -3,4 +3,7 @@
 
     <string name="tencent_wechat">微信</string>
     <string name="tencent_wechat_circle">微信朋友圈</string>
+
+    <string name="read_more">展开</string>
+    <string name="read_less">收缩</string>
 </resources>

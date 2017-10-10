@@ -28,15 +28,19 @@ public interface Constant {
     String KEY_JOKE_TEXT_URL = "key_joke_text_url";
     String KEY_JOKE_PIC_URL = "key_joke_pic_url";
 
-    int JOKE_TEXT_OR_PIC_URL_SAVE_TIME =  60 * 60 * 24; //24小时
+    int JOKE_TEXT_OR_PIC_URL_SAVE_TIME =  24 * 60 * 60 * 1000; //24小时
 
 
     String KEY_LAST_UPDATE_CURR_PERSONINFO_TIME = "key_last_update_curr_personinfo_time";
-    long UPDATE_CURR_PERSONINFO_INTERVAL = 5*60*60;// 5分钟
+    long UPDATE_CURR_PERSONINFO_INTERVAL = 5 * 60 * 1000;// 5分钟
 
 
     String KEY_LAST_CHECK_UPDATE_TIME = "key_last_check_update_time";
-    long CHECK_UPDATE_INTERVAL = 10*60*60;// 10分钟
+    long CHECK_UPDATE_INTERVAL = 10 * 60 * 1000;// 10分钟
+
+
+    String KEY_LAST_SHOW_NOTICE_TIME = "key_last_show_notice_time";
+    long SHOW_NOTICE_INTERVAL =  24 * 60 * 60 * 1000;// 24小时
 
     // 日志过期时间，默认为10天
     int LOG_EXPIRED_TIME = 10;

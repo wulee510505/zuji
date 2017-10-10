@@ -60,13 +60,13 @@
 
 
     <Button
-        android:id="@+id/button_save"
+        android:id="@+id/button_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@drawable/bg_button"
         android:textColor="#fff"
         android:textSize="18sp"
-        android:text="保存" />
+        android:text="提交" />
 
 </LinearLayout>

@@ -3,7 +3,6 @@ package com.wulee.administrator.zuji.ui;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +22,8 @@ import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.CircleContent;
 import com.wulee.administrator.zuji.entity.PublishPicture;
 import com.wulee.administrator.zuji.utils.AppUtils;
+import com.wulee.administrator.zuji.utils.UIUtils;
+import com.wulee.administrator.zuji.widget.AnFQNumEditText;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 
@@ -48,7 +49,7 @@ import static com.wulee.administrator.zuji.App.aCache;
 public class PublishCircleActivity extends TakePhotoActivity {
 
     @InjectView(R.id.edittext)
-    AppCompatEditText edittext;
+    AnFQNumEditText edittext;
     @InjectView(R.id.gridview_pic)
     GridView gridviewPic;
     @InjectView(R.id.progress_bar)
@@ -58,6 +59,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
 
 
     public static final String PUBLISH_TYPE = "publish_type";
+
     private int mType;
     public static final int TYPE_PUBLISH_TEXT_AND_IMG = 0;
     public static final int TYPE_PUBLISH_TEXT_ONLY = 1;
@@ -88,6 +90,11 @@ public class PublishCircleActivity extends TakePhotoActivity {
     }
 
     private void initView() {
+        edittext.setEtHint("说点什么吧...")//设置提示文字
+                .setEtMinHeight(UIUtils.dip2px(120))//设置最小高度，单位px
+                .setLength(300)//设置总字数
+                .setType(AnFQNumEditText.SINGULAR)//TextView显示类型(SINGULAR单数类型)(PERCENTAGE百分比类型)
+                .show();
         if (mType == TYPE_PUBLISH_TEXT_AND_IMG) {
             gridviewPic.setVisibility(View.VISIBLE);
 
@@ -186,7 +193,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
      * 发表圈子内容
      */
     private void publishCircleContent() {
-        String content = edittext.getText().toString().trim();
+        String content = edittext.getInputContent();
         if (TextUtils.isEmpty(content)) {
             Toast.makeText(this, "说点什么吧@^@", Toast.LENGTH_SHORT).show();
             return;

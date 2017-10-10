@@ -17,6 +17,7 @@ public class MessageInfo extends BmobObject implements MultiItemEntity{
     public PersonInfo owner;
     public PersonInfo piInfo;
     public Voice voice;
+    public String audioUrl;
 
     public static final int TYPE_TEXT = 0;
     public static final int TYPE_AUDIO = 1;

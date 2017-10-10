@@ -3,6 +3,9 @@ package com.wulee.administrator.zuji.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,6 +48,8 @@ import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.utils.PhoneUtil;
+import com.wulee.administrator.zuji.widget.CoolImageView;
+import com.zhouwei.blurlibrary.EasyBlur;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.BmobUpdateListener;
@@ -100,6 +105,21 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         }
         initSelectTab(pos);
         sendFragmentFirstSelectedMsg(pos);
+
+
+        long lastShowNoticeTime = 0L;
+        try {
+            String timeStr = aCache.getAsString(Constant.KEY_LAST_SHOW_NOTICE_TIME);
+            if(!TextUtils.isEmpty(timeStr)){
+                lastShowNoticeTime = Long.parseLong(timeStr);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        long interal = System.currentTimeMillis() - lastShowNoticeTime;
+        if(interal > Constant.SHOW_NOTICE_INTERVAL){
+            startActivity(new Intent(this,NoticeActivity.class));
+        }
     }
 
     @Override
@@ -123,7 +143,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
                 @Override
                 public void done(BmobException e) {
                     if(e == null){
-                        aCache.put(Constant.KEY_LAST_UPDATE_CURR_PERSONINFO_TIME,System.currentTimeMillis());
+                        aCache.put(Constant.KEY_LAST_UPDATE_CURR_PERSONINFO_TIME,String.valueOf(System.currentTimeMillis()));
                         personInfo.setMobile(DBHandler.getCurrPesonInfo().getMobile());
                         DBHandler.insertPesonInfo(personInfo);
                     }else{
@@ -156,7 +176,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         long interal = System.currentTimeMillis() - lastCheckUpdateTime;
         if(interal > Constant.CHECK_UPDATE_INTERVAL){
             BmobUpdateAgent.forceUpdate(this);
-            aCache.put(Constant.KEY_LAST_CHECK_UPDATE_TIME,System.currentTimeMillis());
+            aCache.put(Constant.KEY_LAST_CHECK_UPDATE_TIME,String.valueOf(System.currentTimeMillis()));
         }
     }
 
@@ -190,6 +210,17 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
 
         menuHeaderView = navigationView.inflateHeaderView(R.layout.nav_menu_header);
 
+        CoolImageView ivBg = (CoolImageView) menuHeaderView.findViewById(R.id.iv_menu_header_bg);
+        Drawable drawable = ivBg.getBackground();
+        BitmapDrawable bd = (BitmapDrawable) drawable;
+        Bitmap bm = bd.getBitmap();
+        Bitmap finalBitmap = EasyBlur.with(this)
+                .bitmap(bm) //要模糊的图片
+                .radius(50)//模糊半径
+                .scale(4)//指定模糊前缩小的倍数
+                .policy(EasyBlur.BlurPolicy.FAST_BLUR)//使用fastBlur
+                .blur();
+        ivBg.setImageBitmap(finalBitmap);
         ivHeader = (ImageView) menuHeaderView.findViewById(R.id.circle_img_header);
         mTvName = (TextView) menuHeaderView.findViewById(R.id.tv_name);
         mTvMobile = (TextView) menuHeaderView.findViewById(R.id.tv_mobile);

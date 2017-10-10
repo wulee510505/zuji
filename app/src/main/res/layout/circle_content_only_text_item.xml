@@ -16,11 +16,19 @@
         android:layout_centerVertical="true"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/userAvatar"
+        <com.wulee.administrator.zuji.widget.RCRelativeLayout
+            android:id="@+id/avatarBg"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@android:color/darker_gray" />
+            app:stroke_color="#cdcdcd"
+            app:rc_stroke_width="1dp">
+
+            <ImageView
+                android:id="@+id/userAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.wulee.administrator.zuji.widget.RCRelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,16 +51,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/userNick"
                 android:layout_margin="6dp"
-                android:maxLines="3"
-                android:text="BBBBBBBBBBBBBBBBBBBBBBBBB"
                 android:textColor="@color/ctv_black_2"
                 android:textSize="@dimen/com_tv_size_mid_lit"
                 android:lineSpacingMultiplier="1.2"
-                android:lineSpacingExtra="2dp"
-                app:rmtLessColor="@color/colorAccent"
-                app:rmtLessText=" \n收缩"
-                app:rmtMoreColor="@color/colorAccent"
-                app:rmtMoreText=" \n展开"/>
+                android:lineSpacingExtra="2dp" />
 
             <RelativeLayout
                 android:id="@+id/rl_location_and_time"

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -76,7 +77,7 @@ public class CircleFragment extends MainBaseFrag {
     @InjectView(R.id.iv_publish_circle)
     ImageView ivPublishCircle;
     private View mRootView;
-    private ImageView ivHeaderBg;
+    private AppCompatImageView ivHeaderBg;
 
     private Context mContext;
 
@@ -122,7 +123,7 @@ public class CircleFragment extends MainBaseFrag {
 
     private void initView() {
         View headerView = LayoutInflater.from(mContext).inflate(R.layout.circle_list_header, null);
-        ivHeaderBg = (ImageView) headerView.findViewById(R.id.iv_header_bg);
+        ivHeaderBg = (AppCompatImageView) headerView.findViewById(R.id.iv_header_bg);
         ivHeaderBg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

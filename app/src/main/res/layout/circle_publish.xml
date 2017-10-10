@@ -18,15 +18,14 @@
         app:titleLeftText=""/>
 
 
-    <android.support.v7.widget.AppCompatEditText
+    <com.wulee.administrator.zuji.widget.AnFQNumEditText
         android:id="@+id/edittext"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/titlelayout"
         android:layout_margin="10dp"
         android:background="@drawable/umeng_socialize_edit_bg"
         android:gravity="top|left"
-        android:hint="说点什么吧......"
         android:padding="10dp" />
 
 

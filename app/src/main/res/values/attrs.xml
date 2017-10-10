@@ -58,9 +58,35 @@
     </declare-styleable>
 
     <declare-styleable name="ReadMoreTextView">
-        <attr name="rmtMoreText" format="string"/>
-        <attr name="rmtMoreColor" format="color"/>
-        <attr name="rmtLessText" format="string"/>
-        <attr name="rmtLessColor" format="color"/>
+        <attr name="trimExpandedText" format="string" />
+        <attr name="trimCollapsedText" format="string" />
+        <attr name="trimLength" format="integer" />
+        <attr name="showTrimExpandedText" format="boolean" />
+        <attr name="colorClickableText" format="color" />
+        <attr name="trimLines" format="integer" />
+        <attr name="trimMode">
+            <enum name="trimModeLine" value="0"/>
+            <enum name="trimModeLength" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CoolImageView">
+        <attr name="direction" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="RCRelativeLayout">
+        <!--圆形-->
+        <attr name="round_as_circle" format="boolean"/>
+        <!--全部圆角半径-->
+        <attr name="round_corner" format="integer|dimension"/>
+        <!--针对各个角的半径-->
+        <attr name="round_corner_top_left" format="integer|dimension"/>
+        <attr name="round_corner_top_right" format="integer|dimension"/>
+        <attr name="round_corner_bottom_left" format="integer|dimension"/>
+        <attr name="round_corner_bottom_right" format="integer|dimension"/>
+
+        <!--描边颜色／半径-->
+        <attr name="stroke_color" format="color|reference"/>
+        <attr name="rc_stroke_width" format="integer|dimension"/>
     </declare-styleable>
 </resources>

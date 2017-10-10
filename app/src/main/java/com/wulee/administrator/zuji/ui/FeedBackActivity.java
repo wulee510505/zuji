@@ -49,14 +49,14 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        buttonSave = (Button) findViewById(R.id.button_save);
+        buttonSave = (Button) findViewById(R.id.button_submit);
         etContent = (EditText) findViewById(R.id.et_content);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_save:
+            case R.id.button_submit:
                 submitFeedback();
                 break;
         }
