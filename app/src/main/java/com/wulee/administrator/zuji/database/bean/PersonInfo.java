@@ -22,6 +22,15 @@ public class PersonInfo extends BmobUser {
     private Double companyLon;
     private String companyAddress;
     private String uid;
+    private int integral;
+
+    public int getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(int integral) {
+        this.integral = integral;
+    }
 
     public String getCircle_header_bg_url() {
         return circle_header_bg_url;

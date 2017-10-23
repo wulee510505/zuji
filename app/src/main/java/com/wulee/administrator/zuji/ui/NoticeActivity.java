@@ -36,6 +36,8 @@ public class NoticeActivity extends BaseActivity {
     @InjectView(R.id.container)
     RelativeLayout container;
 
+    public static final int FLAG_HOMEKEY_DISPATCHED = 0x80000000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,4 +79,23 @@ public class NoticeActivity extends BaseActivity {
     public void onViewClicked() {
         finish();
     }
+
+    /**
+     * 屏蔽返回键
+     */
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
+
+    /**
+     * 屏蔽Home键
+     */
+    @Override
+    public void onAttachedToWindow() {
+        //关键：在onAttachedToWindow中设置FLAG_HOMEKEY_DISPATCHED
+        this.getWindow().addFlags(FLAG_HOMEKEY_DISPATCHED);
+        super.onAttachedToWindow();
+    }
 }
+

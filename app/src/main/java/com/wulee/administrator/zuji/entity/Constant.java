@@ -42,6 +42,10 @@ public interface Constant {
     String KEY_LAST_SHOW_NOTICE_TIME = "key_last_show_notice_time";
     long SHOW_NOTICE_INTERVAL =  24 * 60 * 60 * 1000;// 24小时
 
+    String KEY_SIGN_DATE= "key_sign_date";
+
+    String KEY_CURR_SERVER_TIME = "key_curr_server_time";
+
     // 日志过期时间，默认为10天
     int LOG_EXPIRED_TIME = 10;
 }

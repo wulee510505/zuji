@@ -16,12 +16,12 @@ import butterknife.InjectView;
  * Created by wulee on 2017/8/25 13:50
  */
 
-public class BigImageActivity extends BaseActivity {
+public class BigSingleImgActivity extends BaseActivity {
 
     @InjectView(R.id.iv_bigimg)
     SuperImageView ivBigimg;
 
-    public static final String IMAGE_URL = "Image_url";
+    public static final String IMAGE_URL = "image_url";
 
     private String imgUrl;
 
@@ -29,7 +29,7 @@ public class BigImageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.circle_big_image);
+        setContentView(R.layout.big_single_image);
         ButterKnife.inject(this);
 
 

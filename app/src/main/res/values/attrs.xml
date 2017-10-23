@@ -89,4 +89,8 @@
         <attr name="stroke_color" format="color|reference"/>
         <attr name="rc_stroke_width" format="integer|dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="DotIndicator">
+        <attr name="distance" format="dimension" />
+    </declare-styleable>
 </resources>

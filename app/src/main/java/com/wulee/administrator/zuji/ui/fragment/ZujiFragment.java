@@ -1,5 +1,6 @@
 package com.wulee.administrator.zuji.ui.fragment;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,6 +40,9 @@ import com.wulee.administrator.zuji.widget.AnimArcButtons;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
 import com.youth.banner.Banner;
 import com.youth.banner.Transformer;
 
@@ -107,9 +111,32 @@ public class ZujiFragment extends MainBaseFrag{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!LocationUtil.getInstance().startGetLocation()){
-            AndPermission.defaultSettingDialog(mContext).show();
-        }
+        String[] permissions = new String[]{Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.ACCESS_NETWORK_STATE ,Manifest.permission.CHANGE_WIFI_STATE
+        };
+        AndPermission.with(this)
+        .permission(permissions)
+        .callback(new PermissionListener() {
+            @Override
+            public void onSucceed(int requestCode, List<String> grantedPermissions) {
+                 LocationUtil.getInstance().startGetLocation();
+            }
+            @Override
+            public void onFailed(int requestCode, List<String> deniedPermissions) {
+                if(AndPermission.hasAlwaysDeniedPermission(mContext,deniedPermissions)){
+                    AndPermission.defaultSettingDialog(mContext).show();
+                }
+            }
+        })
+        .rationale(new RationaleListener() {
+            @Override
+            public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                AndPermission.rationaleDialog(mContext, rationale).show();
+            }
+        })
+        .start();
+
 
         mContext.startService(new Intent(mContext,UploadLocationService.class));
         mContext.startService(new Intent(mContext,ScreenService.class));

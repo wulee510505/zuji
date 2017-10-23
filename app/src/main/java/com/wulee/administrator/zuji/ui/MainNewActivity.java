@@ -31,11 +31,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.stetho.common.LogUtil;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.Constant;
+import com.wulee.administrator.zuji.entity.SignInfo;
 import com.wulee.administrator.zuji.ui.fragment.CircleFragment;
 import com.wulee.administrator.zuji.ui.fragment.JokeFragment;
 import com.wulee.administrator.zuji.ui.fragment.MainBaseFrag;
@@ -51,8 +53,19 @@ import com.wulee.administrator.zuji.utils.PhoneUtil;
 import com.wulee.administrator.zuji.widget.CoolImageView;
 import com.zhouwei.blurlibrary.EasyBlur;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.BmobUpdateListener;
+import cn.bmob.v3.listener.CountListener;
+import cn.bmob.v3.listener.QueryListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
 import cn.bmob.v3.update.UpdateResponse;
@@ -74,6 +87,8 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
     private ImageView ivHeader;
     private TextView mTvName;
     private TextView mTvMobile;
+    private TextView mTvSign;
+    private TextView mTvIntegral;
 
     private MainFPagerAdaper mainFPagerAdaper;
 
@@ -200,7 +215,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
                 new int[]{ -android.R.attr.state_checked},
                 new int[]{android.R.attr.state_checked}
         };
-        int[] colors = new int[]{              ContextCompat.getColor(this,R.color.ctv_black_2),
+        final int[] colors = new int[]{              ContextCompat.getColor(this,R.color.ctv_black_2),
                 ContextCompat.getColor(this,R.color.colorAccent)
         };
         ColorStateList csl = new ColorStateList(states, colors);
@@ -224,6 +239,99 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         ivHeader = (ImageView) menuHeaderView.findViewById(R.id.circle_img_header);
         mTvName = (TextView) menuHeaderView.findViewById(R.id.tv_name);
         mTvMobile = (TextView) menuHeaderView.findViewById(R.id.tv_mobile);
+        mTvSign = (TextView) menuHeaderView.findViewById(R.id.tv_sign);
+        mTvIntegral= (TextView) menuHeaderView.findViewById(R.id.tv_integral);
+
+        final PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
+        if(piInfo == null)
+            return;
+
+        mTvIntegral.setText(piInfo.getIntegral()+"");
+
+        String currDateStr = aCache.getAsString(Constant.KEY_CURR_SERVER_TIME);
+
+        BmobQuery<SignInfo> query1 = new BmobQuery<>();
+        query1.addWhereEqualTo("personInfo",piInfo);
+
+        BmobQuery<SignInfo> query2 = new BmobQuery<>();
+        query2.addWhereEqualTo("date",currDateStr);
+
+        List<BmobQuery<SignInfo>> andQuerys = new ArrayList<>();
+        andQuerys.add(query1);
+        andQuerys.add(query2);
+
+        BmobQuery<SignInfo> query = new BmobQuery<>();
+        query.and(andQuerys);
+
+        query.count(SignInfo.class, new CountListener() {
+            @Override
+            public void done(Integer count, BmobException e) {
+                if(e == null && count > 0){
+                    mTvSign.setTextColor(R.color.baseGrayNor);
+                    mTvSign.setText("已签到");
+                    mTvSign.setEnabled(false);
+                }else{
+                    mTvSign.setEnabled(true);
+                }
+            }
+        });
+
+        mTvSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bmob.getServerTime(new QueryListener<Long>() {
+                    @Override
+                    public void done(Long time, BmobException e) {
+                        if(e == null){
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                            final String date = formatter.format(new Date(time * 1000L));
+                            LogUtil.i("bmob","当前服务器时间为:" + date);
+
+                            SignInfo signInfo = new SignInfo();
+                            signInfo.hasSign = true;
+                            signInfo.date = date;
+                            signInfo.personInfo = piInfo;
+                            signInfo.save(new SaveListener<String>() {
+                                @Override
+                                public void done(String s, BmobException e) {
+                                   if(e == null){
+
+                                       final int integral = piInfo.getIntegral();
+                                       piInfo.setIntegral(integral+1);
+                                       piInfo.update(new UpdateListener() {
+                                           @Override
+                                           public void done(BmobException e) {
+                                             if(e == null){
+                                                 aCache.put(Constant.KEY_SIGN_DATE,date);
+                                                 mTvSign.setTextColor(R.color.baseGrayNor);
+                                                 mTvSign.setText("已签到");
+                                                 mTvSign.setEnabled(false);
+
+                                                 mTvIntegral.setText(Integer.valueOf(integral+1)+"");
+
+                                                 toast("签到成功");
+                                             }else{
+                                                 mTvSign.setEnabled(true);
+
+                                                 toast("签到失败");
+                                             }
+                                           }
+                                       });
+
+                                   }else{
+                                       toast("签到失败");
+                                       mTvSign.setEnabled(true);
+                                   }
+                                }
+                            });
+                        }else{
+                            LogUtil.i("bmob","获取服务器时间失败:" + e.getMessage());
+                        }
+                    }
+
+                });
+            }
+        });
     }
 
     private void initData() {

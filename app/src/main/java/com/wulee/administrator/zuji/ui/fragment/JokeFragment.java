@@ -142,7 +142,7 @@ public class JokeFragment extends MainBaseFrag {
 
 
     private void  getJokeText() {
-        final Message msg = new Message();
+        final Message msg = mHandler.obtainMessage();
 
         final String[] jokeTextUrl = {""};
 
@@ -175,7 +175,7 @@ public class JokeFragment extends MainBaseFrag {
     }
 
     private void  getJokePic() {
-        final Message msg = new Message();
+        final Message msg = mHandler.obtainMessage();
 
         final String[] jokePicUrl = {""};
         String saveUrl = aCache.getAsString(Constant.KEY_JOKE_PIC_URL);

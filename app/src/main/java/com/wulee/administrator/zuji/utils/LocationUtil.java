@@ -1,6 +1,5 @@
 package com.wulee.administrator.zuji.utils;
 
-import android.Manifest;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,8 +16,6 @@ import com.wulee.administrator.zuji.App;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionListener;
 
 import java.util.List;
 
@@ -69,25 +66,9 @@ public class LocationUtil{
     }
 
 
-    public boolean startGetLocation() {
-        final boolean[] isStart = {false};
-        AndPermission.with(App.context)
-            .permission(Manifest.permission.ACCESS_COARSE_LOCATION)
-            .callback(new PermissionListener() {
-                @Override
-                public void onSucceed(int requestCode, List<String> grantedPermissions) {
-                    mLocationClient.start();
-                    mLocationClient.requestLocation();
-                    isStart[0] = true;
-                }
-                @Override
-                public void onFailed(int requestCode, List<String> deniedPermissions) {
-
-                    isStart[0] = false;
-                }
-            })
-            .start();
-        return isStart[0];
+    public void startGetLocation() {
+        mLocationClient.start();
+        mLocationClient.requestLocation();
     }
 
     public void stopGetLocation() {
@@ -179,7 +160,8 @@ public class LocationUtil{
             }else{
                 locationInfo.setNativePhoneNumber(sbdeviceInfo.append(getDeviceBrand()).append(" ").append(getSystemModel()).toString());
             }
-            locationInfo.setDeviceId(PhoneUtil.getDeviceId());
+            if(!TextUtils.isEmpty(PhoneUtil.getDeviceId()))
+                locationInfo.setDeviceId(PhoneUtil.getDeviceId());
             if(!TextUtils.isEmpty(location.getAddrStr()))
                 submitLocationInfo(locationInfo);
 

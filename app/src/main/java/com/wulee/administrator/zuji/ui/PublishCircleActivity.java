@@ -143,8 +143,8 @@ public class PublishCircleActivity extends TakePhotoActivity {
                         mTakePhoto.onEnableCompress(config, false);
                         mTakePhoto.onPickMultiple(maxSelPicNum - picList.size() + 1);
                     } else {
-                        Intent intent = new Intent(PublishCircleActivity.this, BigImageActivity.class);
-                        intent.putExtra(BigImageActivity.IMAGE_URL, pic.getPath());
+                        Intent intent = new Intent(PublishCircleActivity.this, BigSingleImgActivity.class);
+                        intent.putExtra(BigSingleImgActivity.IMAGE_URL, pic.getPath());
                         startActivity(intent);
                     }
                 }

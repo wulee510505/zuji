@@ -9,5 +9,7 @@
     <item name="base_real_tab_content" type="id"/>
     <item name="base_fragment_progress_container" type="id"/>
     <item name="base_fragment_content_container" type="id"/>
-	
+
+    <item type="id" name="statusbarutil_fake_status_bar_view" />
+    <item type="id" name="statusbarutil_translucent_view" />
 </resources>

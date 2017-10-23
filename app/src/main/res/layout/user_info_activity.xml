@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -66,14 +67,23 @@
                 android:textColor="@color/ctv_black_2"
                 android:textSize="@dimen/com_tv_size_middle" />
 
-            <ImageView
-                android:id="@+id/user_photo"
+            <com.wulee.administrator.zuji.widget.RCRelativeLayout
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:contentDescription="@string/app_name"
-                android:src="@mipmap/icon_user_def" />
+                app:round_as_circle="true"
+                app:round_corner_bottom_right="0dp"
+                app:stroke_color="#cdcdcd"
+                app:rc_stroke_width="1dp">
+
+                <ImageView
+                    android:id="@+id/user_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/app_name"
+                    android:src="@mipmap/icon_user_def" />
+            </com.wulee.administrator.zuji.widget.RCRelativeLayout>
         </RelativeLayout>
 
         <View

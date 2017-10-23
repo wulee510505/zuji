@@ -26,7 +26,7 @@ import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.CircleComment;
 import com.wulee.administrator.zuji.entity.CircleContent;
-import com.wulee.administrator.zuji.ui.BigImageActivity;
+import com.wulee.administrator.zuji.ui.BigMultiImgActivity;
 import com.wulee.administrator.zuji.ui.PersonalInfoActivity;
 import com.wulee.administrator.zuji.ui.UserInfoActivity;
 import com.wulee.administrator.zuji.utils.DateTimeUtils;
@@ -65,11 +65,11 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
     protected void convert(BaseViewHolder baseViewHolder, final CircleContent content) {
 
         ImageView ivAvatar = baseViewHolder.getView(R.id.userAvatar);
-        if(content.personInfo != null && !TextUtils.isEmpty(content.personInfo.getHeader_img_url()))
-            ImageUtil.setDefaultImageView(ivAvatar,content.personInfo.getHeader_img_url(),R.mipmap.icon_user_def,mcontext);
-        else
+        if(content.personInfo != null && !TextUtils.isEmpty(content.personInfo.getHeader_img_url())) {
+            ImageUtil.setDefaultImageView(ivAvatar, content.personInfo.getHeader_img_url(), R.mipmap.icon_user_def, mcontext);
+        } else{
             ImageUtil.setDefaultImageView(ivAvatar,"",R.mipmap.icon_user_def,mcontext);
-
+        }
 
         ivAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,12 +112,15 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
         tvDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mListener != null)
-                    mListener.onDelBtnClick(pos-1); //因为有headerview
+                if(mListener != null){
+                    //因为有headerview
+                    mListener.onDelBtnClick(pos-1);
+                }
             }
         });
 
-        final boolean[] isToolbarLikeAndCommentVisible = {false};//喜欢、评论按钮是否显示
+        //喜欢、评论按钮是否显示
+        final boolean[] isToolbarLikeAndCommentVisible = {false};
 
         final LinearLayout llLikeAndComment = baseViewHolder.getView(R.id.album_toolbar);
         viewMap.put(pos,llLikeAndComment);
@@ -151,12 +154,13 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
                 }
 
                 //将当前用户添加到CircleContent表中的likes字段值中，表明当前用户喜欢该帖子
-                BmobRelation relation = new BmobRelation();
+                final BmobRelation relation = new BmobRelation();
                 //将当前用户添加到多对多关联中
                 relation.add(piInfo);
                 //多对多关联指向CircleContent的`likes`字段
                 content.setLikes(relation);
-                content.update(content.getObjectId(),new UpdateListener() {
+
+                content.update(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
                         llLikeAndComment.setVisibility(View.GONE);
@@ -248,8 +252,9 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
                     public void onItemImageClick(Context context, ImageView imageView, int index, List<CircleContent.CircleImageBean> imgList) {
 
                         if(imgList != null && imgList.size()>0){
-                            Intent intent = new Intent(context, BigImageActivity.class);
-                            intent.putExtra(BigImageActivity.IMAGE_URL,imgList.get(index).getUrl());
+                            Intent intent = new Intent(context, BigMultiImgActivity.class);
+                            intent.putExtra(BigMultiImgActivity.IMAGES_URL, content.getImgUrls());
+                            intent.putExtra(BigMultiImgActivity.IMAGE_INDEX, index);
                             context.startActivity(intent);
                         }
                     }
@@ -259,10 +264,14 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
                 //do nothing
 
                 break;
+            default :
+                break;
         }
     }
 
-    //评论Dialog
+    /**
+     *  评论Dialog
+     */
     private void showComentDialog(final CircleContent content,final View likeAndCommentView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
         builder.setTitle("评论");
