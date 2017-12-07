@@ -134,6 +134,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+
         long interal = System.currentTimeMillis() - lastShowNoticeTime;
         if(interal > Constant.SHOW_NOTICE_INTERVAL){
             startActivity(new Intent(this,NoticeActivity.class));
