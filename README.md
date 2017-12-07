@@ -4,7 +4,7 @@ http://bmob-cdn-8120.b0.upaiyun.com/2017/12/07/e4a00ec0404e6d408067898061458770.
 
 
 扫描二维码下载
-![](https://github.com/wulee510505/zuji/blob/master/screenshots/zuji_7.jpg)
+![](https://raw.githubusercontent.com/wulee510505/zuji/master/screenshots/qr_apk.png)
 
 
 效果图如下：
