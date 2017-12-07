@@ -102,12 +102,7 @@ public class StepActivity extends BaseActivity {
     }
 
     private void addListener() {
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                queryStepRankList();
-            }
-        });
+        swipeLayout.setOnRefreshListener(() -> queryStepRankList());
     }
 
     private void queryStepRankList() {

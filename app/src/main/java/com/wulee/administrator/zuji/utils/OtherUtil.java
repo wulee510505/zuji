@@ -3,8 +3,10 @@ package com.wulee.administrator.zuji.utils;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -201,5 +203,16 @@ public class OtherUtil {
         intent.putExtra(Intent.EXTRA_TEXT, msgText);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(Intent.createChooser(intent, "分享到"));
+    }
+
+    /**
+     * @param filename 文件全名，包括后缀哦
+     */
+    public static void updateGallery(Context context,String filename) {
+        MediaScannerConnection.scanFile(context, new String[] { filename }, null,
+                (path, uri) -> {
+                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                    Log.i("ExternalStorage", "-> uri=" + uri);
+                });
     }
 }

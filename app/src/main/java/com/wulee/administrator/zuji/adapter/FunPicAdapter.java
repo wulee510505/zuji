@@ -18,6 +18,7 @@ import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.entity.FunPicInfo;
 import com.wulee.administrator.zuji.utils.FileUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
+import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
@@ -87,6 +88,7 @@ public class FunPicAdapter extends BaseCardAdapter {
                                             ImageUtil.saveBitmap(bmpSource[0],filePath);
                                         }
                                         Toast.makeText(context, "图片已保存至"+ Constant.SAVE_PIC , Toast.LENGTH_SHORT).show();
+                                        OtherUtil.updateGallery(context,filePath);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
