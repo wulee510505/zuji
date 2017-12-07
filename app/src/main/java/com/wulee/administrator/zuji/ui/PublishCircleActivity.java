@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -22,6 +21,7 @@ import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.CircleContent;
 import com.wulee.administrator.zuji.entity.PublishPicture;
 import com.wulee.administrator.zuji.utils.AppUtils;
+import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.utils.UIUtils;
 import com.wulee.administrator.zuji.widget.AnFQNumEditText;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
@@ -128,25 +128,22 @@ public class PublishCircleActivity extends TakePhotoActivity {
                 publishCircleContent();
             }
         });
-        gridviewPic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                PublishPicture pic = picList.get(pos);
-                if (null != pic) {
-                    if (pic.getId() == -1) {
-                        TakePhoto mTakePhoto = getTakePhoto();
+        gridviewPic.setOnItemClickListener((adapterView, view, pos, l) -> {
+            PublishPicture pic = picList.get(pos);
+            if (null != pic) {
+                if (pic.getId() == -1) {
+                    TakePhoto mTakePhoto = getTakePhoto();
 
-                        CompressConfig config = new CompressConfig.Builder()
-                                .setMaxSize(102400) //100Kb
-                                .setMaxPixel(300)
-                                .create();
-                        mTakePhoto.onEnableCompress(config, false);
-                        mTakePhoto.onPickMultiple(maxSelPicNum - picList.size() + 1);
-                    } else {
-                        Intent intent = new Intent(PublishCircleActivity.this, BigSingleImgActivity.class);
-                        intent.putExtra(BigSingleImgActivity.IMAGE_URL, pic.getPath());
-                        startActivity(intent);
-                    }
+                    CompressConfig config = new CompressConfig.Builder()
+                            .setMaxSize(102400) //100Kb
+                            .setMaxPixel(300)
+                            .create();
+                    mTakePhoto.onEnableCompress(config, false);
+                    mTakePhoto.onPickMultiple(maxSelPicNum - picList.size() + 1);
+                } else {
+                    Intent intent = new Intent(PublishCircleActivity.this, BigSingleImgActivity.class);
+                    intent.putExtra(BigSingleImgActivity.IMAGE_URL, pic.getPath());
+                    startActivity(intent);
                 }
             }
         });
@@ -201,7 +198,6 @@ public class PublishCircleActivity extends TakePhotoActivity {
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if (null == piInfo)
             return;
-        progressBar.setVisibility(View.VISIBLE);
         if (mType == TYPE_PUBLISH_TEXT_AND_IMG) {
             final CircleContent circlrContent = new CircleContent(CircleContent.TYPE_TEXT_AND_IMG);
             circlrContent.setId(System.currentTimeMillis());
@@ -219,6 +215,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
                 for (int i = 0; i < picList.size(); i++) {
                     filePaths[i] = picList.get(i).getPath();
                 }
+                progressBar.setVisibility(View.VISIBLE);
                 BmobFile.uploadBatch(filePaths, new UploadBatchListener() {
                     @Override
                     public void onSuccess(List<BmobFile> files, List<String> urls) {
@@ -256,8 +253,11 @@ public class PublishCircleActivity extends TakePhotoActivity {
                         //4、totalPercent--表示总的上传进度（百分比）
                     }
                 });
+            }else{
+                OtherUtil.showToastText("请添加图片");
             }
         } else if (mType == TYPE_PUBLISH_TEXT_ONLY) {
+            progressBar.setVisibility(View.VISIBLE);
             final CircleContent circlrContent = new CircleContent(CircleContent.TYPE_ONLY_TEXT);
             circlrContent.setId(System.currentTimeMillis());
             circlrContent.setUserId(piInfo.getUid());

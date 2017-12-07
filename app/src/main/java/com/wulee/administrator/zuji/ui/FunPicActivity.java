@@ -52,6 +52,8 @@ public class FunPicActivity extends BaseActivity {
 
     private List<FunPicInfo> picDatas = new ArrayList<>();
 
+    private String picUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +85,11 @@ public class FunPicActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            HttpRequest.get((String)msg.obj, new BaseHttpRequestCallback() {
+            picUrl  = (String)msg.obj;
+            if(TextUtils.isEmpty(picUrl)){
+                return;
+            }
+            HttpRequest.get(picUrl, new BaseHttpRequestCallback() {
                 //请求网络前
                 @Override
                 public void onStart() {
@@ -94,6 +100,9 @@ public class FunPicActivity extends BaseActivity {
                 public void onResponse(String response, Headers headers) {
                     super.onResponse(response, headers);
 
+                    if(TextUtils.isEmpty(response)){
+                        return;
+                    }
                     picDatas.clear();
                     picDatas.addAll(jsonParse(response));
                     mAdapter = new FunPicAdapter(picDatas,FunPicActivity.this);
@@ -173,5 +182,13 @@ public class FunPicActivity extends BaseActivity {
             LogUtil.e("JsonParseActivity", "json解析出现了问题");
         }
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(!TextUtils.isEmpty(picUrl)){
+            HttpRequest.cancel(picUrl);
+        }
     }
 }

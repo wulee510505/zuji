@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.facebook.stetho.common.LogUtil;
 import com.wulee.administrator.zuji.R;
@@ -21,6 +22,7 @@ import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.entity.MessageInfo;
+import com.wulee.administrator.zuji.utils.ConfigKey;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 import com.wulee.recordingibrary.entity.Voice;
@@ -43,6 +45,8 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
+import static com.wulee.administrator.zuji.App.aCache;
+
 /**
  * Created by wulee on 2017/9/19 10:46
  */
@@ -59,7 +63,7 @@ public class MessageBoardActivity extends BaseActivity {
     Button btnSubmitMessage;
     @InjectView(R.id.btn_record)
     RecordVoiceButton btnRecord;
-
+    LinearLayout llBottom;
 
     private MessageAdapter mAdapter;
     private ArrayList<MessageInfo> messageList = new ArrayList<>();
@@ -76,6 +80,7 @@ public class MessageBoardActivity extends BaseActivity {
         setContentView(R.layout.message_board_list_main);
         ButterKnife.inject(this);
 
+        llBottom = findViewById(R.id.llayout_bottom);
         piInfo = (PersonInfo) getIntent().getSerializableExtra("piInfo");
         currPiInfo = PersonInfo.getCurrentUser(PersonInfo.class);
 
@@ -102,9 +107,15 @@ public class MessageBoardActivity extends BaseActivity {
     }
 
     private void init() {
+        String mobile = aCache.getAsString(ConfigKey.KEY_CURR_LOGIN_MOBILE);
+        if (TextUtils.equals(piInfo.getUsername(), mobile)) {
+            llBottom.setVisibility(View.GONE);
+        } else {
+            llBottom.setVisibility(View.VISIBLE);
+        }
         btnRecord.setAudioSavePath(Constant.SAVE_AUDIO);
         AndPermission.with(this)
-                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO)
+                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
                 .callback(new PermissionListener() {
                     @Override
                     public void onSucceed(int requestCode, List<String> grantedPermissions) {
@@ -132,7 +143,7 @@ public class MessageBoardActivity extends BaseActivity {
                                 bmobFile.uploadblock(new UploadFileListener() {
                                     @Override
                                     public void done(BmobException e) {
-                                        if(e == null){
+                                        if (e == null) {
                                             LogUtil.d("上传文件成功:" + bmobFile.getFileUrl());
                                             messageInfo.audioUrl = bmobFile.getFileUrl();
                                             messageInfo.save(new SaveListener<String>() {
@@ -146,10 +157,11 @@ public class MessageBoardActivity extends BaseActivity {
                                                     }
                                                 }
                                             });
-                                        }else{
+                                        } else {
                                             LogUtil.d("上传文件失败：" + e.getMessage());
                                         }
                                     }
+
                                     @Override
                                     public void onProgress(Integer value) {
                                         // 返回的上传进度（百分比）
@@ -158,9 +170,10 @@ public class MessageBoardActivity extends BaseActivity {
                             }
                         });
                     }
+
                     @Override
                     public void onFailed(int requestCode, List<String> deniedPermissions) {
-                        if(AndPermission.hasAlwaysDeniedPermission(MessageBoardActivity.this,deniedPermissions))
+                        if (AndPermission.hasAlwaysDeniedPermission(MessageBoardActivity.this, deniedPermissions))
                             AndPermission.defaultSettingDialog(MessageBoardActivity.this).show();
                     }
                 })

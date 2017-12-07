@@ -33,25 +33,31 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/mnc_rbnt_one"
+                android:id="@+id/rbnt_zuji"
                 style="@style/main_tabs_radiobtn"
                 android:drawableTop="@drawable/tab_zuji"
                 android:text="足迹" />
 
             <RadioButton
-                android:id="@+id/mnc_rbnt_two"
+                android:id="@+id/rbnt_circle"
                 style="@style/main_tabs_radiobtn"
                 android:drawableTop="@drawable/tab_circle"
                 android:text="圈子" />
 
             <RadioButton
-                android:id="@+id/mnc_rbnt_three"
+                android:id="@+id/rbnt_user_group"
+                style="@style/main_tabs_radiobtn"
+                android:drawableTop="@drawable/tab_circle"
+                android:text="用户群" />
+
+            <RadioButton
+                android:id="@+id/rbnt_joke"
                 style="@style/main_tabs_radiobtn"
                 android:drawableTop="@drawable/tab_joke"
                 android:text="笑话" />
 
             <RadioButton
-                android:id="@+id/mnc_rbnt_four"
+                android:id="@+id/rbnt_news"
                 style="@style/main_tabs_radiobtn"
                 android:drawableTop="@drawable/tab_news"
                 android:text="新闻" />

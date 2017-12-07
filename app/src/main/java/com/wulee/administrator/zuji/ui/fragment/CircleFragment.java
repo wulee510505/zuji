@@ -452,4 +452,10 @@ public class CircleFragment extends MainBaseFrag {
         builder.create().show();
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 }

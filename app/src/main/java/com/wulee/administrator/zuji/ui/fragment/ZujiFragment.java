@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.stetho.common.LogUtil;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
@@ -39,6 +38,7 @@ import com.wulee.administrator.zuji.utils.Pedometer;
 import com.wulee.administrator.zuji.widget.AnimArcButtons;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
+import com.xdandroid.hellodaemon.DaemonEnv;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
@@ -137,8 +137,8 @@ public class ZujiFragment extends MainBaseFrag{
         })
         .start();
 
-
-        mContext.startService(new Intent(mContext,UploadLocationService.class));
+        UploadLocationService.sShouldStopService = false;
+        DaemonEnv.startServiceMayBind(UploadLocationService.class);
         mContext.startService(new Intent(mContext,ScreenService.class));
 
         getLocationList(0, STATE_REFRESH);
@@ -175,64 +175,47 @@ public class ZujiFragment extends MainBaseFrag{
                 startActivity(new Intent(mContext, ZuJiMapActivity.class));
             }
         });
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                List<LocationInfo> locationInfoList = mAdapter.getData();
-                if(null != locationInfoList && locationInfoList.size()>0){
-                    LocationInfo location = locationInfoList.get(position);
-                    if(null != location){
-                        Intent intent = new Intent(mContext,MapActivity.class);
-                        intent.putExtra(MapActivity.INTENT_KEY_LATITUDE,location.getLatitude());
-                        intent.putExtra(MapActivity.INTENT_KEY_LONTITUDE,location.getLontitude());
-                        startActivity(intent);
-                    }
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<LocationInfo> locationInfoList = mAdapter.getData();
+            if(null != locationInfoList && locationInfoList.size()>0){
+                LocationInfo location = locationInfoList.get(position);
+                if(null != location){
+                    Intent intent = new Intent(mContext,MapActivity.class);
+                    intent.putExtra(MapActivity.INTENT_KEY_LATITUDE,location.getLatitude());
+                    intent.putExtra(MapActivity.INTENT_KEY_LONTITUDE,location.getLontitude());
+                    startActivity(intent);
                 }
             }
         });
-        mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                showDeleteDialog(position);
-                return false;
-            }
+        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            showDeleteDialog(position);
+            return false;
         });
 
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isRefresh = true;
-                curPage = 0;
-                getLocationList(curPage, STATE_REFRESH);
-            }
+        swipeLayout.setOnRefreshListener(() -> {
+            isRefresh = true;
+            curPage = 0;
+            getLocationList(curPage, STATE_REFRESH);
         });
         //加载更多
         mAdapter.setEnableLoadMore(true);
         mAdapter.setPreLoadNumber(PAGE_SIZE);
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener(){
-            @Override
-            public void onLoadMoreRequested() {
-                getLocationList(curPage, STATE_MORE);
-            }
-        });
-        menuBtns.setOnButtonClickListener(new AnimArcButtons.OnButtonClickListener() {
-            @Override
-            public void onButtonClick(View v, int id) {
-                switch (id){
-                    case 0:
-                        startActivity(new Intent(mContext,WeatherActivity.class).putExtra("curr_time",currServerTime));
-                        break;
-                    case 1:
-                        if (pedometer.hasStepSensor()) {
-                            startActivity(new Intent(mContext, StepActivity.class));
-                        } else {
-                            Toast.makeText(mContext, "设备没有计步传感器", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case 2:
-                        startActivity(new Intent(mContext,FunPicActivity.class));
-                        break;
-                }
+        mAdapter.setOnLoadMoreListener(() -> getLocationList(curPage, STATE_MORE));
+        menuBtns.setOnButtonClickListener((v, id) -> {
+            switch (id){
+                case 0:
+                    startActivity(new Intent(mContext,WeatherActivity.class).putExtra("curr_time",currServerTime));
+                    break;
+                case 1:
+                    if (pedometer.hasStepSensor()) {
+                        startActivity(new Intent(mContext, StepActivity.class));
+                    } else {
+                        Toast.makeText(mContext, "设备没有计步传感器", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case 2:
+                    startActivity(new Intent(mContext,FunPicActivity.class));
+                    break;
             }
         });
     }
@@ -383,8 +366,8 @@ public class ZujiFragment extends MainBaseFrag{
                         }
                     }
                 }else{
-                    LogUtil.d("查询LocationInfo失败"+e.getMessage()+","+e.getErrorCode());
                     mAdapter.loadMoreFail();
+                    LogUtil.d("查询LocationInfo失败"+e.getMessage()+","+e.getErrorCode());
                 }
             }
         });
@@ -413,7 +396,10 @@ public class ZujiFragment extends MainBaseFrag{
             mContext.unregisterReceiver(mReceiver);
             mReceiver = null;
         }
-        pedometer.register();
+        if(pedometer!= null){
+            pedometer.unRegister();
+            pedometer = null;
+        }
     }
 
     @Override

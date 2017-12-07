@@ -90,7 +90,7 @@ public class JokeFragment extends MainBaseFrag {
     }
 
     private void initView(View view) {
-        emptyView = (RelativeLayout) view.findViewById(R.id.emptyview);
+        emptyView =  view.findViewById(R.id.emptyview);
         swipCardsView.retainLastCard(true);
     }
 
@@ -111,7 +111,9 @@ public class JokeFragment extends MainBaseFrag {
                 @Override
                 public void onResponse(String response, Headers headers) {
                     super.onResponse(response, headers);
-
+                    if(TextUtils.isEmpty(response)){
+                        return;
+                    }
                     if(jokeType == TYPE_JOKE_TEXT){
                         mJokecDatas.clear();
                         mJokecDatas.addAll(jsonParse(response));

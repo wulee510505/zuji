@@ -1,5 +1,6 @@
 package com.wulee.administrator.zuji.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -18,8 +19,8 @@ public class PhoneUtil {
      * Role:获取当前设置的电话号码
      */
     public static String getNativePhoneNumber() {
-        TelephonyManager telephonyManager  = (TelephonyManager) App.context.getSystemService(Context.TELEPHONY_SERVICE);
-        String NativePhoneNumber = telephonyManager.getLine1Number();
+        TelephonyManager telephonyManager = (TelephonyManager) App.context.getSystemService(Context.TELEPHONY_SERVICE);
+        @SuppressLint("MissingPermission") String NativePhoneNumber = telephonyManager.getLine1Number();
         return NativePhoneNumber;
     }
 
@@ -28,7 +29,7 @@ public class PhoneUtil {
      */
     public static String getDeviceId() {
         TelephonyManager tm = (TelephonyManager)App.context.getSystemService(Context.TELEPHONY_SERVICE);
-        String deviceId = tm.getDeviceId();
+        @SuppressLint("MissingPermission") String deviceId = tm.getDeviceId();
         return deviceId;
     }
 
@@ -68,7 +69,7 @@ public class PhoneUtil {
             if (!"9774d56d682e549c".equals(androidId)) {
                 uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString();
             } else {
-                final String deviceId = ((TelephonyManager) App.context.getSystemService( Context.TELEPHONY_SERVICE )).getDeviceId();
+                @SuppressLint("MissingPermission") final String deviceId = ((TelephonyManager) App.context.getSystemService( Context.TELEPHONY_SERVICE )).getDeviceId();
                 uuid = deviceId!=null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")).toString() : UUID.randomUUID().toString();
             }
         } catch (UnsupportedEncodingException e) {

@@ -205,12 +205,7 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
             } else {
                 holder.mTitle.setTextColor(ContextCompat.getColor(mContext, R.color.ctv_black_2));
             }
-            holder.rlRoot.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.onTitleItemClick(position);
-                }
-            });
+            holder.rlRoot.setOnClickListener(v -> mListener.onTitleItemClick(position));
         }
 
         @Override
