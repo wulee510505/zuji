@@ -93,6 +93,7 @@ public class UserGroupFragment extends MainBaseFrag {
                     if(currPiInfo == null){
                         return;
                     }
+
                     Intent intent;
                     if(TextUtils.equals(currPiInfo.getUsername(),personInfo.getUsername())){
                         intent = new Intent(mContext, PersonalInfoActivity.class);
