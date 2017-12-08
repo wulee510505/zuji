@@ -96,10 +96,11 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
                 public void done(List<SplashPic> list, BmobException e) {
                     if(e == null){
                         if(list != null && list.size()>0){
-                            SplashPic picInfo = list.get(0);
-                            if(null != picInfo && !TextUtils.isEmpty(picInfo.getUrl())){
-                                ImageUtil.setDefaultImageView(ivSplash,picInfo.getUrl(),R.mipmap.bg_wellcome,SplashActivity.this);
-                                aCache.put(Constant.KEY_SPLASH_PIC_URL,picInfo.getUrl(),Constant.SPLASH_PIC_URL_SAVE_TIME);
+                            int index = (int)( Math.random()* (3)) ; //生成 0、1、2 随机数
+                            SplashPic splashPic = list.get(index);
+                            if(null != splashPic && !TextUtils.isEmpty(splashPic.getUrl())){
+                                ImageUtil.setDefaultImageView(ivSplash,splashPic.getUrl(),R.mipmap.bg_wellcome,SplashActivity.this);
+                                aCache.put(Constant.KEY_SPLASH_PIC_URL,splashPic.getUrl(),Constant.SPLASH_PIC_URL_SAVE_TIME);
                             }
                         }
                     }
@@ -134,12 +135,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
             public void onAnimationEnd(Animation animation) {
                 mFadeInTextView
                         .setTextString("一款可以记录并查看出行轨迹的工具类软件")
-                        .setTextAnimationListener(new FadeInTextView.TextAnimationListener() {
-                            @Override
-                            public void animationFinish() {
-                                startActivity();
-                            }
-                        });
+                        .setTextAnimationListener(() -> startActivity());
                 mFadeInTextView.startFadeInAnimation();
             }
         });

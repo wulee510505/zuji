@@ -24,13 +24,14 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class RegistActivity extends BaseActivity implements View.OnClickListener{
 
+    private EditText mEtName;
     private EditText mEtMobile;
     private EditText mEtPwd;
     private EditText mEtPincode;
     private Button  mBtnRegist;
     private Button  mBtnPincode;
 
-    private String mobile ,authCode,pwd ;
+    private String name,mobile ,authCode,pwd ;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
+        mEtName = findViewById(R.id.et_name);
         mEtMobile = (EditText) findViewById(R.id.et_mobile);
         mEtPwd = (EditText) findViewById(R.id.et_pwd);
         mEtPincode = (EditText) findViewById(R.id.et_pincode);
@@ -58,10 +60,15 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_regist:
+                name  = mEtName.getText().toString().trim();
                 mobile  = mEtMobile.getText().toString().trim();
                 pwd = mEtPwd.getText().toString().trim();
                 authCode = mEtPincode.getText().toString().trim();
 
+                if(TextUtils.isEmpty(name)){
+                    Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(TextUtils.isEmpty(mobile)){
                     Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
@@ -83,7 +90,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }*/
-                doRegist(mobile,pwd);
+                doRegist(name ,mobile,pwd);
             break;
             case R.id.btn_pincode:
                 mobile  = mEtMobile.getText().toString().trim();
@@ -107,13 +114,13 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    private void doRegist(String mobile, String pwd) {
+    private void doRegist(String name,String mobile, String pwd) {
         showProgressDialog(false);
         PersonInfo piInfo = new PersonInfo();
         piInfo.setMobilePhoneNumber(mobile);
         piInfo.setUsername(mobile);
         piInfo.setPassword(pwd);
-        piInfo.setName("游客");//设置默认nickName
+        piInfo.setName(name);
        /* piInfo.signOrLogin(authCode, new SaveListener<PersonalInfo>() {
             @Override
             public void done(PersonalInfo user,BmobException e) {

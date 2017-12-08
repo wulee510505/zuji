@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.UserGroupAdapter;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.ui.PersonalInfoActivity;
 import com.wulee.administrator.zuji.ui.UserInfoActivity;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.RecycleViewDivider;
@@ -25,6 +27,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
@@ -86,8 +89,17 @@ public class UserGroupFragment extends MainBaseFrag {
             if(null != piInfoList && piInfoList.size()>0){
                 PersonInfo personInfo = piInfoList.get(position);
                 if(null != personInfo){
-                    Intent intent = new Intent(mContext,UserInfoActivity.class);
-                    intent.putExtra("piInfo",personInfo);
+                    PersonInfo currPiInfo = BmobUser.getCurrentUser(PersonInfo.class);
+                    if(currPiInfo == null){
+                        return;
+                    }
+                    Intent intent;
+                    if(TextUtils.equals(currPiInfo.getUsername(),personInfo.getUsername())){
+                        intent = new Intent(mContext, PersonalInfoActivity.class);
+                    }else{
+                        intent = new Intent(mContext, UserInfoActivity.class);
+                        intent.putExtra("piInfo",personInfo);
+                    }
                     startActivity(intent);
                 }
             }
