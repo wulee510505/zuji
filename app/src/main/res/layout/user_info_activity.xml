@@ -159,12 +159,37 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="20dp"
             android:layout_marginTop="10dp"
             android:background="@color/ctv_black_4" />
 
 
+        <RelativeLayout
+            android:id="@+id/rl_circle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="圈子"
+                android:textColor="@color/ctv_black_2"
+                android:textSize="@dimen/com_tv_size_middle" />
+
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="20dp"
+            android:background="@color/ctv_black_4" />
     </LinearLayout>
 
     <Button

@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.stetho.common.LogUtil;
-import com.jaeger.ninegridimageview.ItemImageClickListener;
+import com.jaeger.ninegridimageview.GridImageView;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
 import com.wulee.administrator.zuji.R;
@@ -71,19 +71,16 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
             ImageUtil.setDefaultImageView(ivAvatar,"",R.mipmap.icon_user_def,mcontext);
         }
 
-        ivAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(null != piInfo){
-                    Intent intent = null;
-                    if(TextUtils.equals(piInfo.getUsername(),content.personInfo.getUsername())){
-                        intent = new Intent(mcontext, PersonalInfoActivity.class);
-                    }else{
-                        intent = new Intent(mcontext, UserInfoActivity.class);
-                        intent.putExtra("piInfo",content.personInfo);
-                    }
-                    mcontext.startActivity(intent);
+        ivAvatar.setOnClickListener(view -> {
+            if(null != piInfo){
+                Intent intent = null;
+                if(TextUtils.equals(piInfo.getUsername(),content.personInfo.getUsername())){
+                    intent = new Intent(mcontext, PersonalInfoActivity.class);
+                }else{
+                    intent = new Intent(mcontext, UserInfoActivity.class);
+                    intent.putExtra("piInfo",content.personInfo);
                 }
+                mcontext.startActivity(intent);
             }
         });
 
@@ -109,13 +106,10 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
             }
         }
         final int pos = baseViewHolder.getAdapterPosition();
-        tvDel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mListener != null){
-                    //因为有headerview
-                    mListener.onDelBtnClick(pos-1);
-                }
+        tvDel.setOnClickListener(view -> {
+            if(mListener != null){
+                //因为有headerview
+                mListener.onDelBtnClick(pos-1);
             }
         });
 
@@ -127,52 +121,46 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
 
         final RelativeLayout rlLike = baseViewHolder.getView(R.id.toolbarLike);
         ImageView ivOpt = baseViewHolder.getView(R.id.album_opt);
-        ivOpt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isToolbarLikeAndCommentVisible[0]){
-                    llLikeAndComment.setVisibility(View.GONE);
-                    isToolbarLikeAndCommentVisible[0] = false;
-                } else{
-                    llLikeAndComment.setVisibility(View.VISIBLE);
-                    isToolbarLikeAndCommentVisible[0] = true;
-                }
+        ivOpt.setOnClickListener(view -> {
+            if(isToolbarLikeAndCommentVisible[0]){
+                llLikeAndComment.setVisibility(View.GONE);
+                isToolbarLikeAndCommentVisible[0] = false;
+            } else{
+                llLikeAndComment.setVisibility(View.VISIBLE);
+                isToolbarLikeAndCommentVisible[0] = true;
             }
         });
 
-        rlLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(content.getLikeList() != null && content.getLikeList().size()>0){
-                    for (PersonInfo likePiInfo : content.getLikeList()){
-                        if(TextUtils.equals(piInfo.getUsername(),likePiInfo.getUsername())){
-                            llLikeAndComment.setVisibility(View.GONE);
-                            Toast.makeText(mcontext, "您已经赞过了", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+        rlLike.setOnClickListener(view -> {
+            if(content.getLikeList() != null && content.getLikeList().size()>0){
+                for (PersonInfo likePiInfo : content.getLikeList()){
+                    if(TextUtils.equals(piInfo.getUsername(),likePiInfo.getUsername())){
+                        llLikeAndComment.setVisibility(View.GONE);
+                        Toast.makeText(mcontext, "您已经赞过了", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                 }
-
-                //将当前用户添加到CircleContent表中的likes字段值中，表明当前用户喜欢该帖子
-                final BmobRelation relation = new BmobRelation();
-                //将当前用户添加到多对多关联中
-                relation.add(piInfo);
-                //多对多关联指向CircleContent的`likes`字段
-                content.setLikes(relation);
-
-                content.update(new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        llLikeAndComment.setVisibility(View.GONE);
-                        if(e == null){
-                            EventBus.getDefault().post(new String("refresh"));
-                            LogUtil.i("zuji","喜欢成功");
-                        }else{
-                            LogUtil.i("zuji","喜欢失败："+e.getMessage());
-                        }
-                    }
-                });
             }
+
+            //将当前用户添加到CircleContent表中的likes字段值中，表明当前用户喜欢该帖子
+            final BmobRelation relation = new BmobRelation();
+            //将当前用户添加到多对多关联中
+            relation.add(piInfo);
+            //多对多关联指向CircleContent的`likes`字段
+            content.setLikes(relation);
+
+            content.update(new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    llLikeAndComment.setVisibility(View.GONE);
+                    if(e == null){
+                        EventBus.getDefault().post(new String("refresh"));
+                        LogUtil.i("zuji","喜欢成功");
+                    }else{
+                        LogUtil.i("zuji","喜欢失败："+e.getMessage());
+                    }
+                }
+            });
         });
         TextView tvLikes = baseViewHolder.getView(R.id.tv_likes);
         StringBuilder sbLikes = new StringBuilder();
@@ -237,7 +225,9 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
                     }
                     @Override
                     protected ImageView generateImageView(Context context) {
-                        return super.generateImageView(context);
+                        GridImageView imageView = new GridImageView(context);
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        return imageView;
                     }
                     @Override
                     protected void onItemImageClick(Context context, ImageView imageView, int index, List<CircleContent.CircleImageBean> photoList) {
@@ -247,16 +237,13 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
                 NineGridImageView nineGridImageView = baseViewHolder.getView(R.id.nine_grid_view);
                 nineGridImageView.setAdapter(mAdapter);
                 nineGridImageView.setImagesData(content.getImageList());
-                nineGridImageView.setItemImageClickListener(new ItemImageClickListener<CircleContent.CircleImageBean>() {
-                    @Override
-                    public void onItemImageClick(Context context, ImageView imageView, int index, List<CircleContent.CircleImageBean> imgList) {
+                nineGridImageView.setItemImageClickListener((context, imageView, index, imgList) -> {
 
-                        if(imgList != null && imgList.size()>0){
-                            Intent intent = new Intent(context, BigMultiImgActivity.class);
-                            intent.putExtra(BigMultiImgActivity.IMAGES_URL, content.getImgUrls());
-                            intent.putExtra(BigMultiImgActivity.IMAGE_INDEX, index);
-                            context.startActivity(intent);
-                        }
+                    if(imgList != null && imgList.size()>0){
+                        Intent intent = new Intent(context, BigMultiImgActivity.class);
+                        intent.putExtra(BigMultiImgActivity.IMAGES_URL, content.getImgUrls());
+                        intent.putExtra(BigMultiImgActivity.IMAGE_INDEX, index);
+                        context.startActivity(intent);
                     }
                 });
                 break;

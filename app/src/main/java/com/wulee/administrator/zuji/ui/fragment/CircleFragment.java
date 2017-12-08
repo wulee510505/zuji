@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.stetho.common.LogUtil;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.model.CropOptions;
@@ -139,25 +138,20 @@ public class CircleFragment extends MainBaseFrag {
             }
         });
 
-        ImageView ivUserAvatar = (ImageView) headerView.findViewById(R.id.userAvatar);
-        TextView tvNick = (TextView) headerView.findViewById(R.id.userNick);
+        ImageView ivUserAvatar = headerView.findViewById(R.id.userAvatar);
+        TextView tvNick =  headerView.findViewById(R.id.userNick);
         PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if (null != piInfo) {
             if (!TextUtils.isEmpty(piInfo.getName()))
                 tvNick.setText(piInfo.getName());
             else
                 tvNick.setText("游客");
-            ImageUtil.setRoundImageView(ivUserAvatar, piInfo.getHeader_img_url(), R.mipmap.icon_user_def, mContext);
+            ImageUtil.setDefaultImageView(ivUserAvatar, piInfo.getHeader_img_url(), R.mipmap.icon_user_def_rect, mContext);
             ImageUtil.setDefaultImageView(ivHeaderBg, piInfo.getCircle_header_bg_url(), R.mipmap.bg_circle_header, mContext);
         } else {
             tvNick.setText("游客");
         }
-        ivUserAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext, PersonalInfoActivity.class));
-            }
-        });
+        ivUserAvatar.setOnClickListener(view -> startActivity(new Intent(mContext, PersonalInfoActivity.class)));
 
         mAdapter = new CircleContentAdapter(circleContentList, mContext);
         mAdapter.addHeaderView(headerView);
@@ -167,48 +161,29 @@ public class CircleFragment extends MainBaseFrag {
     }
 
     private void addListener() {
-        ivPublishCircle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, PublishCircleActivity.class);
-                intent.putExtra(PublishCircleActivity.PUBLISH_TYPE,PublishCircleActivity.TYPE_PUBLISH_TEXT_AND_IMG);
-                startActivity(intent);
-            }
+        ivPublishCircle.setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, PublishCircleActivity.class);
+            intent.putExtra(PublishCircleActivity.PUBLISH_TYPE,PublishCircleActivity.TYPE_PUBLISH_TEXT_AND_IMG);
+            startActivity(intent);
         });
-        ivPublishCircle.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Intent intent = new Intent(mContext, PublishCircleActivity.class);
-                intent.putExtra(PublishCircleActivity.PUBLISH_TYPE,PublishCircleActivity.TYPE_PUBLISH_TEXT_ONLY);
-                startActivity(intent);
-                return false;
-            }
+        ivPublishCircle.setOnLongClickListener(view -> {
+            Intent intent = new Intent(mContext, PublishCircleActivity.class);
+            intent.putExtra(PublishCircleActivity.PUBLISH_TYPE,PublishCircleActivity.TYPE_PUBLISH_TEXT_ONLY);
+            startActivity(intent);
+            return false;
         });
 
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isPullToRefresh = true;
-                isRefresh = true;
-                curPage = 0;
-                getCircleContnets(curPage, STATE_REFRESH);
-            }
+        swipeLayout.setOnRefreshListener(() -> {
+            isPullToRefresh = true;
+            isRefresh = true;
+            curPage = 0;
+            getCircleContnets(curPage, STATE_REFRESH);
         });
         //加载更多
         mAdapter.setEnableLoadMore(true);
         mAdapter.setPreLoadNumber(PAGE_SIZE);
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                getCircleContnets(curPage, STATE_MORE);
-            }
-        });
-        mAdapter.setDelBtnClickListenerListener(new CircleContentAdapter.OnDelBtnClickListener() {
-            @Override
-            public void onDelBtnClick(int postion) {
-                showDeleteDialog(postion);
-            }
-        });
+        mAdapter.setOnLoadMoreListener(() -> getCircleContnets(curPage, STATE_MORE));
+        mAdapter.setDelBtnClickListenerListener(postion -> showDeleteDialog(postion));
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

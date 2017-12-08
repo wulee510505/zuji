@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wulee.administrator.zuji.R;
@@ -37,8 +38,11 @@ public class UserInfoActivity extends BaseActivity {
     TextView tvGender;
     @InjectView(R.id.btn_message_board)
     Button btnMessageBoard;
+    @InjectView(R.id.rl_circle)
+    RelativeLayout rlCircle;
 
     private PersonInfo personInfo;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,16 +72,20 @@ public class UserInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_back,R.id.btn_message_board})
+    @OnClick({R.id.iv_back, R.id.btn_message_board,R.id.rl_circle})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.btn_message_board:
-                startActivity(new Intent(this,MessageBoardActivity.class).putExtra("piInfo",personInfo));
+                startActivity(new Intent(this, MessageBoardActivity.class).putExtra("piInfo", personInfo));
+                break;
+            case R.id.rl_circle:
+                startActivity(new Intent(this, PrivateCircleActivity.class).putExtra("piInfo", personInfo));
                 break;
         }
 
     }
+
 }
