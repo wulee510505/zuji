@@ -35,6 +35,7 @@ import com.wulee.administrator.zuji.ui.LoginActivity;
 import com.wulee.administrator.zuji.ui.PersonalInfoActivity;
 import com.wulee.administrator.zuji.ui.PublishCircleActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
+import com.wulee.administrator.zuji.utils.FileProvider7;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
@@ -129,8 +130,7 @@ public class CircleFragment extends MainBaseFrag {
                 TakePhoto takePhoto = getTakePhoto();
                 File file = new File(Constant.TEMP_FILE_PATH, "circle_header_bg" + ".jpg");
                 if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
-                Uri imageUri = Uri.fromFile(file);
-
+                Uri imageUri =  FileProvider7.getUriForFile(mContext, file);
                 CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
                 takePhoto.onPickFromGalleryWithCrop(imageUri, cropOptions);
 

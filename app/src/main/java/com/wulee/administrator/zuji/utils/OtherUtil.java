@@ -195,7 +195,7 @@ public class OtherUtil {
             File f = new File(imgPath);
             if (f != null && f.exists() && f.isFile()) {
                 intent.setType("image/jpg");
-                Uri u = Uri.fromFile(f);
+                Uri u = FileProvider7.getUriForFile(context,f);
                 intent.putExtra(Intent.EXTRA_STREAM, u);
             }
         }

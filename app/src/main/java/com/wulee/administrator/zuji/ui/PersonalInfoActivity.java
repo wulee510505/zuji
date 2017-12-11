@@ -26,6 +26,7 @@ import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.Constant;
 import com.wulee.administrator.zuji.utils.AppUtils;
+import com.wulee.administrator.zuji.utils.FileProvider7;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
@@ -286,7 +287,7 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                             TakePhoto takePhoto = getTakePhoto();
                             File file=new File(Constant.TEMP_FILE_PATH, "header_img" + ".jpg");
                             if (!file.getParentFile().exists())file.getParentFile().mkdirs();
-                            Uri imageUri = Uri.fromFile(file);
+                            Uri imageUri = FileProvider7.getUriForFile(PersonalInfoActivity.this,file);
 
                             CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
                             takePhoto.onPickFromGalleryWithCrop(imageUri,cropOptions);
