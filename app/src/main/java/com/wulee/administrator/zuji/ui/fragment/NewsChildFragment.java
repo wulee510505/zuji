@@ -12,13 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.NewsAdapter;
+import com.wulee.administrator.zuji.base.ComWebActivity;
 import com.wulee.administrator.zuji.entity.NewsInfo;
 import com.wulee.administrator.zuji.utils.GsonUtil;
-import com.wulee.webactivitylib.WebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,22 +93,16 @@ public class NewsChildFragment extends Fragment {
     }
 
     private void addListener() {
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isRefresh = true;
-                getNews(mUrl);
-            }
+        swipeLayout.setOnRefreshListener(() -> {
+            isRefresh = true;
+            getNews(mUrl);
         });
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                List<NewsInfo.NewsEntity> newsList = mAdapter.getData();
-                if(newsList != null && newsList.size()>0){
-                    NewsInfo.NewsEntity news = newsList.get(position);
-                    if(news != null){
-                        WebActivity.launch(getActivity(),news.getUrl(),news.getTitle(),R.color.colorAccent);
-                    }
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<NewsInfo.NewsEntity> newsList = mAdapter.getData();
+            if(newsList != null && newsList.size()>0){
+                NewsInfo.NewsEntity news = newsList.get(position);
+                if(news != null){
+                    ComWebActivity.launch(getActivity(),news.getUrl(),news.getTitle(),R.color.colorAccent);
                 }
             }
         });

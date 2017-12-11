@@ -82,12 +82,9 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
         titleAdapter = new NavigAdapter();
         recyclerView.setAdapter(titleAdapter);
 
-        setOnTitleItemClickListener(new OnTitleItemClickListener() {
-            @Override
-            public void onTitleItemClick(int index) {
-                titleAdapter.setSelectIndex(index);
-                viewpager.setCurrentItem(index);
-            }
+        setOnTitleItemClickListener(index -> {
+            titleAdapter.setSelectIndex(index);
+            viewpager.setCurrentItem(index);
         });
         pagerAdapter =  new MyFragmentPageAdapter(getChildFragmentManager(),mFragmentList);
         viewpager.setScroll(false);

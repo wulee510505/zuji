@@ -204,7 +204,7 @@ public class LocationUtil{
                     aCache.put("lon",locationInfo.getLontitude());
 
                     aCache.put("isUploadLocation","yes");
-                    speak("您当前位置是"+ locationInfo.getAddress() + locationInfo.getLocationdescribe());
+                    //speak("您当前位置是"+ locationInfo.getAddress() + locationInfo.getLocationdescribe());
                     System.out.println("—— 位置同步成功 ——");
                 }else{
                     System.out.println("—— 位置同步失败 ——");

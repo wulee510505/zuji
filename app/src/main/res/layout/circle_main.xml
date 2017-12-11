@@ -13,6 +13,14 @@
         android:orientation="vertical"
         android:background="@color/colorAccent">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/icon_back"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/title"

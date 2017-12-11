@@ -29,6 +29,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
@@ -53,6 +54,9 @@ public class PrivateCircleActivity extends BaseActivity {
     SwipeRefreshLayout swipeLayout;
     @InjectView(R.id.activity_main)
     RelativeLayout activityMain;
+    @InjectView(R.id.iv_back)
+    ImageView ivBack;
+
 
     private View mRootView;
     private AppCompatImageView ivHeaderBg;
@@ -79,22 +83,23 @@ public class PrivateCircleActivity extends BaseActivity {
         ButterKnife.inject(this);
 
         personInfo = (PersonInfo) getIntent().getSerializableExtra("piInfo");
-        if(null == personInfo){
+        if (null == personInfo) {
             return;
         }
         initView();
         addListener();
-        getCircleContnets(0,STATE_REFRESH);
+        getCircleContnets(0, STATE_REFRESH);
     }
 
     private void initView() {
+        ivBack.setVisibility(View.VISIBLE);
         ivPublishCircle.setVisibility(View.GONE);
 
         View headerView = LayoutInflater.from(this).inflate(R.layout.circle_list_header, null);
         ivHeaderBg = headerView.findViewById(R.id.iv_header_bg);
 
-        ImageView ivUserAvatar =  headerView.findViewById(R.id.userAvatar);
-        TextView tvNick =  headerView.findViewById(R.id.userNick);
+        ImageView ivUserAvatar = headerView.findViewById(R.id.userAvatar);
+        TextView tvNick = headerView.findViewById(R.id.userNick);
 
         if (!TextUtils.isEmpty(personInfo.getName()))
             tvNick.setText(personInfo.getName());
@@ -236,5 +241,10 @@ public class PrivateCircleActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.reset(this);
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        finish();
     }
 }

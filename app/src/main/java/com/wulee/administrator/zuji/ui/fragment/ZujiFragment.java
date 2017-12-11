@@ -3,7 +3,6 @@ package com.wulee.administrator.zuji.ui.fragment;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -277,43 +276,40 @@ public class ZujiFragment extends MainBaseFrag{
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("提示");
         builder.setMessage("确定要删除吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final List<LocationInfo> dataList = mAdapter.getData();
-                String objectId = null;
-                if(dataList != null && dataList.size()>0){
-                    LocationInfo locationInfo = dataList.get(pos);
-                    objectId = locationInfo.getObjectId();
-                }
-                final LocationInfo location = new LocationInfo();
-                location.setObjectId(objectId);
-                final String finalObjectId = objectId;
-
-                showProgressDialog(getActivity(),false);
-                location.delete(new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        stopProgressDialog();
-                        if(e == null){
-                            List<LocationInfo> list =  dataList;
-                            Iterator<LocationInfo> iter = list.iterator();
-                            while(iter.hasNext()){
-                                LocationInfo locationBean = iter.next();
-                                if(locationBean.equals(finalObjectId)){
-                                    iter.remove();
-                                    break;
-                                }
-                            }
-                            isRefresh = true;
-                            getLocationList(0, STATE_REFRESH);
-                            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(mContext, "删除失败："+e.getMessage()+","+e.getErrorCode(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            final List<LocationInfo> dataList = mAdapter.getData();
+            String objectId = null;
+            if(dataList != null && dataList.size()>0){
+                LocationInfo locationInfo = dataList.get(pos);
+                objectId = locationInfo.getObjectId();
             }
+            final LocationInfo location = new LocationInfo();
+            location.setObjectId(objectId);
+            final String finalObjectId = objectId;
+
+            showProgressDialog(getActivity(),false);
+            location.delete(new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    stopProgressDialog();
+                    if(e == null){
+                        List<LocationInfo> list =  dataList;
+                        Iterator<LocationInfo> iter = list.iterator();
+                        while(iter.hasNext()){
+                            LocationInfo locationBean = iter.next();
+                            if(locationBean.equals(finalObjectId)){
+                                iter.remove();
+                                break;
+                            }
+                        }
+                        isRefresh = true;
+                        getLocationList(0, STATE_REFRESH);
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(mContext, "删除失败："+e.getMessage()+","+e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         });
         builder.setNegativeButton("取消", null);
         builder.create().show();

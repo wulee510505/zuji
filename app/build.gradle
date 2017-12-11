@@ -92,7 +92,6 @@ dependencies {
     compile 'org.greenrobot:greendao-generator:2.2.0'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.github.wulee510505:Text2Speach:1.0.0'
-    compile 'com.github.wulee510505:ComWebActivity:6b02d33240'
     compile 'com.github.wulee510505:Recording:1.0.1'
     compile 'com.github.wulee510505:SelectableTextView:1.0.5'
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
@@ -111,7 +110,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     compile 'com.xdandroid:hellodaemon:+'
-
+    compile 'com.github.clans:fab:1.6.4'
 
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile files('libs/gson-2.6.2.jar')

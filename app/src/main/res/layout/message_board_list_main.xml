@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,17 +21,11 @@
 
 
     <LinearLayout
-        android:id="@+id/llayout_bottom"
+        android:id="@+id/llayout_opt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/titlelayout"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grayline" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,6 +60,12 @@
                 android:padding="8dp" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/grayline" />
     </LinearLayout>
 
 
@@ -73,8 +74,7 @@
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/titlelayout"
-        android:layout_above="@id/llayout_bottom"
+        android:layout_below="@id/llayout_opt"
         android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView

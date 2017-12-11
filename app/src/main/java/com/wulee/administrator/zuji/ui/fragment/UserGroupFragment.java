@@ -156,7 +156,7 @@ public class UserGroupFragment extends MainBaseFrag {
                     }
                 }else{
                     mAdapter.loadMoreFail();
-                    LogUtil.d("查询LocationInfo失败"+e.getMessage()+","+e.getErrorCode());
+                    LogUtil.d("查询UserInfo失败"+e.getMessage()+","+e.getErrorCode());
                 }
             }
         });

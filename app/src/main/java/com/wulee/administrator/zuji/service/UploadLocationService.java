@@ -46,7 +46,7 @@ public class UploadLocationService extends AbsWorkService {
     public void startWork(Intent intent, int flags, int startId) {
         //2分钟请求一次定位
         sDisposable = Observable
-                .interval(10, TimeUnit.SECONDS)
+                .interval(2, TimeUnit.MINUTES)
                 //取消任务时取消定时唤醒
                 .doOnDispose(() ->{
                     cancelJobAlarmSub();

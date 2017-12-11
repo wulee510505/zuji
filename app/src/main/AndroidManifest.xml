@@ -143,6 +143,9 @@
         <activity android:name="com.wulee.administrator.zuji.ui.PrivateCircleActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
+        <activity android:name="com.wulee.administrator.zuji.base.ComWebActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
 
 
         <activity

@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:hint=""
-                        android:maxLength="6"
+                        android:maxLength="8"
                         android:background="@null"
                         android:drawableBottom="@drawable/edittext_bottom_line"
                         android:textColor="@color/baseGrayNor"
