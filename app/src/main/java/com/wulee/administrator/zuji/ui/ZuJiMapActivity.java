@@ -11,8 +11,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +31,8 @@ import com.facebook.stetho.common.LogUtil;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.database.bean.LocationInfo;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.widget.BaseTitleLayout;
+import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,6 +56,7 @@ public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMar
     public static final String ACTION_LOCATION_CHANGE = "action_location_change";
     private  final int INTENT_SWITCH_MAP_TYPE = 100;
 
+    private BaseTitleLayout titleLayout;
     private MapView mapView;
     private BaiduMap mBaiduMap;
     private ImageView ivSwitch;
@@ -79,30 +80,35 @@ public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMar
     private boolean isTrafficEnabled = false;  //是否开启交通图
     private boolean isHeatMapEnabled = false;   //是否开启城市热力图
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.zuji_map);
 
         initView();
+        addListener();
         queryData();
     }
 
+    private void addListener() {
+        titleLayout.setOnTitleClickListener(new TitleLayoutClickListener() {
+            @Override
+            public void onLeftClickListener() {
+                finish();
+            }
+        });
+    }
+
     private void initView() {
+        titleLayout = findViewById(R.id.titlelayout);
         mapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mapView.getMap();
         mBaiduMap.setOnMarkerClickListener(this);
 
         ivSwitch = (ImageView) findViewById(R.id.iv_map_type_switch);
-        ivSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(ZuJiMapActivity.this,SwitchMapTypeActivity.class),INTENT_SWITCH_MAP_TYPE);
-            }
-        });
+        ivSwitch.setOnClickListener(view -> startActivityForResult(new Intent(ZuJiMapActivity.this,SwitchMapTypeActivity.class),INTENT_SWITCH_MAP_TYPE));
     }
 
 
@@ -169,7 +175,7 @@ public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMar
             mBaiduMap.addOverlay(ooPolygon);
         }*/
         MapStatus.Builder builder = new MapStatus.Builder();
-        builder.target(lastLocation).zoom(18.0f);
+        builder.target(lastLocation).zoom(16.0f);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
     }
 

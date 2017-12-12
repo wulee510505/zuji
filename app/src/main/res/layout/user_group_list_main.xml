@@ -15,7 +15,7 @@
         app:titleLeftImg="@mipmap/icon_menu"
         app:titleLeftImgVisible="false"
         app:titleLeftText=""
-        app:titleRightImg1="@null"
+        app:titleRightImg1="@mipmap/icon_near_user"
         app:titleTextColor="@color/color_white"
         app:titleTextSize="18sp" />
 

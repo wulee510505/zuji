@@ -136,4 +136,10 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MessageInfo,BaseVi
         }
     }
 
+
+    public void stopPlayAudio(){
+        if(voiceManager.isPlaying()){
+            voiceManager.stopRecordAndPlay();
+        }
+    }
 }

@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titlelayout"
         android:layout_margin="10dp"
-        android:background="@drawable/umeng_socialize_edit_bg"
+        android:background="@drawable/bg_com_edittext"
         android:gravity="top|left"
         android:padding="10dp" />
 

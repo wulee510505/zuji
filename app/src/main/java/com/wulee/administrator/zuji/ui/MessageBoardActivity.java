@@ -268,4 +268,10 @@ public class MessageBoardActivity extends BaseActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.stopPlayAudio();
+    }
 }

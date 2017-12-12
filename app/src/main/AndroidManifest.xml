@@ -143,6 +143,11 @@
         <activity android:name="com.wulee.administrator.zuji.ui.PrivateCircleActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
+
+        <activity android:name="com.wulee.administrator.zuji.ui.NearUserActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+
         <activity android:name="com.wulee.administrator.zuji.base.ComWebActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>
@@ -244,36 +249,12 @@
             android:value="tTPUoUgnb0BO9f9VEGtwLDclBmExPFEU" />       //key:开发者申请的Key
 
 
-        <!-- 微信回调begin -->
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- 微信回调end -->
 
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="59279266b27b0a188d00044f" >
         </meta-data>
 
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent1106248240" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
 
     </application>
 

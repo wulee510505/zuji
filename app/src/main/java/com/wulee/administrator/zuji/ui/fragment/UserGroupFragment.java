@@ -17,10 +17,12 @@ import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.adapter.UserGroupAdapter;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
+import com.wulee.administrator.zuji.ui.NearUserActivity;
 import com.wulee.administrator.zuji.ui.PersonalInfoActivity;
 import com.wulee.administrator.zuji.ui.UserInfoActivity;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.RecycleViewDivider;
+import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 
 import java.util.List;
 
@@ -114,6 +116,13 @@ public class UserGroupFragment extends MainBaseFrag {
         mAdapter.setEnableLoadMore(true);
         mAdapter.setPreLoadNumber(PAGE_SIZE);
         mAdapter.setOnLoadMoreListener(() -> getUserList(curPage, STATE_MORE));
+
+        titlelayout.setOnTitleClickListener(new TitleLayoutClickListener() {
+            @Override
+            public void onRightImg1ClickListener() {
+               startActivity(new Intent(mContext, NearUserActivity.class));
+            }
+        });
     }
 
     @Override

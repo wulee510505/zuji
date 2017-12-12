@@ -3,13 +3,9 @@ package com.wulee.administrator.zuji;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.multidex.MultiDexApplication;
-
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
-import com.umeng.socialize.Config;
-import com.umeng.socialize.PlatformConfig;
-import com.umeng.socialize.UMShareAPI;
 import com.wulee.administrator.zuji.database.dao.DaoMaster;
 import com.wulee.administrator.zuji.database.dao.DaoSession;
 import com.wulee.administrator.zuji.service.UploadLocationService;
@@ -56,8 +52,6 @@ public class App extends MultiDexApplication {
         context = getApplicationContext();
         aCache = ACache.get(this);
 
-        Config.DEBUG = true;
-
         SDKInitializer.initialize(context);
 
         initDB();
@@ -71,8 +65,6 @@ public class App extends MultiDexApplication {
         OkHttpFinalConfiguration.Builder builder = new OkHttpFinalConfiguration.Builder();
         OkHttpFinal.getInstance().init(builder.build());
 
-        initUMShareSDK();
-
         //崩溃处理
         CrashHandlerUtil crashHandlerUtil = CrashHandlerUtil.getInstance();
         crashHandlerUtil.init(this);
@@ -84,12 +76,6 @@ public class App extends MultiDexApplication {
         initNetChangeReceiver();
     }
 
-
-    private void initUMShareSDK() {
-        UMShareAPI.get(this);
-        PlatformConfig.setWeixin("wx1073aba850d8e7e9", "cab9b8657c10ed5c8c07ab78a4649935");
-        PlatformConfig.setQQZone("1106248240", "GJqraocx5pCDcX6Z");
-    }
 
     private static void initDB(){
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "zuji-db", null);

@@ -8,7 +8,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
@@ -64,7 +63,6 @@ public class MapSelPointActivity extends BaseActivity implements OnGetGeoCoderRe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.map_sel_point);
         /**
          * 初始化搜索模块，注册事件监听
@@ -144,11 +142,6 @@ public class MapSelPointActivity extends BaseActivity implements OnGetGeoCoderRe
                 builder.target(ll).zoom(18.0f);
                 baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
-        }
-
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-
         }
 
     }
