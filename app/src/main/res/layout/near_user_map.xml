@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#fff">
+
+
+    <com.wulee.administrator.zuji.widget.BaseTitleLayout
+        android:id="@+id/titlelayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/com_title_height"
+        android:background="@color/colorAccent"
+        app:titleCenterText="附近的人"
+        app:titleLeftImg="@mipmap/icon_back"
+        app:titleLeftImgVisible="true"
+        app:titleLeftText="返回"
+        app:titleTextColor="@color/color_white"
+        app:titleTextSize="18sp" />
+
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlelayout"
+        android:clickable="true" />
+
+</RelativeLayout>
