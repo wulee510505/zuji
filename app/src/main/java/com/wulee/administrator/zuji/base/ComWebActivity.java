@@ -59,7 +59,7 @@ public class ComWebActivity extends AppCompatActivity implements WebFragment.OnW
             }
             @Override
             public void onRightImg1ClickListener() {
-                OtherUtil.shareTextAndImage(ComWebActivity.this,title,url, null);
+                OtherUtil.shareTextAndImage(ComWebActivity.this,title,title +"\n"+ url, null);
             }
         });
     }

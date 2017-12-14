@@ -72,7 +72,7 @@ public class BaseActivity extends AppCompatActivity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             return;
         }
-        mProgressDialog = new BaseProgressDialog(this, msg);
+        mProgressDialog = new BaseProgressDialog(this);
         if (cancelListener != null) {
             mProgressDialog.setOnCancelListener(cancelListener);
         }

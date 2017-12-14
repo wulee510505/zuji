@@ -20,19 +20,33 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/line_1"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/rl_title"
+        android:background="@color/white"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rl_title"
+        android:layout_below="@id/line_1"
         android:layout_centerVertical="true"
         android:fadingEdge="none"
         android:overScrollMode="never" />
+
+    <TextView
+        android:id="@+id/line_2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/recycler_view"
+        android:background="@color/grayline"/>
 
     <com.wulee.administrator.zuji.widget.NoScroViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/recycler_view"/>
+        android:layout_below="@id/line_2"/>
 
 </RelativeLayout>

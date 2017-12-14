@@ -1,6 +1,5 @@
 package com.wulee.administrator.zuji.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -20,12 +19,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.DBHandler;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.Constant;
+import com.wulee.administrator.zuji.entity.MessageInfo;
 import com.wulee.administrator.zuji.entity.SignInfo;
 import com.wulee.administrator.zuji.service.UploadLocationService;
 import com.wulee.administrator.zuji.ui.fragment.CircleFragment;
@@ -64,13 +66,11 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.BmobUpdateListener;
 import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
-import cn.bmob.v3.update.UpdateResponse;
 import cn.bmob.v3.update.UpdateStatus;
 
 import static cn.bmob.v3.BmobUser.getCurrentUser;
@@ -80,7 +80,7 @@ import static com.wulee.administrator.zuji.App.aCache;
  * Created by wulee on 2017/9/6 09:52
  */
 
-public class MainNewActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener,NavigationView.OnNavigationItemSelectedListener{
+public class MainNewActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener,NavigationView.OnNavigationItemSelectedListener,ZujiFragment.OnMenuBtnClickListener{
 
     private ViewPager mViewPager;
     private RadioGroup mRg;
@@ -91,11 +91,12 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
     private TextView mTvMobile;
     private TextView mTvSign;
     private TextView mTvIntegral;
+    private TextView tvNewMsg;
 
     private MainFPagerAdaper mainFPagerAdaper;
 
 
-    private static DrawerLayout mDrawerLayout;
+    private  DrawerLayout mDrawerLayout;
 
     // 标示了当前位置
     private final int POS_ONE = 0, POS_TWO = 1, POS_THREE = 2, POS_FOUR = 3, POS_FIVE = 4;
@@ -209,12 +210,12 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
 
 
     private void initView() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawerLayout);
+        mDrawerLayout =  findViewById(R.id.id_drawerLayout);
         mDrawerLayout.setScrimColor(0x80000000);
 
-        mViewPager = (ViewPager) findViewById(R.id.mviewpager);
-        mRg = (RadioGroup) findViewById(R.id.mnc_rg);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        mViewPager =  findViewById(R.id.mviewpager);
+        mRg = findViewById(R.id.mnc_rg);
+        navigationView =  findViewById(R.id.nav_view);
 
         //自定义menu菜单icon和title颜色
         int[][] states = new int[][]{
@@ -231,11 +232,11 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
 
         menuHeaderView = navigationView.inflateHeaderView(R.layout.nav_menu_header);
 
-        CoolImageView ivBg = (CoolImageView) menuHeaderView.findViewById(R.id.iv_menu_header_bg);
+        CoolImageView ivBg =  menuHeaderView.findViewById(R.id.iv_menu_header_bg);
         Drawable drawable = ivBg.getBackground();
         BitmapDrawable bd = (BitmapDrawable) drawable;
         Bitmap bm = bd.getBitmap();
-        finalBitmap = EasyBlur.with(this)
+        finalBitmap = EasyBlur.with(getApplicationContext())
                 .bitmap(bm) //要模糊的图片
                 .radius(50)//模糊半径
                 .scale(4)//指定模糊前缩小的倍数
@@ -248,6 +249,8 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         mTvMobile = (TextView) menuHeaderView.findViewById(R.id.tv_mobile);
         mTvSign = (TextView) menuHeaderView.findViewById(R.id.tv_sign);
         mTvIntegral= (TextView) menuHeaderView.findViewById(R.id.tv_integral);
+        LinearLayout llmsg = (LinearLayout) navigationView.getMenu().findItem(R.id.item_msg_board).getActionView();
+        tvNewMsg = llmsg.findViewById(R.id.tv_new_msg);
 
         final PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
         if(piInfo == null)
@@ -363,7 +366,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
             }
             @Override
             public void onDrawerOpened(View drawerView) {
-
+                mHandler.sendEmptyMessage(MSG_QUERY_MESSAGE_COUNT);
             }
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -374,12 +377,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
-        ivHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainNewActivity.this,PersonalInfoActivity.class));
-            }
-        });
+        ivHeader.setOnClickListener(view -> startActivity(new Intent(MainNewActivity.this,PersonalInfoActivity.class)));
     }
 
     private void initSelectTab(int pos) {
@@ -495,25 +493,24 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
             startActivity(new Intent(this,PushMsgListActivity.class));
         }else  if (id ==  R.id.item_msg_board) {
             PersonInfo personInfo = getCurrentUser(PersonInfo.class);
-            startActivity(new Intent(this,MessageBoardActivity.class).putExtra("piInfo",personInfo));
+            if(personInfo != null){
+                startActivity(new Intent(this,MessageBoardActivity.class).putExtra("piInfo",personInfo));
+            }
         }else  if (id ==  R.id.item_checkupdate) {
-            BmobUpdateAgent.setUpdateListener(new BmobUpdateListener() {
-                @Override
-                public void onUpdateReturned(int updateStatus, UpdateResponse updateInfo) {
-                    // TODO Auto-generated method stub
-                    if (updateStatus == UpdateStatus.Yes) {//版本有更新
+            BmobUpdateAgent.setUpdateListener((updateStatus, updateInfo) -> {
+                // TODO Auto-generated method stub
+                if (updateStatus == UpdateStatus.Yes) {//版本有更新
 
-                    }else if(updateStatus == UpdateStatus.No){
-                        Toast.makeText(MainNewActivity.this,"版本无更新", Toast.LENGTH_SHORT).show();
-                    }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
-                        Toast.makeText(MainNewActivity.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
-                    }else if(updateStatus==UpdateStatus.IGNORED){
-                        Toast.makeText(MainNewActivity.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
-                    }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
-                        Toast.makeText(MainNewActivity.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
-                    }else if(updateStatus==UpdateStatus.TimeOut){
-                        Toast.makeText(MainNewActivity.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
-                    }
+                }else if(updateStatus == UpdateStatus.No){
+                    Toast.makeText(MainNewActivity.this,"版本无更新", Toast.LENGTH_SHORT).show();
+                }else if(updateStatus==UpdateStatus.EmptyField){//此提示只是提醒开发者关注那些必填项，测试成功后，无需对用户提示
+                    Toast.makeText(MainNewActivity.this, "请检查你AppVersion表的必填项，1、target_size（文件大小）是否填写；2、path或者android_url两者必填其中一项。", Toast.LENGTH_SHORT).show();
+                }else if(updateStatus==UpdateStatus.IGNORED){
+                    Toast.makeText(MainNewActivity.this, "该版本已被忽略更新", Toast.LENGTH_SHORT).show();
+                }else if(updateStatus==UpdateStatus.ErrorSizeFormat){
+                    Toast.makeText(MainNewActivity.this, "请检查target_size填写的格式，请使用file.length()方法获取apk大小。", Toast.LENGTH_SHORT).show();
+                }else if(updateStatus==UpdateStatus.TimeOut){
+                    Toast.makeText(MainNewActivity.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
                 }
             });
             BmobUpdateAgent.forceUpdate(MainNewActivity.this);
@@ -532,21 +529,25 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("提示");
         builder.setMessage("确定要退出吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                aCache.put("has_login","no");
-                LocationUtil.getInstance().stopGetLocation();
-                AppUtils.AppExit(MainNewActivity.this);
-                PersonInfo.logOut();
-                startActivity(new Intent(MainNewActivity.this,LoginActivity.class));
-                UploadLocationService.stopService();
-            }
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            aCache.put("has_login","no");
+            LocationUtil.getInstance().stopGetLocation();
+            AppUtils.AppExit(MainNewActivity.this);
+            PersonInfo.logOut();
+            startActivity(new Intent(MainNewActivity.this,LoginActivity.class));
+            UploadLocationService.stopService();
         });
         builder.setNegativeButton("取消", null);
         builder.create().show();
     }
 
+    /**
+     * 打开左侧Menu的监听事件
+     */
+    @Override
+    public void OpenLeftMenu() {
+        mDrawerLayout.openDrawer(Gravity.LEFT);
+    }
 
     /**
      * 页面适配器start
@@ -597,13 +598,6 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
     }
 
     /**
-     * 打开左侧Menu的监听事件
-     */
-    public static void OpenLeftMenu() {
-        mDrawerLayout.openDrawer(Gravity.LEFT);
-    }
-
-    /**
      * 关闭Menu
      */
     public boolean CloseMenu() {
@@ -640,5 +634,52 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
             finalBitmap=null;
             System.gc();  //提醒系统及时回收
         }
+    }
+
+
+    private final int MSG_QUERY_MESSAGE_COUNT = 101;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                 case MSG_QUERY_MESSAGE_COUNT:
+                     queryMessageCount();
+                 break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+
+    public void queryMessageCount() {
+        PersonInfo piInfo = BmobUser.getCurrentUser(PersonInfo.class);
+        BmobQuery<MessageInfo> messageQuery = new BmobQuery<>();
+        messageQuery.addWhereEqualTo("owner", piInfo);
+
+        messageQuery.count(MessageInfo.class, new CountListener() {
+            @Override
+            public void done(Integer count, BmobException e) {
+                if(e == null){
+                    int oldCount = 0;
+                    try {
+                        String oldCountStr = aCache.getAsString(ConfigKey.KEY_MESSAGE_COUNT);
+                        if(!TextUtils.isEmpty(oldCountStr)){
+                            oldCount = Integer.parseInt(oldCountStr);
+                        }
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    int diffCount = count - oldCount;
+                    if(diffCount >0){
+                        tvNewMsg.setVisibility(View.VISIBLE);
+                        tvNewMsg.setText(diffCount+"");
+                    }else{
+                        tvNewMsg.setVisibility(View.GONE);
+                    }
+                }else{
+                    Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+                }
+            }
+        });
     }
 }

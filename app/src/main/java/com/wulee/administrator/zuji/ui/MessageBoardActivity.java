@@ -2,7 +2,6 @@ package com.wulee.administrator.zuji.ui;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -105,8 +104,6 @@ public class MessageBoardActivity extends BaseActivity {
     }
 
     private void init() {
-
-
         String mobile = aCache.getAsString(ConfigKey.KEY_CURR_LOGIN_MOBILE);
         if (TextUtils.equals(piInfo.getUsername(), mobile)) {
             llOpt.setVisibility(View.GONE);
@@ -189,45 +186,42 @@ public class MessageBoardActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("留言");
         View dialogView = LayoutInflater.from(this).inflate(R.layout.circle_comment_dialog, null);
-        final EditText etMessage = (EditText) dialogView.findViewById(R.id.et_comment);
+        final EditText etMessage = dialogView.findViewById(R.id.et_comment);
 
         builder.setView(dialogView);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        builder.setPositiveButton("确定", (dialog, which) -> {
 
-                String messageContent = etMessage.getText().toString().trim();
-                if (TextUtils.isEmpty(messageContent)) {
-                    toast("说点什么吧...");
-                    return;
-                }
-                MessageInfo messageInfo = new MessageInfo(MessageInfo.TYPE_TEXT);
-                messageInfo.setContent(messageContent);
-                if (currPiInfo != null)
-                    messageInfo.piInfo = currPiInfo;
-                if (piInfo != null)
-                    messageInfo.owner = piInfo;
+            String messageContent = etMessage.getText().toString().trim();
+            if (TextUtils.isEmpty(messageContent)) {
+                toast("说点什么吧...");
+                return;
+            }
+            MessageInfo messageInfo = new MessageInfo(MessageInfo.TYPE_TEXT);
+            messageInfo.setContent(messageContent);
+            if (currPiInfo != null)
+                messageInfo.piInfo = currPiInfo;
+            if (piInfo != null)
+                messageInfo.owner = piInfo;
 
-                //将当前用户添加到MessageInfo表中的sender字段值中，表明当前用户留了言
-                BmobRelation relation = new BmobRelation();
-                //将当前用户添加到多对多关联中
-                relation.add(currPiInfo);
-                //多对多关联指向MessageInfo的`sender`字段
-                messageInfo.setSender(relation);
+            //将当前用户添加到MessageInfo表中的sender字段值中，表明当前用户留了言
+            BmobRelation relation = new BmobRelation();
+            //将当前用户添加到多对多关联中
+            relation.add(currPiInfo);
+            //多对多关联指向MessageInfo的`sender`字段
+            messageInfo.setSender(relation);
 
-                showProgressDialog(false);
-                messageInfo.save(new SaveListener<String>() {
-                    @Override
-                    public void done(String s, BmobException e) {
-                        stopProgressDialog();
-                        if (e == null) {
-                            if (!TextUtils.isEmpty(s)) {
-                                getMessageList();
-                            }
+            showProgressDialog(false);
+            messageInfo.save(new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    stopProgressDialog();
+                    if (e == null) {
+                        if (!TextUtils.isEmpty(s)) {
+                            getMessageList();
                         }
                     }
-                });
-            }
+                }
+            });
         });
         builder.setNegativeButton("取消", null);
         Dialog dialog = builder.create();
@@ -242,8 +236,9 @@ public class MessageBoardActivity extends BaseActivity {
         messageQuery.addWhereEqualTo("owner", piInfo);    // 查询指定用户的所有留言信息
         messageQuery.order("-createdAt");
 
-        if (!isRefresh)
+        if (!isRefresh){
             showProgressDialog(false);
+        }
         messageQuery.findObjects(new FindListener<MessageInfo>() {
             @Override
             public void done(List<MessageInfo> list, BmobException e) {
@@ -254,6 +249,8 @@ public class MessageBoardActivity extends BaseActivity {
                         messageList.clear();
                         messageList.addAll(list);
                         mAdapter.setNewData(messageList);
+
+                        aCache.put(ConfigKey.KEY_MESSAGE_COUNT,list.size()+"");
                     }
                 }
             }

@@ -40,20 +40,20 @@ public class JokeAdapter extends BaseCardAdapter {
         if (datas == null || datas.size() == 0) {
             return;
         }
-        final TextView tvJoke = (TextView) cardview.findViewById(R.id.tv_joke);
-        TextView tvCpoy = (TextView) cardview.findViewById(R.id.tv_copy);
+        final TextView tvJoke =  cardview.findViewById(R.id.tv_joke);
+        TextView tvCpoy =  cardview.findViewById(R.id.tv_copy);
+        TextView tvShare =  cardview.findViewById(R.id.tv_share);
 
         final JokeInfo joke = datas.get(position);
         tvJoke.setText(joke.getContent());
 
-        tvCpoy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                OtherUtil.copy(joke.getContent(),context);
-                Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show();
-            }
+        tvCpoy.setOnClickListener(view -> {
+            OtherUtil.copy(joke.getContent(),context);
+            Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show();
         });
-
+        tvShare.setOnClickListener(v -> {
+            OtherUtil.shareTextAndImage(context,"",joke.getContent(),null);
+        });
 
     }
 

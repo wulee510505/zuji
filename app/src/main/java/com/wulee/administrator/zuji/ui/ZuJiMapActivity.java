@@ -3,7 +3,6 @@ package com.wulee.administrator.zuji.ui;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +10,8 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -50,7 +52,7 @@ import static com.wulee.administrator.zuji.App.aCache;
  * Created by wulee on 2017/3/15 11:47
  */
 
-public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMarkerClickListener{
+public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMarkerClickListener,BaiduMap.OnMapClickListener{
 
 
     public static final String ACTION_LOCATION_CHANGE = "action_location_change";
@@ -99,13 +101,15 @@ public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMar
                 finish();
             }
         });
+        mBaiduMap.setOnMarkerClickListener(this);
+        mBaiduMap.setOnMapClickListener(this);
     }
 
     private void initView() {
         titleLayout = findViewById(R.id.titlelayout);
         mapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mapView.getMap();
-        mBaiduMap.setOnMarkerClickListener(this);
+
 
         ivSwitch = (ImageView) findViewById(R.id.iv_map_type_switch);
         ivSwitch.setOnClickListener(view -> startActivityForResult(new Intent(ZuJiMapActivity.this,SwitchMapTypeActivity.class),INTENT_SWITCH_MAP_TYPE));
@@ -183,24 +187,32 @@ public class ZuJiMapActivity extends AppCompatActivity implements BaiduMap.OnMar
     public boolean onMarkerClick(Marker marker) {
         // 获得marker中的数据
         LocationInfo location = (LocationInfo) marker.getExtraInfo().get("info");
-        // 生成一个TextView用户在地图中显示InfoWindow
-        TextView tvLocation = new TextView(getApplicationContext());
-        tvLocation.setBackgroundResource(R.color.light_red);
-        tvLocation.setPadding(15, 15, 8, 35);
-        tvLocation.setTextColor(Color.WHITE);
-        tvLocation.setText(location.getUpdatedAt() + "\n" + location.getAddress());
-        tvLocation.setTextSize(14);
+        View popView = LayoutInflater.from(this).inflate(R.layout.map_mark_click_pop,null);
+        TextView tvTime = popView.findViewById(R.id.tv_1);
+        tvTime.setText(location.getUpdatedAt());
+        TextView tvLocation = popView.findViewById(R.id.tv_2);
+        tvLocation.setText(location.getAddress());
         // 将marker所在的经纬度的信息转化成屏幕上的坐标
         final LatLng ll = marker.getPosition();
         Point p = mBaiduMap.getProjection().toScreenLocation(ll);
         p.y -= 47;
         LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
-        InfoWindow window = new InfoWindow(tvLocation,llInfo,-20);
+        InfoWindow window = new InfoWindow(popView,llInfo,-20);
         // 显示InfoWindow
         mBaiduMap.showInfoWindow(window);
         return true;
     }
 
+    @Override
+    public void onMapClick(LatLng latLng) {
+        // 隐藏InfoWindow
+        mBaiduMap.hideInfoWindow();
+    }
+
+    @Override
+    public boolean onMapPoiClick(MapPoi mapPoi) {
+        return false;
+    }
 
     public class LocationChangeReceiver extends BroadcastReceiver {
         @Override

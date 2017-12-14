@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
         <item
             android:id="@+id/item_pushmsg"
             android:icon="@mipmap/icon_menu_pushmsg"
@@ -13,9 +14,14 @@
             android:title="反馈"/>
 
         <item
+            app:actionLayout="@layout/message_badge"
             android:id="@+id/item_msg_board"
             android:icon="@mipmap/icon_msg_board"
             android:title="留言板"/>
+    </group>
+
+
+    <group android:checkableBehavior="none">
 
         <item
             android:id="@+id/item_setting"
@@ -31,7 +37,9 @@
             android:id="@+id/item_about"
             android:icon="@mipmap/icon_about_me"
             android:title="关于"/>
+
     </group>
+
 
     <item android:title="">
         <menu>

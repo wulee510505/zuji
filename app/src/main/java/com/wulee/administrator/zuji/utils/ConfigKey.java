@@ -18,4 +18,6 @@ public class ConfigKey {
     public static final String KEY_CURR_LAST_LONGITUDE = "key_curr_last_longitude";
 
     public static final String KEY_CURR_CITY = "key_curr_city";
+
+    public static final String KEY_MESSAGE_COUNT = "key_message_count";
 }

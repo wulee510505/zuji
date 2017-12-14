@@ -48,14 +48,6 @@
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
 
-    <style name="loading_progress_small" parent="@android:style/Widget.ProgressBar.Large">
-        <item name="android:indeterminateDrawable">@drawable/base_progress_round_small</item>
-        <item name="android:minWidth">39dp</item>
-        <item name="android:maxWidth">39dp</item>
-        <item name="android:minHeight">39dp</item>
-        <item name="android:maxHeight">39dp</item>
-    </style>
-
 
     <!-- 主Tab页下方Radio按钮 -->
     <style name="main_tabs_radiobtn">

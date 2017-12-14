@@ -4,7 +4,7 @@
     android:id="@+id/rl_root"
     android:layout_width="wrap_content"
     android:layout_height="48dp"
-    android:background="#80656565"
+    android:background="@color/white"
     android:clickable="true"
     android:minWidth="90dp">
 
@@ -15,8 +15,9 @@
         android:layout_centerInParent="true"
         android:duplicateParentState="true"
         android:gravity="center"
-        android:textColor="@drawable/nav_menu_text_color"
+        android:textColor="@color/ctv_black_3"
         android:text="标题"
+        android:textStyle="bold"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:textSize="16sp"/>

@@ -693,14 +693,11 @@ public class ImageUtil {
 	public static void setCircleImageView(ImageView iv, String imgUrl, int defResId, Context context){
 		RequestManager glideRequest = Glide.with(context);
 		if(!TextUtils.isEmpty(imgUrl)){
-			ViewPropertyAnimation.Animator anim = new ViewPropertyAnimation.Animator() {
-				@Override
-				public void animate(View view) {
-					ObjectAnimator fadeAnim = ObjectAnimator.ofFloat( view, "alpha", 0.5f, 1f );
-					fadeAnim.setDuration( 600 );
-					fadeAnim.start();
-				}
-			};
+			ViewPropertyAnimation.Animator anim = view -> {
+                ObjectAnimator fadeAnim = ObjectAnimator.ofFloat( view, "alpha", 0.5f, 1f );
+                fadeAnim.setDuration( 600 );
+                fadeAnim.start();
+            };
 			glideRequest.load(imgUrl).animate(anim).placeholder(defResId).transform(new GlideCircleTransform(context,0)).into(iv);
 		}else{
 			iv.setImageResource(defResId);

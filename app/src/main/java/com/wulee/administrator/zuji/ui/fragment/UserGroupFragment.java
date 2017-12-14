@@ -127,6 +127,7 @@ public class UserGroupFragment extends MainBaseFrag {
 
     @Override
     public void onFragmentFirstSelected() {
+        showProgressDialog(getActivity(),false);
         getUserList(0,STATE_REFRESH);
     }
 
@@ -149,7 +150,10 @@ public class UserGroupFragment extends MainBaseFrag {
         query.findObjects(new FindListener<PersonInfo>() {
             @Override
             public void done(List<PersonInfo> dataList, BmobException e) {
-                swipeLayout.setRefreshing(false);
+                stopProgressDialog();
+                if (swipeLayout != null && swipeLayout.isRefreshing()){
+                    swipeLayout.setRefreshing(false);
+                }
                 if(e == null){
                     curPage++;
                     if (isRefresh){//下拉刷新需清理缓存

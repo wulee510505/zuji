@@ -1,17 +1,19 @@
 package com.wulee.administrator.zuji.ui;
 
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -30,6 +32,7 @@ import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.utils.ConfigKey;
+import com.wulee.administrator.zuji.utils.PhoneUtil;
 import com.wulee.administrator.zuji.widget.BaseTitleLayout;
 import com.wulee.administrator.zuji.widget.TitleLayoutClickListener;
 
@@ -45,7 +48,7 @@ import static com.wulee.administrator.zuji.App.aCache;
  * 附近的人
  */
 
-public class NearUserActivity extends BaseActivity implements RadarSearchListener,BaiduMap.OnMarkerClickListener {
+public class NearUserActivity extends BaseActivity implements RadarSearchListener,BaiduMap.OnMarkerClickListener,BaiduMap.OnMapClickListener {
     private static final String TAG = "NearUserActivity";
 
     private BaseTitleLayout titleLayout;
@@ -88,7 +91,6 @@ public class NearUserActivity extends BaseActivity implements RadarSearchListene
         titleLayout= findViewById(R.id.titlelayout);
         mMapView = findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
-        mBaiduMap.setOnMarkerClickListener(this);
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
     }
@@ -100,6 +102,8 @@ public class NearUserActivity extends BaseActivity implements RadarSearchListene
                 finish();
             }
         });
+        mBaiduMap.setOnMapClickListener(this);
+        mBaiduMap.setOnMarkerClickListener(this);
     }
 
 
@@ -114,8 +118,11 @@ public class NearUserActivity extends BaseActivity implements RadarSearchListene
         RadarUploadInfo info = new RadarUploadInfo();
         currLatitude = aCache.getAsString("lat");
         currLontitude = aCache.getAsString("lon");
-        currPt = new LatLng(Double.parseDouble(currLatitude), Double.parseDouble(currLontitude));
-
+        try {
+            currPt = new LatLng(Double.parseDouble(currLatitude), Double.parseDouble(currLontitude));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
         PersonInfo personInfo = BmobUser.getCurrentUser(PersonInfo.class);
         info.comments = personInfo != null ? personInfo.getName() : "";
         info.pt = currPt;
@@ -195,24 +202,32 @@ public class NearUserActivity extends BaseActivity implements RadarSearchListene
     public boolean onMarkerClick(Marker marker) {
         // 获得marker中的数据
         PersonInfo personInfo = (PersonInfo) marker.getExtraInfo().get("info");
-        // 生成一个TextView用户在地图中显示InfoWindow
-        TextView tvLocation = new TextView(getApplicationContext());
-        tvLocation.setBackgroundResource(R.color.light_red);
-        tvLocation.setPadding(15, 15, 8, 35);
-        tvLocation.setTextColor(Color.WHITE);
-        tvLocation.setText(personInfo.getName());
-        tvLocation.setTextSize(14);
+        View popView = LayoutInflater.from(this).inflate(R.layout.map_mark_click_pop,null);
+        TextView tvMobile = popView.findViewById(R.id.tv_1);
+        tvMobile.setText(PhoneUtil.encryptTelNum(personInfo.getMobile()));
+        TextView tvName = popView.findViewById(R.id.tv_2);
+        tvName.setText(personInfo.getName());
         // 将marker所在的经纬度的信息转化成屏幕上的坐标
         final LatLng ll = marker.getPosition();
         Point p = mBaiduMap.getProjection().toScreenLocation(ll);
         p.y -= 47;
         LatLng llInfo = mBaiduMap.getProjection().fromScreenLocation(p);
-        InfoWindow window = new InfoWindow(tvLocation,llInfo,-20);
+        InfoWindow window = new InfoWindow(popView,llInfo,-20);
         // 显示InfoWindow
         mBaiduMap.showInfoWindow(window);
         return true;
     }
 
+    @Override
+    public void onMapClick(LatLng latLng) {
+        // 隐藏InfoWindow
+        mBaiduMap.hideInfoWindow();
+    }
+
+    @Override
+    public boolean onMapPoiClick(MapPoi mapPoi) {
+        return false;
+    }
 
     @Override
     public void onGetNearbyInfoList(RadarNearbyResult radarNearbyResult, RadarSearchError radarSearchError) {

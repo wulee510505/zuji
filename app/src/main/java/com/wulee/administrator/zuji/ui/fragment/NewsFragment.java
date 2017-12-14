@@ -216,8 +216,8 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                rlRoot = (RelativeLayout) itemView.findViewById(R.id.rl_root);
-                mTitle = (TextView) itemView.findViewById(R.id.tv_title);
+                rlRoot =  itemView.findViewById(R.id.rl_root);
+                mTitle =  itemView.findViewById(R.id.tv_title);
             }
         }
     }

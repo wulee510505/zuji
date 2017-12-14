@@ -1,6 +1,7 @@
 package com.wulee.administrator.zuji.ui.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,8 +56,6 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.update.BmobUpdateAgent;
-
-import static com.wulee.administrator.zuji.ui.MainNewActivity.OpenLeftMenu;
 
 /**
  * Created by wulee on 2017/9/6 09:52
@@ -140,8 +139,6 @@ public class ZujiFragment extends MainBaseFrag{
         DaemonEnv.startServiceMayBind(UploadLocationService.class);
         mContext.startService(new Intent(mContext,ScreenService.class));
 
-        getLocationList(0, STATE_REFRESH);
-
         mHandler.postDelayed(mRunnable,1000);
 
         BmobUpdateAgent.forceUpdate(mContext);
@@ -166,7 +163,9 @@ public class ZujiFragment extends MainBaseFrag{
             @Override
             public void onLeftClickListener() {
                 super.onLeftClickListener();
-                OpenLeftMenu();
+                if(mListener != null){
+                    mListener.OpenLeftMenu();
+                }
             }
             @Override
             public void onRightImg1ClickListener() {
@@ -347,7 +346,10 @@ public class ZujiFragment extends MainBaseFrag{
         query.findObjects(new FindListener<LocationInfo>() {
             @Override
             public void done(List<LocationInfo> dataList, BmobException e) {
-                swipeLayout.setRefreshing(false);
+                stopProgressDialog();
+                if (swipeLayout != null && swipeLayout.isRefreshing()){
+                    swipeLayout.setRefreshing(false);
+                }
                 if(e == null){
                     curPage++;
                     if (isRefresh){//下拉刷新需清理缓存
@@ -372,6 +374,8 @@ public class ZujiFragment extends MainBaseFrag{
 
     @Override
     public void onFragmentFirstSelected() {
+        showProgressDialog(getActivity(),false);
+        getLocationList(0, STATE_REFRESH);
     }
 
     public class LocationChangeReceiver extends BroadcastReceiver {
@@ -410,5 +414,19 @@ public class ZujiFragment extends MainBaseFrag{
         super.onStop();
         //结束轮播
         bannerLayout.stopAutoPlay();
+    }
+
+    public OnMenuBtnClickListener mListener;
+    public  interface OnMenuBtnClickListener{
+        //打开侧栏
+        void OpenLeftMenu();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnMenuBtnClickListener){
+            mListener = ((OnMenuBtnClickListener)activity);
+        }
     }
 }
