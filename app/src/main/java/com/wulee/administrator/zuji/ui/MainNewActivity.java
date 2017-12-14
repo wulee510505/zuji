@@ -33,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.stetho.common.LogUtil;
+import com.liangmayong.text2speech.Text2Speech;
+import com.wulee.administrator.zuji.App;
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.DBHandler;
@@ -343,6 +345,8 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         mainFPagerAdaper = new MainFPagerAdaper(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mainFPagerAdaper);
+
+        mHandler.sendEmptyMessageDelayed(MSG_QUERY_MESSAGE_COUNT,1500);
     }
 
     private void initMenuHeaderInfo() {
@@ -673,6 +677,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
                     if(diffCount >0){
                         tvNewMsg.setVisibility(View.VISIBLE);
                         tvNewMsg.setText(diffCount+"");
+                        Text2Speech.speech(App.context,"您有新的留言，请注意查看",true);
                     }else{
                         tvNewMsg.setVisibility(View.GONE);
                     }
