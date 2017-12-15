@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivstatebar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="@color/colorAccent" />
+
 
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/com_title_height"
+        android:layout_below="@id/ivstatebar"
         android:background="@color/colorAccent">
 
         <TextView

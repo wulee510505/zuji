@@ -38,7 +38,6 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadBatchListener;
-import de.greenrobot.event.EventBus;
 
 import static com.wulee.administrator.zuji.App.aCache;
 
@@ -68,6 +67,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
     private List<PublishPicture> picList = new ArrayList<>();
     private int maxSelPicNum = 9;
 
+    public static final String ACTION_PUBLISH_CIRCLE_OK  = "action_publish_circle_ok";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,7 +232,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
                                 public void done(String s, BmobException e) {
                                     progressBar.setVisibility(View.GONE);
                                     if (e == null) {
-                                        EventBus.getDefault().post(new String("refresh"));
+                                        sendBroadcast(new Intent(ACTION_PUBLISH_CIRCLE_OK));
                                         PublishCircleActivity.this.finish();
                                     }
                                 }
@@ -272,7 +272,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
                 public void done(String s, BmobException e) {
                     progressBar.setVisibility(View.GONE);
                     if (e == null) {
-                        EventBus.getDefault().post(new String("refresh"));
+                        sendBroadcast(new Intent(ACTION_PUBLISH_CIRCLE_OK));
                         PublishCircleActivity.this.finish();
                     }
                 }

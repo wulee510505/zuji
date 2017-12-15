@@ -2,6 +2,7 @@ package com.wulee.administrator.zuji.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.facebook.stetho.common.LogUtil;
 import com.jude.easyrecyclerview.EasyRecyclerView;
@@ -69,7 +71,17 @@ public class UserGroupFragment extends MainBaseFrag {
             parent.removeView(mRootView);
         }
         ButterKnife.inject(this, mRootView);
+        initView(mRootView);
         return mRootView;
+    }
+
+    private void initView(View rootView) {
+        ImageView topHeaderIv = (ImageView) rootView.findViewById(R.id.ivstatebar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            topHeaderIv.setVisibility(View.VISIBLE);
+        } else {
+            topHeaderIv.setVisibility(View.GONE);
+        }
     }
 
     @Override

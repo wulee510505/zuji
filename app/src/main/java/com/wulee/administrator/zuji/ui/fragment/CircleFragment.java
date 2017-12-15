@@ -1,9 +1,11 @@
 package com.wulee.administrator.zuji.ui.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -56,9 +58,6 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
 
 import static com.wulee.administrator.zuji.App.aCache;
 
@@ -93,6 +92,7 @@ public class CircleFragment extends MainBaseFrag {
     private boolean isPullToRefresh = false;
 
     private String circleHeaderBgUrl;
+    private OnCirclePublishOkReceiver mReceiver;
 
     @Nullable
     @Override
@@ -107,21 +107,21 @@ public class CircleFragment extends MainBaseFrag {
         }
         ButterKnife.inject(this, mRootView);
 
-        initView();
+        initView(mRootView);
         addListener();
         return mRootView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
+
+
+    private void initView(View rootView) {
+        ImageView topHeaderIv = rootView.findViewById(R.id.ivstatebar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            topHeaderIv.setVisibility(View.VISIBLE);
+        } else {
+            topHeaderIv.setVisibility(View.GONE);
         }
-    }
 
-
-    private void initView() {
         View headerView = LayoutInflater.from(mContext).inflate(R.layout.circle_list_header, null);
         ivHeaderBg =  headerView.findViewById(R.id.iv_header_bg);
         ivHeaderBg.setOnLongClickListener(view -> {
@@ -196,6 +196,16 @@ public class CircleFragment extends MainBaseFrag {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mReceiver = new OnCirclePublishOkReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(PublishCircleActivity.ACTION_PUBLISH_CIRCLE_OK);
+        mContext.registerReceiver(mReceiver,filter);
+    }
+
+    @Override
     public void takeCancel() {
         super.takeCancel();
     }
@@ -258,14 +268,6 @@ public class CircleFragment extends MainBaseFrag {
                 OtherUtil.showToastText("上传" + value + "%");
             }
         });
-    }
-
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onPublishOkEvent(String event) {
-        if (TextUtils.equals(event, "refresh")) {
-            isRefresh = true;
-            getCircleContnets(0, STATE_REFRESH);
-        }
     }
 
 
@@ -383,43 +385,40 @@ public class CircleFragment extends MainBaseFrag {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("提示");
         builder.setMessage("确定要删除吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final List<CircleContent> dataList = mAdapter.getData();
-                String objectId = null;
-                if (dataList != null && dataList.size() > 0) {
-                    CircleContent circleContent = dataList.get(pos);
-                    objectId = circleContent.getObjectId();
-                }
-                final CircleContent circleContent = new CircleContent(CircleContent.TYPE_TEXT_AND_IMG);
-                circleContent.setObjectId(objectId);
-                final String finalObjectId = objectId;
-
-                showProgressDialog(getActivity(), false);
-                circleContent.delete(new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        stopProgressDialog();
-                        if (e == null) {
-                            List<CircleContent> list = dataList;
-                            Iterator<CircleContent> iter = list.iterator();
-                            while (iter.hasNext()) {
-                                CircleContent content = iter.next();
-                                if (content.equals(finalObjectId)) {
-                                    iter.remove();
-                                    break;
-                                }
-                            }
-                            isRefresh = true;
-                            getCircleContnets(0, STATE_REFRESH);
-                            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(mContext, "删除失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            final List<CircleContent> dataList = mAdapter.getData();
+            String objectId = null;
+            if (dataList != null && dataList.size() > 0) {
+                CircleContent circleContent = dataList.get(pos);
+                objectId = circleContent.getObjectId();
             }
+            final CircleContent circleContent = new CircleContent(CircleContent.TYPE_TEXT_AND_IMG);
+            circleContent.setObjectId(objectId);
+            final String finalObjectId = objectId;
+
+            showProgressDialog(getActivity(), false);
+            circleContent.delete(new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    stopProgressDialog();
+                    if (e == null) {
+                        List<CircleContent> list = dataList;
+                        Iterator<CircleContent> iter = list.iterator();
+                        while (iter.hasNext()) {
+                            CircleContent content = iter.next();
+                            if (content.equals(finalObjectId)) {
+                                iter.remove();
+                                break;
+                            }
+                        }
+                        isRefresh = true;
+                        getCircleContnets(0, STATE_REFRESH);
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mContext, "删除失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         });
         builder.setNegativeButton("取消", null);
         builder.create().show();
@@ -427,8 +426,23 @@ public class CircleFragment extends MainBaseFrag {
 
 
     @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+    public void onDestroy() {
+        super.onDestroy();
+        if(mReceiver!=null){
+           mContext.unregisterReceiver(mReceiver);
+           mReceiver = null;
+        }
     }
+
+    private class OnCirclePublishOkReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(TextUtils.equals(PublishCircleActivity.ACTION_PUBLISH_CIRCLE_OK,intent.getAction())){
+                isRefresh = true;
+                getCircleContnets(0, STATE_REFRESH);
+            }
+        }
+    }
+
+
 }

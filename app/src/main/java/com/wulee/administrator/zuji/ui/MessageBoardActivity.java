@@ -116,55 +116,52 @@ public class MessageBoardActivity extends BaseActivity {
                 .callback(new PermissionListener() {
                     @Override
                     public void onSucceed(int requestCode, List<String> grantedPermissions) {
-                        btnRecord.setEnrecordVoiceListener(new RecordVoiceButton.EnRecordVoiceListener() {
-                            @Override
-                            public void onFinishRecord(long length, String strLength, String filePath) {
+                        btnRecord.setEnrecordVoiceListener((length, strLength, filePath) -> {
 
-                                final MessageInfo messageInfo = new MessageInfo(MessageInfo.TYPE_AUDIO);
-                                messageInfo.voice = new Voice(length, strLength, filePath);
-                                if (currPiInfo != null)
-                                    messageInfo.piInfo = currPiInfo;
-                                if (piInfo != null)
-                                    messageInfo.owner = piInfo;
+                            final MessageInfo messageInfo = new MessageInfo(MessageInfo.TYPE_AUDIO);
+                            messageInfo.voice = new Voice(length, strLength, filePath);
+                            if (currPiInfo != null)
+                                messageInfo.piInfo = currPiInfo;
+                            if (piInfo != null)
+                                messageInfo.owner = piInfo;
 
-                                //将当前用户添加到MessageInfo表中的sender字段值中，表明当前用户留了言
-                                BmobRelation relation = new BmobRelation();
-                                //将当前用户添加到多对多关联中
-                                relation.add(currPiInfo);
-                                //多对多关联指向MessageInfo的`sender`字段
-                                messageInfo.setSender(relation);
+                            //将当前用户添加到MessageInfo表中的sender字段值中，表明当前用户留了言
+                            BmobRelation relation = new BmobRelation();
+                            //将当前用户添加到多对多关联中
+                            relation.add(currPiInfo);
+                            //多对多关联指向MessageInfo的`sender`字段
+                            messageInfo.setSender(relation);
 
-                                showProgressDialog(false);
+                            showProgressDialog(false);
 
-                                final BmobFile bmobFile = new BmobFile(new File(filePath));
-                                bmobFile.uploadblock(new UploadFileListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        if (e == null) {
-                                            LogUtil.d("上传文件成功:" + bmobFile.getFileUrl());
-                                            messageInfo.audioUrl = bmobFile.getFileUrl();
-                                            messageInfo.save(new SaveListener<String>() {
-                                                @Override
-                                                public void done(String s, BmobException e) {
-                                                    stopProgressDialog();
-                                                    if (e == null) {
-                                                        if (!TextUtils.isEmpty(s)) {
-                                                            getMessageList();
-                                                        }
+                            final BmobFile bmobFile = new BmobFile(new File(filePath));
+                            bmobFile.uploadblock(new UploadFileListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        LogUtil.d("上传文件成功:" + bmobFile.getFileUrl());
+                                        messageInfo.audioUrl = bmobFile.getFileUrl();
+                                        messageInfo.save(new SaveListener<String>() {
+                                            @Override
+                                            public void done(String s, BmobException e) {
+                                                stopProgressDialog();
+                                                if (e == null) {
+                                                    if (!TextUtils.isEmpty(s)) {
+                                                        getMessageList();
                                                     }
                                                 }
-                                            });
-                                        } else {
-                                            LogUtil.d("上传文件失败：" + e.getMessage());
-                                        }
+                                            }
+                                        });
+                                    } else {
+                                        LogUtil.d("上传文件失败：" + e.getMessage());
                                     }
+                                }
 
-                                    @Override
-                                    public void onProgress(Integer value) {
-                                        // 返回的上传进度（百分比）
-                                    }
-                                });
-                            }
+                                @Override
+                                public void onProgress(Integer value) {
+                                    // 返回的上传进度（百分比）
+                                }
+                            });
                         });
                     }
 

@@ -30,9 +30,10 @@
         </com.wulee.administrator.zuji.widget.RCRelativeLayout>
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_marginLeft="15dp">
 
             <TextView
@@ -46,11 +47,11 @@
 
 
             <com.wulee.administrator.zuji.widget.ReadMoreTextView
-                android:id="@+id/content"
+                android:id="@+id/circle_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/userNick"
-                android:layout_margin="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
                 android:lineSpacingExtra="2dp"
                 android:lineSpacingMultiplier="1.2"
                 android:textColor="@color/ctv_black_2"
@@ -61,8 +62,8 @@
                 android:id="@+id/nine_grid_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/content"
-                android:layout_margin="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:imgGap="4dp"
                 app:showStyle="fill"
                 app:singleImgSize="120dp" />
@@ -72,7 +73,6 @@
                 android:id="@+id/rl_location_and_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/nine_grid_view"
                 android:layout_marginTop="6dp">
 
                 <LinearLayout
@@ -106,7 +106,7 @@
                             android:textColor="@color/baseGrayNor"
                             android:textSize="12sp" />
 
-                        <Space
+                        <android.support.v4.widget.Space
                             android:layout_width="20dp"
                             android:layout_height="wrap_content" />
 
@@ -137,7 +137,6 @@
                 android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/nine_grid_view"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="4dp"
                 android:background="@color/colorAccent"
@@ -202,7 +201,6 @@
                 android:id="@+id/tv_likes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_location_and_time"
                 android:layout_marginTop="8dp"
                 android:drawableLeft="@mipmap/icon_like_light"
                 android:drawablePadding="4dp"
@@ -215,11 +213,10 @@
                 android:id="@+id/lv_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_likes"
                 android:layout_marginTop="8dp"
                 android:overScrollMode="never"
                 android:scrollbars="none" />
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

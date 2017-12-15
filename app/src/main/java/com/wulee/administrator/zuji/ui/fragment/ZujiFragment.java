@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -219,6 +221,12 @@ public class ZujiFragment extends MainBaseFrag{
     }
 
     private void initView(View view) {
+        ImageView topHeaderIv = view.findViewById(R.id.ivstatebar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            topHeaderIv.setVisibility(View.VISIBLE);
+        } else {
+            topHeaderIv.setVisibility(View.GONE);
+        }
         titleLayout = (BaseTitleLayout) view.findViewById(R.id.titlelayout);
 
         menuBtns = (AnimArcButtons) view.findViewById(R.id.arc_menu_button);

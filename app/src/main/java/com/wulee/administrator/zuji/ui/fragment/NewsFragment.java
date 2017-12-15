@@ -1,6 +1,7 @@
 package com.wulee.administrator.zuji.ui.fragment;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,7 +71,17 @@ public class NewsFragment extends MainBaseFrag implements ViewPager.OnPageChange
             parent.removeView(mRootView);
         }
         ButterKnife.inject(this, mRootView);
+        initView(mRootView);
         return mRootView;
+    }
+
+    private void initView(View rootView) {
+        ImageView topHeaderIv =  rootView.findViewById(R.id.ivstatebar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            topHeaderIv.setVisibility(View.VISIBLE);
+        } else {
+            topHeaderIv.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.wulee.administrator.zuji.adapter;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -85,42 +84,39 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<MessageInfo,BaseVi
                     baseViewHolder.setText(R.id.tv_length, voice[0].getStrLength());
                     final ImageView ivVoice = baseViewHolder.getView(R.id.iv_voice);
                     RelativeLayout rlAudio = baseViewHolder.getView(R.id.rl_audio);
-                    rlAudio.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (voiceAnimation != null) {
-                                voiceAnimation.stop();
-                                voiceAnimation.selectDrawable(0);
-                            }
-                            if (voiceManager.isPlaying()&& lastPosition == position) {
-                                voiceManager.stopPlay();
-                            }else{
-                                voiceManager.stopPlay();
-                                voiceAnimation = (AnimationDrawable) ivVoice.getBackground();
-                                voiceAnimation.start();
-                                voiceManager.setVoicePlayListener(new VoiceManager.VoicePlayCallBack() {
-                                    @Override
-                                    public void voiceTotalLength(long time, String strTime) {
+                    rlAudio.setOnClickListener(view -> {
+                        if (voiceAnimation != null) {
+                            voiceAnimation.stop();
+                            voiceAnimation.selectDrawable(0);
+                        }
+                        if (voiceManager.isPlaying()&& lastPosition == position) {
+                            voiceManager.stopPlay();
+                        }else{
+                            voiceManager.stopPlay();
+                            voiceAnimation = (AnimationDrawable) ivVoice.getBackground();
+                            voiceAnimation.start();
+                            voiceManager.setVoicePlayListener(new VoiceManager.VoicePlayCallBack() {
+                                @Override
+                                public void voiceTotalLength(long time, String strTime) {
+                                }
+                                @Override
+                                public void playDoing(long time, String strTime) {
+                                }
+                                @Override
+                                public void playPause() {
+                                }
+                                @Override
+                                public void playStart() {
+                                }
+                                @Override
+                                public void playFinish() {
+                                    if (voiceAnimation != null) {
+                                        voiceAnimation.stop();
+                                        voiceAnimation.selectDrawable(0);
                                     }
-                                    @Override
-                                    public void playDoing(long time, String strTime) {
-                                    }
-                                    @Override
-                                    public void playPause() {
-                                    }
-                                    @Override
-                                    public void playStart() {
-                                    }
-                                    @Override
-                                    public void playFinish() {
-                                        if (voiceAnimation != null) {
-                                            voiceAnimation.stop();
-                                            voiceAnimation.selectDrawable(0);
-                                        }
-                                    }
-                                });
-                                voiceManager.startPlay(voice[0].getFilePath());
-                            }
+                                }
+                            });
+                            voiceManager.startPlay(voice[0].getFilePath());
                         }
                     });
                 }

@@ -39,8 +39,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.login);
 
         initView();
+        initData();
         addListener();
     }
+
 
     private void addListener() {
         mBtnLogin.setOnClickListener(this);
@@ -54,6 +56,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         mBtnLogin = (Button) findViewById(R.id.btn_login);
         tvRegist = (TextView) findViewById(R.id.tv_regist);
         tvForgetPwd = (TextView) findViewById(R.id.tv_forget_pwd);
+    }
+
+    private void initData() {
+        String mobile = aCache.getAsString(ConfigKey.KEY_CURR_LOGIN_MOBILE);
+        if(!TextUtils.isEmpty(mobile)){
+            mEtMobile.setText(mobile);
+            mEtMobile.setSelection(mobile.length());
+        }
     }
 
     @Override

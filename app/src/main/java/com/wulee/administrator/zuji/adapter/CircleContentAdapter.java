@@ -28,6 +28,7 @@ import com.wulee.administrator.zuji.entity.CircleComment;
 import com.wulee.administrator.zuji.entity.CircleContent;
 import com.wulee.administrator.zuji.ui.BigMultiImgActivity;
 import com.wulee.administrator.zuji.ui.PersonalInfoActivity;
+import com.wulee.administrator.zuji.ui.PublishCircleActivity;
 import com.wulee.administrator.zuji.ui.UserInfoActivity;
 import com.wulee.administrator.zuji.utils.DateTimeUtils;
 import com.wulee.administrator.zuji.utils.ImageUtil;
@@ -42,7 +43,6 @@ import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
-import de.greenrobot.event.EventBus;
 
 
 
@@ -85,7 +85,7 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
         });
 
         baseViewHolder.setText(R.id.userNick,circleContent.getUserNick());
-        baseViewHolder.setText(R.id.content , circleContent.getContent());
+        baseViewHolder.setText(R.id.circle_content , circleContent.getContent());
 
         TextView tvLocation = baseViewHolder.getView(R.id.location);
         if(!TextUtils.isEmpty(circleContent.getLocation())){
@@ -154,7 +154,7 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
                 public void done(BmobException e) {
                     llLikeAndComment.setVisibility(View.GONE);
                     if(e == null){
-                        EventBus.getDefault().post(new String("refresh"));
+                        mcontext.sendBroadcast(new Intent(PublishCircleActivity.ACTION_PUBLISH_CIRCLE_OK));
                         LogUtil.i("zuji","喜欢成功");
                     }else{
                         LogUtil.i("zuji","喜欢失败："+e.getMessage());
@@ -274,7 +274,7 @@ public class CircleContentAdapter extends BaseMultiItemQuickAdapter<CircleConten
                     public void done(String objectId,BmobException e) {
                         likeAndCommentView.setVisibility(View.GONE);
                         if(e == null){
-                            EventBus.getDefault().post(new String("refresh"));
+                            mcontext.sendBroadcast(new Intent(PublishCircleActivity.ACTION_PUBLISH_CIRCLE_OK));
                             LogUtil.i("zuji","评论发表成功");
                         }else{
                             LogUtil.i("zuji","评论失败："+e.getMessage());

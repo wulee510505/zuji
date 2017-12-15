@@ -142,8 +142,10 @@ public class LocationUtil{
 
                 if(lastlat > 0 && lastlon >0){
                     LatLng lastLatLng = new LatLng(lastlat,lastlon);
-                    boolean isContains  = SpatialRelationUtil.isCircleContainsPoint(lastLatLng, 5, new LatLng(location.getLatitude(),location.getLongitude()));
-                    if(isContains){
+                    LatLng newLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    //判断点newPt是否在，以lastPt为中心点，50为半径的圆内
+                    boolean isInner  = SpatialRelationUtil.isCircleContainsPoint(lastLatLng, 50, newLatLng);
+                    if(isInner){
                         return;
                     }
                 }
@@ -179,7 +181,6 @@ public class LocationUtil{
             }
             Log.i("Location", sb.toString());
         }
-
     }
 
 

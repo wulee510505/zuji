@@ -27,9 +27,15 @@ public class PhoneUtil {
     /**
      * 获取设备的串号
      */
+    @SuppressLint("MissingPermission")
     public static String getDeviceId() {
         TelephonyManager tm = (TelephonyManager)App.context.getSystemService(Context.TELEPHONY_SERVICE);
-        @SuppressLint("MissingPermission") String deviceId = tm.getDeviceId();
+        final String tmDevice, tmSerial,androidId;
+        tmDevice = "" + tm.getDeviceId();
+        tmSerial = "" + tm.getSimSerialNumber();
+        androidId = "" + Settings.Secure.getString(App.context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        String deviceId = deviceUuid.toString();
         return deviceId;
     }
 
@@ -62,6 +68,7 @@ public class PhoneUtil {
      * 获取设备UDID
      * @return String UUID
      */
+    @SuppressLint("MissingPermission")
     public synchronized static String getUDID() {
         String uuid = "";
         final String androidId = Settings.Secure.getString(App.context.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -69,7 +76,7 @@ public class PhoneUtil {
             if (!"9774d56d682e549c".equals(androidId)) {
                 uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString();
             } else {
-                @SuppressLint("MissingPermission") final String deviceId = ((TelephonyManager) App.context.getSystemService( Context.TELEPHONY_SERVICE )).getDeviceId();
+                final String deviceId = ((TelephonyManager) App.context.getSystemService( Context.TELEPHONY_SERVICE )).getDeviceId();
                 uuid = deviceId!=null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")).toString() : UUID.randomUUID().toString();
             }
         } catch (UnsupportedEncodingException e) {
