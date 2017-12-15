@@ -15,8 +15,8 @@ android {
         applicationId "com.wulee.administrator.zuji"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 24
-        versionName "1.4.2"
+        versionCode 25
+        versionName "1.4.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
