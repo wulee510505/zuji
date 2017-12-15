@@ -382,7 +382,7 @@ public class ZujiFragment extends MainBaseFrag{
 
     @Override
     public void onFragmentFirstSelected() {
-        showProgressDialog(getActivity(),false);
+        showProgressDialog(getActivity(),true);
         getLocationList(0, STATE_REFRESH);
     }
 

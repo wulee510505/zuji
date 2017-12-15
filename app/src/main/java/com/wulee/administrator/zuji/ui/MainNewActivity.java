@@ -677,7 +677,9 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
                     if(diffCount >0){
                         tvNewMsg.setVisibility(View.VISIBLE);
                         tvNewMsg.setText(diffCount+"");
-                        Text2Speech.speech(App.context,"您有新的留言，请注意查看",true);
+                        if(!Text2Speech.isSpeeching()){
+                            Text2Speech.speech(App.context,"您有新的留言，请注意查看",true);
+                        }
                     }else{
                         tvNewMsg.setVisibility(View.GONE);
                     }

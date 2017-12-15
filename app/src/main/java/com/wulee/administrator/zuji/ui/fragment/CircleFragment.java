@@ -375,7 +375,7 @@ public class CircleFragment extends MainBaseFrag {
 
     @Override
     public void onFragmentFirstSelected() {
-        showProgressDialog(getActivity(),false);
+        showProgressDialog(getActivity(),true);
         getCircleContnets(0, STATE_REFRESH);
     }
 

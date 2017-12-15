@@ -139,7 +139,7 @@ public class UserGroupFragment extends MainBaseFrag {
 
     @Override
     public void onFragmentFirstSelected() {
-        showProgressDialog(getActivity(),false);
+        showProgressDialog(getActivity(),true);
         getUserList(0,STATE_REFRESH);
     }
 
