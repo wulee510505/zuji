@@ -56,6 +56,8 @@ import static com.wulee.administrator.zuji.App.aCache;
 public class PersonalInfoActivity extends TakePhotoActivity implements ActionSheet.MenuItemClickListener {
 
     private static final int AVATAR_REQUEST_CODE = 100;
+    private static final int BIRTHDAY_REQUEST_CODE = 101;
+
     @InjectView(R.id.iv_back)
     ImageView ivBack;
     @InjectView(R.id.title)
@@ -78,20 +80,25 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
     RelativeLayout rlGender;
     @InjectView(R.id.container)
     LinearLayout container;
+    @InjectView(R.id.tv_birthday)
+    TextView tvBirthday;
+    @InjectView(R.id.rl_birthday)
+    RelativeLayout rlBirthday;
 
 
     private String headerimgurl;
+    private String mBirthday;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.me_personal_center);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        AppUtils.setStateBarColor(this,R.color.colorAccent);
+        AppUtils.setStateBarColor(this, R.color.colorAccent);
 
         ButterKnife.inject(this);
 
@@ -101,19 +108,25 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
 
     private void initData() {
         title.setText("个人中心");
-        PersonInfo personInfo =  DBHandler.getCurrPesonInfo();
+        PersonInfo personInfo = DBHandler.getCurrPesonInfo();
         if (null != personInfo) {
-            if (!TextUtils.isEmpty(personInfo.getName()))
-                etName.setText(personInfo.getName());
-            else
-                etName.setText("游客");
-
-            if (!TextUtils.isEmpty(personInfo.getSex()))
-                etGender.setText(personInfo.getSex());
-            else
-                etGender.setText("其他");
-
             ImageUtil.setCircleImageView(userPhoto, personInfo.getHeader_img_url(), R.mipmap.icon_user_def, this);
+
+            if (!TextUtils.isEmpty(personInfo.getName())){
+                etName.setText(personInfo.getName());
+            } else{
+                etName.setText("游客");
+            }
+            if (!TextUtils.isEmpty(personInfo.getSex())){
+                etGender.setText(personInfo.getSex());
+            } else {
+                etGender.setText("其他");
+            }
+            if (!TextUtils.isEmpty(personInfo.getBirthday())){
+                tvBirthday.setText(personInfo.getBirthday());
+            } else {
+                tvBirthday.setText("未选择");
+            }
         }
     }
 
@@ -123,14 +136,19 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
         String genderStr = etGender.getText().toString().trim();
 
         PersonInfo personInfo = getCurrentUser(PersonInfo.class);
+        if(personInfo == null){
+            return;
+        }
         personInfo.setName(name);
         personInfo.setSex(genderStr);
-
+        if(!TextUtils.isEmpty(mBirthday)){
+            personInfo.setBirthday(mBirthday);
+        }
         personInfo.setHeader_img_url(headerimgurl);
         personInfo.update(new UpdateListener() {
             @Override
             public void done(BmobException e) {
-               // stopProgressDialog();
+                 //stopProgressDialog();
                 if (e == null) {
                     PersonInfo pi = DBHandler.getCurrPesonInfo();
                     if (null != pi) {
@@ -141,14 +159,14 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                     }
                     OtherUtil.showToastText("更新个人信息成功");
                 } else {
-                    if(e.getErrorCode() == 206){
+                    if (e.getErrorCode() == 206) {
                         OtherUtil.showToastText("您的账号在其他地方登录，请重新登录");
-                        aCache.put("has_login","no");
+                        aCache.put("has_login", "no");
                         LocationUtil.getInstance().stopGetLocation();
                         AppUtils.AppExit(PersonalInfoActivity.this);
                         PersonInfo.logOut();
-                        startActivity(new Intent(PersonalInfoActivity.this,LoginActivity.class));
-                    }else{
+                        startActivity(new Intent(PersonalInfoActivity.this, LoginActivity.class));
+                    } else {
                         OtherUtil.showToastText("更新个人信息失败:" + e.getMessage());
                     }
                 }
@@ -175,6 +193,15 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                     }*/
                 }
                 break;
+            case BIRTHDAY_REQUEST_CODE:// 生日的返回
+                if (resultCode == RESULT_OK && data != null) {
+                     String birthday = data.getStringExtra(SelectDateActivity.SELECT_DATE);
+                     if (!TextUtils.isEmpty(birthday)) {
+                         tvBirthday.setText(birthday);
+                         mBirthday = birthday;
+                     }
+                }
+                break;
         }
     }
 
@@ -183,10 +210,12 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
     public void takeCancel() {
         super.takeCancel();
     }
+
     @Override
     public void takeFail(TResult result, String msg) {
         super.takeFail(result, msg);
     }
+
     @Override
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
@@ -228,14 +257,14 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                                 DBHandler.updatePesonInfo(piInfo);
                                 Toast.makeText(PersonalInfoActivity.this, "更新个人头像成功", Toast.LENGTH_SHORT).show();
                             } else {
-                                if(e.getErrorCode() == 206){
+                                if (e.getErrorCode() == 206) {
                                     OtherUtil.showToastText("您的账号在其他地方登录，请重新登录");
-                                    aCache.put("has_login","no");
+                                    aCache.put("has_login", "no");
                                     LocationUtil.getInstance().stopGetLocation();
                                     AppUtils.AppExit(PersonalInfoActivity.this);
                                     PersonInfo.logOut();
-                                    startActivity(new Intent(PersonalInfoActivity.this,LoginActivity.class));
-                                }else{
+                                    startActivity(new Intent(PersonalInfoActivity.this, LoginActivity.class));
+                                } else {
                                     OtherUtil.showToastText("更新个人头像失败:" + e.getMessage());
                                 }
                             }
@@ -254,7 +283,7 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
         });
     }
 
-    @OnClick({R.id.iv_back, R.id.iv_submit, R.id.user_photo,R.id.rl_gender})
+    @OnClick({R.id.iv_back, R.id.iv_submit, R.id.user_photo, R.id.rl_gender,R.id.rl_birthday})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -280,25 +309,26 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
 
 
                 AndPermission.with(this)
-                    .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .callback(new PermissionListener() {
-                        @Override
-                        public void onSucceed(int requestCode, List<String> grantedPermissions) {
-                            TakePhoto takePhoto = getTakePhoto();
-                            File file=new File(Constant.TEMP_FILE_PATH, "header_img" + ".jpg");
-                            if (!file.getParentFile().exists())file.getParentFile().mkdirs();
-                            Uri imageUri = FileProvider7.getUriForFile(PersonalInfoActivity.this,file);
+                        .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .callback(new PermissionListener() {
+                            @Override
+                            public void onSucceed(int requestCode, List<String> grantedPermissions) {
+                                TakePhoto takePhoto = getTakePhoto();
+                                File file = new File(Constant.TEMP_FILE_PATH, "header_img" + ".jpg");
+                                if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+                                Uri imageUri = FileProvider7.getUriForFile(PersonalInfoActivity.this, file);
 
-                            CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
-                            takePhoto.onPickFromGalleryWithCrop(imageUri,cropOptions);
-                        }
-                        @Override
-                        public void onFailed(int requestCode, List<String> deniedPermissions) {
-                            if(AndPermission.hasAlwaysDeniedPermission(PersonalInfoActivity.this,deniedPermissions))
-                                AndPermission.defaultSettingDialog(PersonalInfoActivity.this).show();
-                        }
-                    })
-                    .start();
+                                CropOptions cropOptions = new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
+                                takePhoto.onPickFromGalleryWithCrop(imageUri, cropOptions);
+                            }
+
+                            @Override
+                            public void onFailed(int requestCode, List<String> deniedPermissions) {
+                                if (AndPermission.hasAlwaysDeniedPermission(PersonalInfoActivity.this, deniedPermissions))
+                                    AndPermission.defaultSettingDialog(PersonalInfoActivity.this).show();
+                            }
+                        })
+                        .start();
                 break;
             case R.id.rl_gender:
                 ActionSheet menuView = new ActionSheet(this);
@@ -308,25 +338,30 @@ public class PersonalInfoActivity extends TakePhotoActivity implements ActionShe
                 menuView.setCancelableOnTouchMenuOutside(true);
                 menuView.showMenu();
                 break;
+            case R.id.rl_birthday:
+                startActivityForResult(new Intent(this,SelectDateActivity.class),BIRTHDAY_REQUEST_CODE);
+                break;
         }
     }
 
+
     @Override
     public void onItemClick(int pos) {
-         switch (pos){
-             case 0:
-                  etGender.setText("男");
-                 break;
-             case 1:
-                  etGender.setText("女");
-                 break;
-             case 2:
-                  etGender.setText("其他");
-                 break;
-         }
+        switch (pos) {
+            case 0:
+                etGender.setText("男");
+                break;
+            case 1:
+                etGender.setText("女");
+                break;
+            case 2:
+                etGender.setText("其他");
+                break;
+        }
         PersonInfo personInfo = DBHandler.getCurrPesonInfo();
         if (null != personInfo) {
             personInfo.setSex(etGender.getText().toString().trim());
         }
     }
+
 }

@@ -13,7 +13,6 @@ import com.wulee.administrator.zuji.base.BaseActivity;
 import com.wulee.administrator.zuji.database.bean.PersonInfo;
 import com.wulee.administrator.zuji.entity.FeedBackInfo;
 
-import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
@@ -74,12 +73,12 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
         FeedBackInfo feedBackInfo = new FeedBackInfo();
         feedBackInfo.personInfo  = user;
         feedBackInfo.setContent(content);
-        BmobInstallation installation = BmobInstallation.getCurrentInstallation();
+       /* BmobInstallation installation = BmobInstallation.getCurrentInstallation();
         String installationId;
         if(installation != null){
             installationId = installation.getInstallationId();
             feedBackInfo.setInstallationId(installationId);
-        }
+        }*/
         feedBackInfo.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {

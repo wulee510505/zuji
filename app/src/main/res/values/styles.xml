@@ -29,7 +29,7 @@
         <item name="android:windowAnimationStyle">@style/AnimBottom</item>
     </style>
 
-    <style name="DialogActivity.Transparent2" parent="Base.Theme.AppCompat.Dialog">
+    <style name="DialogActivity.Transparent2" parent="@android:style/Theme.Holo.Light.DialogWhenLarge.NoActionBar">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowIsFloating">true</item>

@@ -1,5 +1,6 @@
 package com.wulee.administrator.zuji.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -52,11 +53,14 @@ import com.wulee.administrator.zuji.ui.fragment.ZujiFragment;
 import com.wulee.administrator.zuji.ui.pushmsg.PushMsgListActivity;
 import com.wulee.administrator.zuji.utils.AppUtils;
 import com.wulee.administrator.zuji.utils.ConfigKey;
+import com.wulee.administrator.zuji.utils.HolidayUtil;
 import com.wulee.administrator.zuji.utils.ImageUtil;
 import com.wulee.administrator.zuji.utils.LocationUtil;
 import com.wulee.administrator.zuji.utils.OtherUtil;
 import com.wulee.administrator.zuji.utils.PhoneUtil;
 import com.wulee.administrator.zuji.widget.CoolImageView;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
 import com.zhouwei.blurlibrary.EasyBlur;
 
 import java.text.SimpleDateFormat;
@@ -142,6 +146,10 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         if(interal > Constant.SHOW_NOTICE_INTERVAL){
             startActivity(new Intent(this,NoticeActivity.class));
         }
+
+        if(HolidayUtil.isHoliday(new Date())){
+            startActivity(new Intent(this,FallingViewActivity.class).putExtra(FallingViewActivity.CURR_HOLIDAYS,HolidayUtil.getCurrHolidays()));
+        }
     }
 
     @Override
@@ -199,7 +207,8 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         }
         long interal = System.currentTimeMillis() - lastCheckUpdateTime;
         if(interal > Constant.CHECK_UPDATE_INTERVAL){
-            BmobUpdateAgent.forceUpdate(this);
+            BmobUpdateAgent.setUpdateOnlyWifi(true);
+            checkUpdate();
             aCache.put(Constant.KEY_LAST_CHECK_UPDATE_TIME,String.valueOf(System.currentTimeMillis()));
         }
     }
@@ -208,6 +217,23 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
         initView();
         initData();
         addListner();
+    }
+
+    private void checkUpdate(){
+        AndPermission.with(this)
+                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .callback(new PermissionListener() {
+                    @Override
+                    public void onSucceed(int requestCode, List<String> grantedPermissions) {
+                        BmobUpdateAgent.forceUpdate(MainNewActivity.this);
+                    }
+                    @Override
+                    public void onFailed(int requestCode, List<String> deniedPermissions) {
+                        if(AndPermission.hasAlwaysDeniedPermission(MainNewActivity.this,deniedPermissions))
+                            AndPermission.defaultSettingDialog(MainNewActivity.this).show();
+                    }
+                })
+                .start();
     }
 
 
@@ -517,7 +543,7 @@ public class MainNewActivity extends BaseActivity implements RadioGroup.OnChecke
                     Toast.makeText(MainNewActivity.this, "查询出错或查询超时", Toast.LENGTH_SHORT).show();
                 }
             });
-            BmobUpdateAgent.forceUpdate(MainNewActivity.this);
+            checkUpdate();
         }else  if (id ==  R.id.item_feedback) {
             startActivity(new Intent(this,FeedBackActivity.class));
         }else  if (id ==  R.id.item_setting) {

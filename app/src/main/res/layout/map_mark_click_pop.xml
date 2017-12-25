@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@mipmap/bg_map_mark_pop"
+    android:background="@drawable/bg_map_mark_pop"
     android:orientation="vertical">
 
     <TextView
@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
         android:text="11111111111111"
         android:textColor="@color/ctv_white"
         android:textSize="15sp" />
@@ -20,10 +19,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
         android:text="2222222222222222"
         android:layout_marginTop="5dp"
         android:textColor="@color/ctv_white"
         android:textSize="15sp" />
 
+
+    <TextView
+        android:id="@+id/tv_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="3333333333333333"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/ctv_white"
+        android:textSize="15sp"
+        android:visibility="gone"/>
 </LinearLayout>

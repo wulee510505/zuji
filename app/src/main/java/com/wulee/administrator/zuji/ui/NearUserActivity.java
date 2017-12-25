@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,19 +119,22 @@ public class NearUserActivity extends BaseActivity implements RadarSearchListene
         RadarUploadInfo info = new RadarUploadInfo();
         currLatitude = aCache.getAsString("lat");
         currLontitude = aCache.getAsString("lon");
-        try {
-            currPt = new LatLng(Double.parseDouble(currLatitude), Double.parseDouble(currLontitude));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        PersonInfo personInfo = BmobUser.getCurrentUser(PersonInfo.class);
-        info.comments = personInfo != null ? personInfo.getName() : "";
-        info.pt = currPt;
-        mManager.uploadInfoRequest(info);
+        if(!TextUtils.isEmpty(currLatitude) && !TextUtils.isEmpty(currLontitude)){
+            try {
+                currPt = new LatLng(Double.parseDouble(currLatitude), Double.parseDouble(currLontitude));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
 
-        MapStatus.Builder builder = new MapStatus.Builder();
-        builder.target(currPt).zoom(16.0f);
-        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            PersonInfo personInfo = BmobUser.getCurrentUser(PersonInfo.class);
+            info.comments = personInfo != null ? personInfo.getName() : "";
+            info.pt = currPt;
+            mManager.uploadInfoRequest(info);
+
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(currPt).zoom(16.0f);
+            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+        }
     }
 
     /**
@@ -192,6 +196,7 @@ public class NearUserActivity extends BaseActivity implements RadarSearchListene
             PersonInfo piInfo = new PersonInfo();
             piInfo.setMobile(nearInfo.userID);
             piInfo.setName(nearInfo.comments);
+            bundle.putString("distance",nearInfo.distance+"");
             bundle.putSerializable("info", piInfo);
             marker.setExtraInfo(bundle);
         }
@@ -202,11 +207,15 @@ public class NearUserActivity extends BaseActivity implements RadarSearchListene
     public boolean onMarkerClick(Marker marker) {
         // 获得marker中的数据
         PersonInfo personInfo = (PersonInfo) marker.getExtraInfo().get("info");
+        String distance = marker.getExtraInfo().getString("distance");
         View popView = LayoutInflater.from(this).inflate(R.layout.map_mark_click_pop,null);
         TextView tvMobile = popView.findViewById(R.id.tv_1);
         tvMobile.setText(PhoneUtil.encryptTelNum(personInfo.getMobile()));
         TextView tvName = popView.findViewById(R.id.tv_2);
         tvName.setText(personInfo.getName());
+        TextView tvDistance = popView.findViewById(R.id.tv_3);
+        tvDistance.setVisibility(View.VISIBLE);
+        tvDistance.setText(distance + " m ");
         // 将marker所在的经纬度的信息转化成屏幕上的坐标
         final LatLng ll = marker.getPosition();
         Point p = mBaiduMap.getProjection().toScreenLocation(ll);

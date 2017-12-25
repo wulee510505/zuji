@@ -1,7 +1,6 @@
 package com.wulee.administrator.zuji.ui;
 
 import android.os.Bundle;
-import android.widget.RelativeLayout;
 
 import com.wulee.administrator.zuji.R;
 import com.wulee.administrator.zuji.base.BaseActivity;
@@ -34,10 +33,10 @@ public class BigSingleImgActivity extends BaseActivity {
 
 
         int sw = UIUtils.getScreenWidthAndHeight(this)[0];
-        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) ivBigimg.getLayoutParams();
+       /* RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) ivBigimg.getLayoutParams();
         rlp.width = sw;
         rlp.height = sw * 3/2;
-        ivBigimg.setLayoutParams(rlp);
+        ivBigimg.setLayoutParams(rlp);*/
 
         imgUrl = getIntent().getStringExtra(IMAGE_URL);
         ImageUtil.setDefaultImageView(ivBigimg,imgUrl,R.mipmap.bg_pic_def_rect,this);

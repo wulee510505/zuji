@@ -136,7 +136,7 @@ public class PublishCircleActivity extends TakePhotoActivity {
 
                     CompressConfig config = new CompressConfig.Builder()
                             .setMaxSize(102400) //100Kb
-                            .setMaxPixel(300)
+                            .setMaxPixel(600)
                             .create();
                     mTakePhoto.onEnableCompress(config, false);
                     mTakePhoto.onPickMultiple(maxSelPicNum - picList.size() + 1);

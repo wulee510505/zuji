@@ -171,13 +171,33 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
+        <activity android:name="com.wulee.administrator.zuji.ui.SelectDateActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/DialogActivity.Transparent2"/>
+
+        <activity android:name="com.wulee.administrator.zuji.ui.FallingViewActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+
         <!-- 解决 Android N 7.0 上 报错：android.os.FileUriExposedException-->
-        <provider
+       <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.wulee.administrator.zuji.android7.fileprovider"
+            android:authorities="com.wulee.administrator.zuji.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false"
-            tools:replace="android:authorities">
+            tools:replace="name,authorities,exported,grantUriPermissions">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"
+                tools:replace="name,resource"/>
+        </provider>
+
+        <provider
+            android:name=".utils.MyProvider"
+            android:authorities="cn.bmob.update.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
