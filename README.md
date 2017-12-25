@@ -2,7 +2,7 @@
 
 APK下载地址：
 
-http://bmob-cdn-8120.b0.upaiyun.com/2017/12/11/f82fbcd740f82f3a80a9698546643d0b.apk
+http://bmob-cdn-8120.b0.upaiyun.com/2017/12/25/9d4da1074001da7380410861f4140b0e.apk
 
 
 
