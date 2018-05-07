@@ -1,8 +1,7 @@
 # zuji
 
 APK下载地址：
-
-http://bmob-cdn-8120.b0.upaiyun.com/2017/12/25/9d4da1074001da7380410861f4140b0e.apk
+http://bmob-cdn-8120.b0.upaiyun.com/2018/05/07/4ab4a8b640197d8e800e79da32d0f900.apk
 
 
 
